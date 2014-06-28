@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <groupId>net.blaklizt</groupId>
+        <artifactId>symbiosis</artifactId>
+        <version>2.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.blaklizt.symbiosis</groupId>
+    <artifactId>sym_proximity</artifactId>
+    <version>${project.parent.version}</version>
+    <packaging>jar</packaging>
+    <name>Symbiosis Proximity Monitor</name>
+    <description>Symbiosis Proximity Monitor</description>
+
+    <build>
+        <finalName>sym_proximity</finalName>
+    </build>
+    <dependencies>
+
+        <!-- Symbiosis Modules -->
+        <dependency>
+            <groupId>net.blaklizt.symbiosis</groupId>
+            <artifactId>sym_bluetooth</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.blaklizt.symbiosis</groupId>
+            <artifactId>sym_tts_engine</artifactId>
+        </dependency>
+
+        <!-- Spring Framework -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <!-- Other dependencies -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.blaklizt.symbiosis</groupId>
+            <artifactId>sym_common</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+    </dependencies>
+
+</project>

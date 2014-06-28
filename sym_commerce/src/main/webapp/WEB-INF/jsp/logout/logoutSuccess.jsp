@@ -1,0 +1,1 @@
+<a href="<c:url value='/start'/>">Click here to return to login screen</a>

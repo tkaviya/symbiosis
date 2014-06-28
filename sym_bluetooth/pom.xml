@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <groupId>net.blaklizt</groupId>
+        <artifactId>symbiosis</artifactId>
+        <version>2.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.blaklizt.symbiosis</groupId>
+    <artifactId>sym_bluetooth</artifactId>
+    <packaging>jar</packaging>
+    <version>${project.parent.version}</version>
+    <name>Symbiosis Bluetooth</name>
+    <description>Symbiosis Bluetooth</description>
+
+    <build>
+        <finalName>sym_bluetooth</finalName>
+    </build>
+
+    <dependencies>
+        <!-- Symbiosis Module Dependancies -->
+        <dependency>
+            <groupId>net.blaklizt.symbiosis</groupId>
+            <artifactId>sym_common</artifactId>
+        </dependency>
+
+        <!-- Spring Framework -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <!-- Bluecove Bluetooth Library -->
+        <dependency>
+            <groupId>net.sf.bluecove</groupId>
+            <artifactId>bluecove</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.bluecove</groupId>
+            <artifactId>bluecove-gpl</artifactId>
+        </dependency>
+
+        <!-- Other dependencies -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
