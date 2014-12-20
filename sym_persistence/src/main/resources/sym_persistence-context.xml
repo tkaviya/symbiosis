@@ -7,7 +7,7 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <import resource="classpath*:sym_common-context.xml" />
+    <import resource="classpath*:sym_common-spring-context.xml" />
     <import resource="classpath*:sym_persistence-context.xml" />
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
