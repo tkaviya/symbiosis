@@ -1,19 +1,15 @@
 package net.blaklizt.symbiosis.sym_sync;
 
-import com.google.gson.Gson;
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
-import net.blaklizt.symbiosis.sym_common.response.ResponseCode;
+import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
+import net.blaklizt.symbiosis.sym_common.utilities.Format;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.log4j.Logger;
 
 import javax.jms.*;
 import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.DigestInputStream;
+import java.io.FileInputStream;
 import java.security.MessageDigest;
-import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,22 +19,47 @@ import java.util.HashMap;
  */
 class SymSyncServer {
 
-	private static final Logger logger = Configuration.getNewLogger(SymSyncServer.class.getSimpleName());
+	protected static final Logger logger = Configuration.getNewLogger(SymSyncServer.class.getSimpleName());
 
-	private static Session apacheMQueSession;
+	protected static Session apacheMQueSession;
 
-	private static MessageProducer syncQueue;
+	protected static MessageProducer syncQueue;
 
-	private static Connection apacheMQueueConnection;
+	protected static Connection apacheMQueueConnection;
 
-	private static MessageDigest md5Digest;
+	protected static MessageDigest messageDigest;
 
-	SymSyncServer()
+	protected static final int MAX_FILES = 100;
+
+	protected static int countProcessed = 0;
+
+	protected static SymSyncServer symSyncServer = null;
+
+	protected static boolean serverStarted = false;
+
+	protected static byte[] fileBytes = new byte[1024];
+
+	//singleton
+	public static SymSyncServer getInstance()
 	{
-		if (startMQueue())
+		if (symSyncServer == null)
+		{
+			symSyncServer = new SymSyncServer();
+		}
+		return symSyncServer;
+	}
+
+	//singleton
+	protected SymSyncServer()
+	{
+		if (!serverStarted && startMQueue())
 		{
 			logger.info("Apache MQueue started. Populating consumer data");
 			getFileHashes();
+		}
+		else if (serverStarted)
+		{
+			logger.info("Server already running");
 		}
 		else
 		{
@@ -46,95 +67,123 @@ class SymSyncServer {
 		}
 	}
 
-	String getFileHashes()
+	private void getFileHashes()
 	{
 		logger.info("Getting all files to sync");
-		Gson responseData = new Gson();
-		HashMap<String, String> fileHasheResponse = new HashMap<>();
 
 		try
 		{
-			fileHasheResponse.put("response_code","0");
-			fileHasheResponse.put("response_message","Success");
-			md5Digest = MessageDigest.getInstance("MD5");
+			messageDigest = MessageDigest.getInstance("SHA-512");
 
 			String allFolderData = Configuration.getProperty("sync", "locations");
-			String[] folderData = allFolderData.split("|");
+			logger.info("Got all folder data: " + allFolderData);
+			String[] folderData = allFolderData.split("\\|");
 			for (String folder : folderData)
 			{
+				logger.info("Processing entry: " + folder);
 				String[] folderInfo = folder.split(",");
-				processFolder(folderInfo[0], Boolean.parseBoolean(folderInfo[1]));
-			}
 
-			// Clean up
-			apacheMQueSession.close();
-			apacheMQueueConnection.close();
+				if (folderInfo.length == 2)
+				{
+					try
+					{
+						//process folders recursively
+						processFolder(folderInfo[0].trim(), !folderInfo[1].trim().equals("0"));
+					}
+					catch (Exception ex)
+					{
+						logger.error("Invalid configuration specified: " + folder);
+					}
+				}
+				else
+				{
+					logger.error("Invalid configuration specified: " + folder);
+					logger.info("folderInfo[0] = " + folderInfo[0]);
+					logger.info("folderInfo[1] = " + folderInfo[1]);
+				}
+			}
 		}
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
 
-			fileHasheResponse.put("response_code", String.valueOf(ResponseCode.SUCCESS));
-			fileHasheResponse.put("response_message", ResponseCode.SUCCESS.responseMsg());
-
 			logger.error("Failed to get file data: " + ex.getMessage());
 		}
-
-		return responseData.toJson(fileHasheResponse);
 	}
 
-	void processFolder(String path, boolean recursive)
+	private void processFolder(String full_path, boolean recursive)
 	{
-		logger.error("Recursive = " + (recursive ? 1 : 0) +  " | Processing path " + path);
-		File location = new File(path);
-		if (location.isDirectory() && recursive) { processFolder(path, recursive); }
-		else if (location.isFile())
-		{
-			logger.info("Processing file " + location.getName());
-			try (InputStream is = Files.newInputStream(Paths.get(path)))
-			{
-				new DigestInputStream(is, md5Digest);
-				String digest = String.valueOf(md5Digest.digest());
+		if (countProcessed > MAX_FILES) { logger.debug("Processing limit reached! Skipping " + full_path); return; }
 
-				logger.info("Publishing file: " + location.getName() + " | " + digest);
+		logger.info("Recursive = " + (recursive ? 1 : 0) + " | Processing path " + full_path);
+
+		File location = new File(full_path);
+		if (location.isDirectory() && !location.getName().equals(".") && !location.getName().equals("..") && recursive)
+		{
+			File[] files = location.listFiles();
+			for (File file : files)
+			{
+				processFolder(file.getAbsolutePath(), recursive);
+			}
+		}
+		else if (location.isFile() && !location.getName().equals(".") && !location.getName().equals(".."))
+		{
+			logger.info(CommonUtilities.alignStringToLength(String.valueOf(countProcessed++), 3) + "| Processing file " + location.getName());
+			try
+			{
+				FileInputStream fis = new FileInputStream(full_path);
+				int nread = 0;
+
+				while ((nread = fis.read(fileBytes)) != -1) { messageDigest.update(fileBytes, 0, nread); }
+
+				String hexStr = Format.bytesToHexString(messageDigest.digest());
+				String objectStr = Format.objectToBase64(new SymSyncFile(location.getName(), location.getAbsolutePath(), location.length(), hexStr));
+
+				logger.info( "Publishing file: " + location.getName() + " | " + hexStr);
+				logger.info( "Object Str     : " + objectStr);
 
 				Message message = apacheMQueSession.createMapMessage();
-				message.setObjectProperty(digest, new SymSyncFile(location.getName(), location.getAbsolutePath(), location.length(), digest));
+				message.setStringProperty(hexStr, objectStr);
 
 				syncQueue.send(message);
 			}
 			catch (Exception ex)
 			{
-				logger.error("Failed to read file " + path + ": " + ex.getMessage());
+				logger.error("Failed to process file " + full_path + ": " + ex.getMessage());
 			}
 
 		}
+		else
+		{
+			logger.warn("Skipping file: " + full_path);
+		}
 	}
 
-	public boolean startMQueue()
+	private boolean startMQueue()
 	{
+		serverStarted = true;
 		try
 		{
 			// Create a ConnectionFactory
-			logger.info("Starting apache MQueue");
-//			ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://localhost");
-			ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://0.0.0.0");
+			logger.info("Starting publisher apache MQueue");
+			ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://localhost");
+//			ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://0.0.0.0");
 
 			// Create a Connection
-			logger.info("Creating apache MQueue connection factory");
+			logger.info("Creating publisher apache MQueue connection factory");
 			apacheMQueueConnection = connectionFactory.createConnection();
 			apacheMQueueConnection.start();
 
 			// Create a Session
-			logger.info("Creating apache MQueue session");
+			logger.info("Creating publisher apache MQueue session");
 			apacheMQueSession = apacheMQueueConnection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
 			// Create the destination (Topic or Queue)
-			logger.info("Creating apache MQueue destination");
+			logger.info("Creating publisher apache MQueue destination");
 			Destination destination = apacheMQueSession.createQueue("SYM_SYNC_SERVER.SERVER");
 
 			// Create a MessageProducer from the Session to the Topic or Queue
-			logger.info("Creating apache MQueue message producer");
+			logger.info("Creating publisher apache MQueue message producer");
 			syncQueue = apacheMQueSession.createProducer(destination);
 			syncQueue.setDeliveryMode(DeliveryMode.PERSISTENT);
 
@@ -143,7 +192,7 @@ class SymSyncServer {
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-			logger.error("Failed to initialize MQueue: " + ex.getMessage());
+			logger.error("Failed to initialize publisher MQueue: " + ex.getMessage());
 			return false;
 		}
 	}

@@ -1,5 +1,10 @@
 package net.blaklizt.symbiosis.sym_common.utilities;
 
+import java.io.*;
+
+import static org.apache.commons.codec.binary.Base64.decodeBase64;
+import static org.apache.commons.codec.binary.Base64.encodeBase64;
+
 /**
  * Created with IntelliJ IDEA.
  * User: tkaviya
@@ -41,5 +46,50 @@ public class Format {
 	public static String formatBlink(String text)
 	{
 		return "<emphasize>" + text + "</emphasize>";
+	}
+
+	public static String objectToBase64(Serializable object)
+	{
+		try
+		{
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream( baos );
+			oos.writeObject(object);
+			oos.close();
+			return new String(encodeBase64(baos.toByteArray()));
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	/** Read the object from Base64 string. */
+	public static Object objectFromBase64(String encodedString)
+	{
+		try
+		{
+			byte [] data = decodeBase64(encodedString);
+			ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+			Object o  = ois.readObject();
+			ois.close();
+			return o;
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	public static String bytesToHexString(byte[] bytes)
+	{
+		//convert the byte to hex format
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < bytes.length; i++) {
+			sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+		}
+		return sb.toString();
 	}
 }
