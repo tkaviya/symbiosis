@@ -1,28 +1,35 @@
 package net.blaklizt.symbiosis.sym_translator;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class GoogleTranslator
 {
-	boolean translate(String text)
+	boolean translate(String word)
 	{
-		String text="〜のそばに";
-		word=java.net.URLEncoder.encode(word, "UTF-8");
-		URL url = new URL("http://translate.google.com/translate_tts?tl=ja&ie=UTF-8&q="+word);
-		HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
-		urlConn.addRequestProperty("User-Agent", "Mozilla/4.76");
-		InputStream audioSrc = urlConn.getInputStream();
-		DataInputStream read = new DataInputStream(audioSrc);
-		OutputStream outstream = new FileOutputStream(new File("mysound.mp3"));
-		byte[] buffer = new byte[1024];
-		int len;
-		while ((len = read.read(buffer)) > 0) {
-			outstream.write(buffer, 0, len);
+		try
+		{
+			word = java.net.URLEncoder.encode(word, "UTF-8");
+			URL url = new URL("http://translate.google.com/translate_tts?tl=ja&ie=UTF-8&q=" + word);
+			HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+			urlConn.addRequestProperty("User-Agent", "Mozilla/4.76");
+			InputStream audioSrc = urlConn.getInputStream();
+			DataInputStream read = new DataInputStream(audioSrc);
+			OutputStream outstream = new FileOutputStream(new File("mysound.mp3"));
+			byte[] buffer = new byte[1024];
+			int len;
+			while ((len = read.read(buffer)) > 0)
+			{
+				outstream.write(buffer, 0, len);
+			}
+			outstream.close();
+			return true;
 		}
-		outstream.close();
-	}catch(IOException e){
-	System.out.println(e.getMessage());
-
-}
+		catch (IOException e)
+		{
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
 }

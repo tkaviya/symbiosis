@@ -61,10 +61,10 @@ public class ProximityScanner implements Observer, Runnable {
 				if (masterBluetoothDevice == null)
 				{
 					//device not yet detected in range, lets do some scanning
-					bluetoothManager.enquireDevices();
-					bluetoothManager.enquireServices(Configuration.getProperty("bluetooth","bluetoothMasterMac"));
+					BluetoothManager.enquireDevices();
+					BluetoothManager.enquireServices(Configuration.getProperty("bluetooth", "bluetoothMasterMac"));
 
-					LinkedList<BluetoothDevice> bluetoothDevices = bluetoothManager.getBluetoothDevices();
+					LinkedList<BluetoothDevice> bluetoothDevices = BluetoothManager.getBluetoothDevices();
 
 					for (BluetoothDevice bluetoothDevice : bluetoothDevices)
 					{
@@ -121,12 +121,12 @@ public class ProximityScanner implements Observer, Runnable {
 	{
 		if (remoteDevice == null || remoteDevice.getServices() == null) return false;
 
-		synchronized (bluetoothManager.lock)
+		synchronized (BluetoothManager.lock)
 		{
 			for (ServiceRecord serviceRecord : remoteDevice.getServices())
 			{
 				log4j.debug("Connecting Service Record: " + serviceRecord.toString());
-				boolean success = bluetoothManager.connectService(serviceRecord);
+				boolean success = BluetoothManager.connectService(serviceRecord);
 				if (success) return success;
 			}
 		}
