@@ -314,6 +314,7 @@
         <module>sym_web</module>
         <module>sym_commerce</module>
         <module>sym_sync</module>
+        <module>../../BlakSync</module>
     </modules>
 
 

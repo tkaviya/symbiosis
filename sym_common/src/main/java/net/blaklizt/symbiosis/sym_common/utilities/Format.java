@@ -1,5 +1,8 @@
 package net.blaklizt.symbiosis.sym_common.utilities;
 
+import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
+import org.apache.log4j.Logger;
+
 import java.io.*;
 
 import static org.apache.commons.codec.binary.Base64.decodeBase64;
@@ -12,6 +15,8 @@ import static org.apache.commons.codec.binary.Base64.encodeBase64;
  * Time: 8:33 PM
  */
 public class Format {
+
+	private static final Logger logger = Configuration.getNewLogger(Format.class.getSimpleName());
 
 	public static enum HTML_COLOR
 	{
@@ -48,6 +53,7 @@ public class Format {
 		return "<emphasize>" + text + "</emphasize>";
 	}
 
+	/** Save the object into a Base64 string. */
 	public static String objectToBase64(Serializable object)
 	{
 		try
@@ -56,11 +62,11 @@ public class Format {
 			ObjectOutputStream oos = new ObjectOutputStream( baos );
 			oos.writeObject(object);
 			oos.close();
-			return new String(encodeBase64(baos.toByteArray()));
+			return new String(encodeBase64(baos.toByteArray()), "UTF-8");
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			logger.error("Failed to serialize object: " + ex.getMessage());
 			return null;
 		}
 	}
@@ -78,7 +84,7 @@ public class Format {
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			logger.error("Failed to serialize object: " + ex.getMessage());
 			return null;
 		}
 	}

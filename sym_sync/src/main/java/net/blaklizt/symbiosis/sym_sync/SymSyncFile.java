@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 public class SymSyncFile implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 	private String fileName;
 	private String filePath;
 	private String fileChecksum;

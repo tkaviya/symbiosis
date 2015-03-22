@@ -29,7 +29,7 @@ class SymSyncServer {
 
 	protected static MessageDigest messageDigest;
 
-	protected static final int MAX_FILES = 100;
+	protected static final int MAX_FILES = 1;
 
 	protected static int countProcessed = 0;
 
@@ -38,6 +38,8 @@ class SymSyncServer {
 	protected static boolean serverStarted = false;
 
 	protected static byte[] fileBytes = new byte[1024];
+
+	protected static final short SYNC_SERVER_CONSTANT = 6767;
 
 	//singleton
 	public static SymSyncServer getInstance()
@@ -113,7 +115,7 @@ class SymSyncServer {
 
 	private void processFolder(String full_path, boolean recursive)
 	{
-		if (countProcessed > MAX_FILES) { logger.debug("Processing limit reached! Skipping " + full_path); return; }
+		if (countProcessed >= MAX_FILES) { logger.debug("Processing limit reached! Skipping " + full_path); return; }
 
 		logger.info("Recursive = " + (recursive ? 1 : 0) + " | Processing path " + full_path);
 
@@ -128,7 +130,7 @@ class SymSyncServer {
 		}
 		else if (location.isFile() && !location.getName().equals(".") && !location.getName().equals(".."))
 		{
-			logger.info(CommonUtilities.alignStringToLength(String.valueOf(countProcessed++), 3) + "| Processing file " + location.getName());
+			logger.info(CommonUtilities.alignStringToLength(String.valueOf(++countProcessed), 3) + "| Processing file " + location.getName());
 			try
 			{
 				FileInputStream fis = new FileInputStream(full_path);
@@ -137,7 +139,10 @@ class SymSyncServer {
 				while ((nread = fis.read(fileBytes)) != -1) { messageDigest.update(fileBytes, 0, nread); }
 
 				String hexStr = Format.bytesToHexString(messageDigest.digest());
-				String objectStr = Format.objectToBase64(new SymSyncFile(location.getName(), location.getAbsolutePath(), location.length(), hexStr));
+
+				SymSyncFile symSyncFile = new SymSyncFile(location.getName(), full_path, location.length(), hexStr);
+
+				String objectStr = Format.objectToBase64(symSyncFile);
 
 				logger.info( "Publishing file: " + location.getName() + " | " + hexStr);
 				logger.info( "Object Str     : " + objectStr);
@@ -166,8 +171,8 @@ class SymSyncServer {
 		{
 			// Create a ConnectionFactory
 			logger.info("Starting publisher apache MQueue");
-			ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://localhost");
-//			ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://0.0.0.0");
+//			ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://localhost");
+			ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://0.0.0.0");
 
 			// Create a Connection
 			logger.info("Creating publisher apache MQueue connection factory");

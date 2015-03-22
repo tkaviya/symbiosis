@@ -53,47 +53,52 @@ public class SymSyncServerTest extends SymSyncServer implements ExceptionListene
 			MessageConsumer consumer = session.createConsumer(destination);
 
 			// Wait for a message
-			System.out.println("Getting consumer queued message");
-			Message message = consumer.receive();
+			System.out.println("Getting consumer queued messages");
 
-			Enumeration<String> propertyNames = message.getPropertyNames();
+			Message message = consumer.receive(5000);
 
-			System.out.println("Getting consumer queued message");
-
-			while(propertyNames.hasMoreElements())
+			while (message != null)
 			{
-				String currentElement = propertyNames.nextElement();
-				System.out.println("Reading property: " + currentElement);
-				String data = message.getStringProperty(currentElement);
+				System.out.println("Got JMS message: " + message.getJMSMessageID());
 
-				System.out.println("Object concat value : " + data);
-				System.out.println("Object cast value   : " + data);
-				System.out.println("String.valueOf value: " + String.valueOf(data));
-				System.out.println("new String value    : " + new String(data.getBytes()));
+				Enumeration<String> propertyNames = message.getPropertyNames();
 
+				System.out.println("Getting consumer queued message data");
 
-				if (data != null)
+				while(propertyNames.hasMoreElements())
 				{
-					Object dataObject = Format.objectFromBase64(data);
+					String currentElement = propertyNames.nextElement();
 
-					if (dataObject instanceof SymSyncFile)
+					System.out.println("Reading property: " + currentElement);
+					String data = message.getStringProperty(currentElement);
+
+					if (data != null)
 					{
-						SymSyncFile symSyncFileData = (SymSyncFile) dataObject;
-						System.out.println("File Name: " + symSyncFileData.getFileName());
-						System.out.println("File Path: " + symSyncFileData.getFilePath());
-						System.out.println("File Size: " + symSyncFileData.getSize());
-						System.out.println("Checksum:  " + symSyncFileData.getFileChecksum());
+						Object dataObject = Format.objectFromBase64(data);
+
+						if (dataObject instanceof SymSyncFile)
+						{
+							SymSyncFile symSyncFileData = (SymSyncFile) dataObject;
+							System.out.println("File Name: " + symSyncFileData.getFileName());
+							System.out.println("File Path: " + symSyncFileData.getFilePath());
+							System.out.println("File Size: " + symSyncFileData.getSize());
+							System.out.println("Checksum:  " + symSyncFileData.getFileChecksum());
+						}
+						else
+						{
+							System.out.println("Got mangled data for property: " + currentElement);
+						}
 					}
 					else
 					{
-						System.out.println("Got mangled data for property: " + currentElement);
+						System.out.println("Got no data for property: " + currentElement);
 					}
 				}
-				else
-				{
-					System.out.println("Got no data for property: " + currentElement);
-				}
+
+				message = consumer.receive(5000);
 			}
+
+			System.out.println("No more messages in queue");
 
 			consumer.close();
 			session.close();
