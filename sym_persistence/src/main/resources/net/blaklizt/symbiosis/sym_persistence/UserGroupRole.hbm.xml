@@ -4,8 +4,8 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="net.blaklizt.symbiosis.persistence.UserGroupRole" table="usergrouprole" schema="" catalog="streets">
-        <composite-id mapped="true" class="net.blaklizt.symbiosis.persistence.UserGroupRolePK">
+    <class name="net.blaklizt.symbiosis.sym_persistence.UserGroupRole" table="UserGroupRole" schema="" catalog="symbiosis">
+        <composite-id mapped="true" class="net.blaklizt.symbiosis.sym_persistence.UserGroupRolePK">
             <key-property name="userGroupID" column="UserGroupID"/>
             <key-property name="roleID" column="RoleID"/>
         </composite-id>

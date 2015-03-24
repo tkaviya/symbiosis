@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="net.blaklizt.symbiosis.persistence.EventLog" table="eventlog" schema="" catalog="streets">
+    <class name="net.blaklizt.symbiosis.sym_persistence.EventLog" table="EventLog" schema="" catalog="symbiosis">
         <id name="eventLogId" column="EventLogID" type="long">
             <generator class="identity"/>
         </id>

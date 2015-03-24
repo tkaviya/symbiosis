@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="net.blaklizt.symbiosis.persistence.UserAttribute" table="userattribute" schema="" catalog="streets">
-        <id name="userID" column="UserID" length="10" />
+    <class name="net.blaklizt.symbiosis.sym_persistence.UserGroup" table="UserGroup" schema="" catalog="symbiosis">
+        <id name="userGroupID" column="UserGroupID"/>
     </class>
 </hibernate-mapping>

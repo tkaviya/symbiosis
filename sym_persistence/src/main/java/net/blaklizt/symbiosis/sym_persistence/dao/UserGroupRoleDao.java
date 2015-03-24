@@ -1,6 +1,6 @@
-package net.blaklizt.symbiosis.persistence.dao;
+package net.blaklizt.symbiosis.sym_persistence.dao;
 
-import net.blaklizt.symbiosis.persistence.UserGroupRole;
+import net.blaklizt.symbiosis.sym_persistence.UserGroupRole;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;

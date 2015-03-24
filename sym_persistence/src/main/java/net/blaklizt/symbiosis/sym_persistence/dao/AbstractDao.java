@@ -1,4 +1,4 @@
-package net.blaklizt.symbiosis.persistence.dao;
+package net.blaklizt.symbiosis.sym_persistence.dao;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;

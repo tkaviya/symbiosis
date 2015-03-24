@@ -1,4 +1,4 @@
-package net.blaklizt.symbiosis.persistence;
+package net.blaklizt.symbiosis.sym_persistence;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;

@@ -1,6 +1,6 @@
-package net.blaklizt.symbiosis.persistence.dao;
+package net.blaklizt.symbiosis.sym_persistence.dao;
 
-import net.blaklizt.symbiosis.persistence.UserAttribute;
+import net.blaklizt.symbiosis.sym_persistence.UserAttribute;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;

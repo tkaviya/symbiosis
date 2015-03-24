@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="net.blaklizt.symbiosis.persistence.Role" table="role" schema="" catalog="streets">
+    <class name="net.blaklizt.symbiosis.sym_persistence.Role" table="Role" schema="" catalog="symbiosis">
         <id name="roleID" column="RoleID"/>
         <property name="description" column="Description"/>
         <property name="enabled" column="Enabled"/>

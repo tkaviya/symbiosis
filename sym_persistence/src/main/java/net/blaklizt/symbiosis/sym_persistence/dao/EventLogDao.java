@@ -1,6 +1,6 @@
-package net.blaklizt.symbiosis.persistence.dao;
+package net.blaklizt.symbiosis.sym_persistence.dao;
 
-import net.blaklizt.symbiosis.persistence.EventLog;
+import net.blaklizt.symbiosis.sym_persistence.EventLog;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;

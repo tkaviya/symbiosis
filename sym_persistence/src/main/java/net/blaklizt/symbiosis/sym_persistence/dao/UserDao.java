@@ -1,7 +1,6 @@
-package net.blaklizt.symbiosis.persistence.dao;
+package net.blaklizt.symbiosis.sym_persistence.dao;
 
-import net.blaklizt.symbiosis.persistence.User;
-import org.hibernate.criterion.MatchMode;
+import net.blaklizt.symbiosis.sym_persistence.User;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -21,14 +20,14 @@ public class UserDao extends AbstractDao<User, Long>
 
 	public User findByUsername(String username)
 	{
-		List result = findByCriterion(Restrictions.like("username", username, MatchMode.EXACT));
+		List result = findByCriterion(Restrictions.eq("username", username));
 		if (result == null || result.size() != 1) return null;
 		return (User)result.get(0);
 	}
 
 	public User findByEmail(String email)
 	{
-		List result = findByCriterion(Restrictions.like("email", email, MatchMode.EXACT));
+		List result = findByCriterion(Restrictions.eq("email", email));
 		if (result == null || result.size() != 1) return null;
 		return (User)result.get(0);
 	}
