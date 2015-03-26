@@ -36,6 +36,24 @@ public class CommonUtilities
 		return props;
 	}
 
+	public static String toCamelCase(String initialString) {
+
+		if (initialString == null) return null;
+
+		StringBuilder returnString = new StringBuilder(initialString.length());
+
+		for (String word : initialString.split(" ")) {
+			if (!word.isEmpty()) {
+				returnString.append(word.substring(0, 1).toUpperCase());
+				returnString.append(word.substring(1).toLowerCase());
+			}
+			if (!(returnString.length() == initialString.length()))
+				returnString.append(" ");
+		}
+
+		return returnString.toString();
+	}
+
 	public static String alignStringToLength(String text, int length)
 	{
 		if (text == null) text = "";

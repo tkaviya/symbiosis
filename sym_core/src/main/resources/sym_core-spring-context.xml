@@ -3,20 +3,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <import resource="classpath:/sym_common-context.xml"/>
+    <import resource="classpath:/sym_common-spring-context.xml"/>
     <import resource="classpath:/sym_tts_engine-spring-context.xml"/>
     <import resource="classpath:/sym_proximity-spring-context.xml"/>
 
     <bean id="symbiosis" name="symbiosis"  class="net.blaklizt.symbiosis.sym_core.manager.Symbiosis">
-        <!--<constructor-arg index="0" value="#{configurationEngine.coreManagerName}"/>-->
         <property name="textToSpeechEngine" ref="textToSpeechEngine" />
         <property name="proximityScanner" ref="proximityScanner" />
-        <property name="configurationEngine" ref="configurationEngine" />
     </bean>
 
-    <!--<bean id="symbiosis" name="symbiosis"  class="net.blaklizt.symbiosis.sym_core.manager.Symbiosis">-->
-        <!--<constructor-arg index="0" ref="configurationEngine"/>-->
-        <!--<constructor-arg index="1" ref="proximityScanner"/>-->
-        <!--<constructor-arg index="2" ref="textToSpeechEngine" />-->
-    <!--</bean>-->
 </beans>

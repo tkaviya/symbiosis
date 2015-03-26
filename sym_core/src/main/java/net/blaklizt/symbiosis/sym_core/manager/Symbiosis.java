@@ -1,6 +1,6 @@
 package net.blaklizt.symbiosis.sym_core.manager;
 
-import net.blaklizt.symbiosis.sym_common.ConfigurationEngine;
+import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
 import net.blaklizt.symbiosis.sym_proximity.ProximityScanner;
 import net.blaklizt.symbiosis.sym_tts_engine.TextToSpeechEngine;
 import org.apache.log4j.Logger;
@@ -14,8 +14,6 @@ public class Symbiosis implements Runnable
 
 	private ProximityScanner proximityScanner;
 
-	private ConfigurationEngine configurationEngine;
-
 	private static Symbiosis symbiosis;
 
 	public static Symbiosis getInstance()
@@ -25,17 +23,10 @@ public class Symbiosis implements Runnable
 
 	private Symbiosis() { symbiosis = this; }
 
-//	public Symbiosis(ConfigurationEngine configurationEngine,
-//		ProximityScanner proximityScanner, TextToSpeechEngine textToSpeechEngine)
-//	{
-//		this.configurationEngine = configurationEngine;
-//		this.proximityScanner = proximityScanner;
-//		this.textToSpeechEngine = textToSpeechEngine;
-//	}
-
 	public void run()
 	{
-		textToSpeechEngine.speak("Hello Master, my name is " + configurationEngine.getCoreManagerName() + "...");
+		textToSpeechEngine.speak("Hello " + Configuration.getProperty("masterName")
+			 + ", my name is " + Configuration.getProperty("coreManagerName") + "...");
 		proximityScanner.start();
 	}
 
@@ -43,7 +34,8 @@ public class Symbiosis implements Runnable
     {
 		try
 		{
-			new ClassPathXmlApplicationContext("spring-context.xml");
+			new ClassPathXmlApplicationContext("sym_core-spring-context.xml");
+			Symbiosis.getInstance();
 			new Thread(Symbiosis.getInstance()).start();
 		}
 		catch (Exception e)
@@ -52,15 +44,13 @@ public class Symbiosis implements Runnable
 		}
     }
 
-	public void setConfigurationEngine(ConfigurationEngine configurationEngine) {
-		this.configurationEngine = configurationEngine;
-	}
-
 	public void setTextToSpeechEngine(TextToSpeechEngine textToSpeechEngine) {
+		log4j.debug("Assigning textToSpeechEngine to Symbiosis");
 		this.textToSpeechEngine = textToSpeechEngine;
 	}
 
 	public void setProximityScanner(ProximityScanner proximityScanner) {
+		log4j.debug("Assigning proximityScanner to Symbiosis");
 		this.proximityScanner = proximityScanner;
 	}
 
