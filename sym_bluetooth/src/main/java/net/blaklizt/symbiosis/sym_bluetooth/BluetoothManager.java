@@ -1,6 +1,5 @@
 package net.blaklizt.symbiosis.sym_bluetooth;
 
-import net.blaklizt.symbiosis.sym_common.ConfigurationEngine;
 import org.apache.log4j.Logger;
 
 import javax.bluetooth.*;
@@ -18,7 +17,6 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 
 	public static Object lock = new Object();
 
-	protected static ConfigurationEngine configurationEngine;
 	protected static BluetoothManager bluetoothManager;
 	protected static LinkedList<BluetoothDevice> remoteDevices = new LinkedList();
 	protected static LinkedList<ServiceRecord> remoteServices = new LinkedList();
@@ -326,7 +324,10 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 
 
 	//make this a Singleton
-	protected BluetoothManager() {}
+	protected BluetoothManager() {
+		System.setProperty("bluecove.stack", "widcomm");
+		//System.setProperty(BlueCoveConfigProperties.PROPERTY_JSR_82_PSM_MINIMUM_OFF, "true");
+	}
 
 	public static String getLocalBluetoothAddress() {
 		return localBluetoothAddress;
@@ -358,10 +359,5 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 
 	public static LinkedList<BluetoothDevice> getBluetoothDevices() {
 		return remoteDevices;
-	}
-
-	public void setConfigurationEngine(ConfigurationEngine configurationEngine)
-	{
-		this.configurationEngine = configurationEngine;
 	}
 }

@@ -3,13 +3,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <import resource="classpath:/sym_common-context.xml"/>
-    <import resource="classpath:/sym_bluetooth-spring-context.xml" />
-    <import resource="classpath:/sym_tts_engine-spring-context.xml" />
+    <import resource="classpath*:/sym_common-spring-context.xml"/>
+    <import resource="classpath*:/sym_bluetooth-spring-context.xml" />
+    <import resource="classpath*:/sym_tts_engine-spring-context.xml" />
 
     <bean name="proximityScanner" id="proximityScanner" factory-method="getInstance"
           class="net.blaklizt.symbiosis.sym_proximity.ProximityScanner">
-        <property name="configurationEngine" ref="configurationEngine" />
         <property name="bluetoothManager" ref="bluetoothManager" />
         <property name="textToSpeechEngine" ref="textToSpeechEngine" />
     </bean>

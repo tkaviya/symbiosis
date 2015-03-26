@@ -2,7 +2,7 @@ package net.blaklizt.symbiosis.sym_proximity;
 
 import net.blaklizt.symbiosis.sym_bluetooth.BluetoothDevice;
 import net.blaklizt.symbiosis.sym_bluetooth.BluetoothManager;
-import net.blaklizt.symbiosis.sym_common.ConfigurationEngine;
+import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
 import net.blaklizt.symbiosis.sym_tts_engine.TextToSpeechEngine;
 import org.apache.log4j.Logger;
 
@@ -18,8 +18,6 @@ import java.util.Observer;
  * Time: 9:11 PM
  */
 public class ProximityScanner implements Observer, Runnable {
-
-	protected static ConfigurationEngine configurationEngine;
 
 	protected static BluetoothManager bluetoothManager;
 
@@ -39,7 +37,7 @@ public class ProximityScanner implements Observer, Runnable {
 		{
 			proximityScanner = new ProximityScanner();
 
-			if (configurationEngine != null && configurationEngine.getBluetoothProximityAutostart())
+			if (true)//Boolean.parseBoolean(Configuration.getProperty("bluetoothProximityAutostart")))
 			{
 				proximityScanner.start();
 			}
@@ -50,7 +48,7 @@ public class ProximityScanner implements Observer, Runnable {
 	public void start()
 	{
 		running = true;
-		bluetoothManager.addObserver(this);
+		BluetoothManager.getBluetoothManagerInstance().addObserver(proximityScanner);
 		run();
 	}
 
@@ -64,22 +62,22 @@ public class ProximityScanner implements Observer, Runnable {
 				{
 					//device not yet detected in range, lets do some scanning
 					bluetoothManager.enquireDevices();
-					bluetoothManager.enquireServices(configurationEngine.getBluetoothMasterMac());
+					bluetoothManager.enquireServices(Configuration.getProperty("bluetooth","bluetoothMasterMac"));
 
 					LinkedList<BluetoothDevice> bluetoothDevices = bluetoothManager.getBluetoothDevices();
 
 					for (BluetoothDevice bluetoothDevice : bluetoothDevices)
 					{
 						if (bluetoothDevice.getBluetoothAddress().equalsIgnoreCase(
-								configurationEngine.getBluetoothMasterMac()))
+							Configuration.getProperty("bluetooth","bluetoothMasterMac")))
 						{
 							log4j.info("Found master bluetooth device. Resolving friendly name...");
 							if (bluetoothDevice.getFriendlyName() != null)
 							{
 								masterBluetoothDevice = bluetoothDevice;
 								log4j.info("Monitoring proximity of " + masterBluetoothDevice.getFriendlyName());
-								log4j.debug("--> Polling period: " + configurationEngine.getBluetoothPollPeriod());
-								log4j.debug("--> Proximity range: " + configurationEngine.getBluetoothProximityRange());
+								log4j.debug("--> Polling period: " + Configuration.getProperty("bluetooth","bluetoothPollPeriod"));
+								log4j.debug("--> Proximity range: " + Configuration.getProperty("bluetooth","bluetoothProximityRange"));
 
 								if (!connectServices(masterBluetoothDevice))
 								{
@@ -109,7 +107,7 @@ public class ProximityScanner implements Observer, Runnable {
 					//update master on developments.
 				}
 
-				Thread.sleep(configurationEngine.getBluetoothPollPeriod());
+				Thread.sleep(Long.parseLong(Configuration.getProperty("bluetooth","bluetoothPollPeriod")));
 			}
 			catch (Exception e)
 			{
@@ -162,19 +160,16 @@ public class ProximityScanner implements Observer, Runnable {
 //		}
 	}
 
-	public void setConfigurationEngine(ConfigurationEngine configurationEngine)
-	{
-		this.configurationEngine = configurationEngine;
-	}
-
 	public void setBluetoothManager(BluetoothManager bluetoothManager)
 	{
-		this.bluetoothManager = bluetoothManager;
+		log4j.debug("Assigning bluetoothManager to proximityScanner");
+		ProximityScanner.bluetoothManager = bluetoothManager;
 	}
 
 	public void setTextToSpeechEngine(TextToSpeechEngine textToSpeechEngine)
 	{
-		this.textToSpeechEngine = textToSpeechEngine;
+		log4j.debug("Assigning textToSpeechEngine to proximityScanner");
+		ProximityScanner.textToSpeechEngine = textToSpeechEngine;
 	}
 
 }
