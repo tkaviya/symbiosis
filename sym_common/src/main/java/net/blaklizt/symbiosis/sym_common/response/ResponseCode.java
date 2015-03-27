@@ -57,7 +57,7 @@ public enum ResponseCode
 	AUTHENTICATION_FAILED
 	{
 		public int responseCode() {return 21;}
-		public String responseMsg() {return "Authorization failed";}
+		public String responseMsg() {return "Authentication failed";}
 	},
 
 	//Account Status
@@ -164,8 +164,8 @@ public enum ResponseCode
 		JSONObject responseJSON = new JSONObject();
 		try
 		{
-			responseJSON.append("response_code", this.responseCode());
-			responseJSON.append("response_message", this.responseMsg());
+			responseJSON.put("response_message", this.responseMsg());
+			responseJSON.put("response_code", this.responseCode());
 			return responseJSON.toString();
 		}
 		catch (Exception ex)

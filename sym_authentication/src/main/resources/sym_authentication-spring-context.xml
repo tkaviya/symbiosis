@@ -9,6 +9,6 @@
     <import resource="classpath*:sym_persistence-spring-context.xml" />
 
     <context:annotation-config />
-    <context:component-scan base-package="net.blaklizt.symbiosis.sym_authentication" />
+    <context:component-scan base-package="net.blaklizt.symbiosis.sym_authentication.authentication" />
 
 </beans>

@@ -11,6 +11,8 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Security
 {
+	private static SecureRandom secureRandom;
+
 	public static String generateIV()
 	{
 		int n = 16;
@@ -31,14 +33,42 @@ public class Security
 		return new String(iv);
 	}
 
-	public static String encrypt(byte [] input)
+	public static byte[] generateSecureRandomBytes()
+	{
+		if (secureRandom == null) secureRandom = new SecureRandom();
+		byte[] randomBytes = new byte[20];
+		secureRandom.nextBytes(randomBytes);
+		return randomBytes;
+	}
+
+	public static String encrypt(String input, String encryptMode)
 	{
 		try
 		{
-			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+			MessageDigest messageDigest = MessageDigest.getInstance(encryptMode);
 			messageDigest.reset();
 
-			byte[] digested = messageDigest.digest(input);
+			byte[] digested = messageDigest.digest(input.getBytes());
+			StringBuffer sb = new StringBuffer();
+
+			for (byte aDigested : digested) { sb.append(Integer.toHexString(0xff & aDigested)); }
+
+			return sb.toString();
+		}
+		catch (NoSuchAlgorithmException ex) { ex.printStackTrace(); }
+
+		return null;
+	}
+	
+	public static String encryptWithSalt(String input, String encryptMode, byte[] salt)
+	{
+		try
+		{
+			MessageDigest messageDigest = MessageDigest.getInstance(encryptMode);
+			messageDigest.reset();
+			messageDigest.update(salt);
+
+			byte[] digested = messageDigest.digest(input.getBytes());
 			StringBuffer sb = new StringBuffer();
 
 			for (byte aDigested : digested) { sb.append(Integer.toHexString(0xff & aDigested)); }

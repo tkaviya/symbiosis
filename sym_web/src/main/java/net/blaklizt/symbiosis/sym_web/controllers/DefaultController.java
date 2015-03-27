@@ -3,17 +3,21 @@ package net.blaklizt.symbiosis.sym_web.controllers;
 import net.blaklizt.symbiosis.sym_authentication.authentication.Authenticator;
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
 import net.blaklizt.symbiosis.sym_common.response.ResponseCode;
+import net.blaklizt.symbiosis.sym_persistence.User;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONObject;
 
 @Controller
 public class DefaultController
@@ -21,7 +25,9 @@ public class DefaultController
 	@Autowired
 	Authenticator authenticator;
 
-	Logger logger = Configuration.getNewLogger(DefaultController.class.getSimpleName());
+	private Logger logger = Configuration.getNewLogger(DefaultController.class.getSimpleName());
+	
+	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView root()
@@ -31,30 +37,41 @@ public class DefaultController
     }
 
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-	public String authenticate(@RequestBody String postData)
+	public String authenticate(HttpServletRequest request, HttpServletResponse response)
 	{
+		String jsonResponse;
 		try
 		{
-			logger.info("Got authentication request:\n" + postData);
-			JSONObject authRequest = new JSONObject(postData);
-			UserDetails userDetails = authenticator.loadUserByUsername(authRequest.getString("username"));
-			String jsonResponse = null;
-			if (userDetails.getPassword().equals(authRequest.getString("password")))
+			SymbiosisUserDetails userDetails = authenticator.loadUserByUsername(request.getParameter("username"));
+			
+			Date lastAccessDate = userDetails.getSymbiosisUser().getLastAccessDate();
+			
+			ResponseCode authResponse = authenticator.authenticateUser();
+			
+			
+			if (authResponse == ResponseCode.SUCCESS)
 			{
 				logger.info("Authentiation successful.");
-				jsonResponse = ResponseCode.SUCCESS.toJSONResponse();
+				JSONObject responseJSON = new JSONObject(ResponseCode.SUCCESS.toJSONResponse());
+				responseJSON.put("auth_token", userDetails.getSymbiosisUser().getAuthToken());
+				responseJSON.put("last_access_date", sdf.format(lastAccessDate));
+				jsonResponse = responseJSON.toJSONString();
+				
 			}
 			else
 			{
 				jsonResponse = ResponseCode.AUTHENTICATION_FAILED.toJSONResponse();
 			}
-			logger.info("Returning response:" + jsonResponse);
-			return jsonResponse;
 		}
 		catch (Exception ex)
 		{
-			logger.error("Failed to authenticate: " + ex.getMessage());
-			return ResponseCode.GENERAL_ERROR.toJSONResponse();
+			logger.error("Failed to authenticate:\n" + ex.getMessage());
+			jsonResponse = ResponseCode.GENERAL_ERROR.toJSONResponse();
 		}
+
+		response.setStatus(HttpStatus.OK.value());
+
+		logger.info("Returning response:\n" + jsonResponse);
+		return jsonResponse;
 	}
 }
