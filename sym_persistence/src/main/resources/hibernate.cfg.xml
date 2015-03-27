@@ -16,8 +16,8 @@
         <!--<property name="hibernate.connection.username">streets</property>-->
         <!--<mapping resource="net/blaklizt/streets/persistence/Role.hbm.xml"/>-->
         <!--<mapping class="net.blaklizt.symbiosis.persistence.Role"/>-->
-        <!--<mapping resource="net/blaklizt/streets/persistence/User.hbm.xml"/>-->
-        <!--<mapping class="net.blaklizt.symbiosis.persistence.User"/>-->
+        <!--<mapping resource="net/blaklizt/streets/persistence/SymbiosisUser.hbm.xml"/>-->
+        <!--<mapping class="net.blaklizt.symbiosis.persistence.SymbiosisUser"/>-->
         <!--<mapping resource="net/blaklizt/streets/persistence/UserGroup.hbm.xml"/>-->
         <!--<mapping class="net.blaklizt.symbiosis.persistence.UserGroup"/>-->
         <!--<mapping resource="net/blaklizt/streets/persistence/UserGroupRole.hbm.xml"/>-->

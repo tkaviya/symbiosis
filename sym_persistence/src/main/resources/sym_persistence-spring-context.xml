@@ -23,12 +23,12 @@
         <property name="jndiName" value="java:jboss/datasources/symbiosis"/>
     </bean>
 
-    <bean id="symbiosisSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+    <bean id="symbiosisSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
         <property name="annotatedClasses">
             <list>
                 <value>net.blaklizt.symbiosis.sym_persistence.EventLog</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.Role</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.User</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUser</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.UserAttribute</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.UserGroup</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.UserGroupRole</value>
@@ -55,16 +55,16 @@
             <!--</props>-->
         <!--</property>-->
 
-        <property name="mappingResources">
-            <list>
-                <value>net/blaklizt/symbiosis/sym_persistence/EventLog.hbm.xml</value>
-                <value>net/blaklizt/symbiosis/sym_persistence/Role.hbm.xml</value>
-                <value>net/blaklizt/symbiosis/sym_persistence/User.hbm.xml</value>
-                <value>net/blaklizt/symbiosis/sym_persistence/UserAttribute.hbm.xml</value>
-                <value>net/blaklizt/symbiosis/sym_persistence/UserGroup.hbm.xml</value>
-                <value>net/blaklizt/symbiosis/sym_persistence/UserGroupRole.hbm.xml</value>
-            </list>
-        </property>
+        <!--<property name="mappingResources">-->
+            <!--<list>-->
+                <!--<value>net/blaklizt/symbiosis/sym_persistence/EventLog.hbm.xml</value>-->
+                <!--<value>net/blaklizt/symbiosis/sym_persistence/Role.hbm.xml</value>-->
+                <!--<value>net/blaklizt/symbiosis/sym_persistence/SymbiosisUser.hbm.xml</value>-->
+                <!--<value>net/blaklizt/symbiosis/sym_persistence/UserAttribute.hbm.xml</value>-->
+                <!--<value>net/blaklizt/symbiosis/sym_persistence/UserGroup.hbm.xml</value>-->
+                <!--<value>net/blaklizt/symbiosis/sym_persistence/UserGroupRole.hbm.xml</value>-->
+            <!--</list>-->
+        <!--</property>-->
     </bean>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>

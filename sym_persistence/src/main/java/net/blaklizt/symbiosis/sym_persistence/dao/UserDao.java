@@ -1,6 +1,6 @@
 package net.blaklizt.symbiosis.sym_persistence.dao;
 
-import net.blaklizt.symbiosis.sym_persistence.User;
+import net.blaklizt.symbiosis.sym_persistence.SymbiosisUser;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -8,34 +8,34 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * User: tkaviya
+ * SymbiosisUser: tkaviya
  * Date: 8/10/13
  * Time: 11:25 AM
  */
 
 @Repository
-public class UserDao extends AbstractDao<User, Long>
+public class UserDao extends AbstractDao<SymbiosisUser, Long>
 {
-	protected UserDao() { super(User.class); }
+	protected UserDao() { super(SymbiosisUser.class); }
 
-	public User findByUsername(String username)
+	public SymbiosisUser findByUsername(String username)
 	{
 		List result = findByCriterion(Restrictions.eq("Username", username));
 		if (result == null || result.size() != 1) return null;
-		return (User)result.get(0);
+		return (SymbiosisUser)result.get(0);
 	}
 
-	public User findByEmail(String email)
+	public SymbiosisUser findByEmail(String email)
 	{
 		List result = findByCriterion(Restrictions.eq("Email", email));
 		if (result == null || result.size() != 1) return null;
-		return (User)result.get(0);
+		return (SymbiosisUser)result.get(0);
 	}
 
-	public User findByMsisdn(String msisdn)
+	public SymbiosisUser findByMsisdn(String msisdn)
 	{
 		List result = findByCriterion(Restrictions.eq("Msisdn", msisdn));
 		if (result == null || result.size() != 1) return null;
-		return (User)result.get(0);
+		return (SymbiosisUser)result.get(0);
 	}
 }

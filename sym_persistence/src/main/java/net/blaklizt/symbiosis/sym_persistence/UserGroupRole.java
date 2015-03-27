@@ -1,42 +1,50 @@
 package net.blaklizt.symbiosis.sym_persistence;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
  * Created with IntelliJ IDEA.
- * User: tkaviya
+ * SymbiosisUser: tkaviya
  * Date: 8/7/13
  * Time: 9:02 PM
  */
 @javax.persistence.IdClass(UserGroupRolePK.class)
-@Entity
-@Table (name = "UserGroupRole")
+@javax.persistence.Entity
+@javax.persistence.Table (name = "UserGroupRole")
 public class UserGroupRole implements Serializable {
-	private String userGroupID;
+	private Integer userGroupID;
+	private String userGroupRoleDescription;
+	private String roleID;
 
 	@javax.persistence.Column(name = "UserGroupID")
-	@Id
-	public String getUserGroupID() {
+	@javax.persistence.Id
+	public Integer getUserGroupID() {
 		return userGroupID;
 	}
 
-	public void setUserGroupID(String userGroupID) {
+	public void setUserGroupID(Integer userGroupID) {
 		this.userGroupID = userGroupID;
 	}
 
-	private String roleID;
 
 	@javax.persistence.Column(name = "roleID")
-	@Id
+	@javax.persistence.Id
 	public String getRoleID() {
 		return roleID;
 	}
 
 	public void setRoleID(String roleID) {
 		this.roleID = roleID;
+	}
+
+	@javax.persistence.Column(name = "userGroupRoleDescription")
+	@javax.persistence.Basic
+	public String getUserGroupRoleDescription() {
+		return userGroupRoleDescription;
+	}
+
+	public void setUserGroupRoleDescription(String userGroupRoleDescription) {
+		this.userGroupRoleDescription = userGroupRoleDescription;
 	}
 
 	@Override
@@ -48,6 +56,7 @@ public class UserGroupRole implements Serializable {
 
 		if (roleID != null ? !roleID.equals(that.roleID) : that.roleID != null) return false;
 		if (userGroupID != null ? !userGroupID.equals(that.userGroupID) : that.userGroupID != null) return false;
+		if (userGroupRoleDescription != null ? !userGroupRoleDescription.equals(that.userGroupRoleDescription) : that.userGroupRoleDescription != null) return false;
 
 		return true;
 	}
@@ -56,6 +65,7 @@ public class UserGroupRole implements Serializable {
 	public int hashCode() {
 		int result = userGroupID != null ? userGroupID.hashCode() : 0;
 		result = 31 * result + (roleID != null ? roleID.hashCode() : 0);
+		result = 31 * result + (userGroupRoleDescription != null ? userGroupRoleDescription.hashCode() : 0);
 		return result;
 	}
 }

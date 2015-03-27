@@ -9,7 +9,7 @@
             <generator class="identity"/>
         </id>
         <property name="eventDate" column="EventDate"/>
-        <property name="userID" column="UserID"/>
+        <property name="symbiosisUserID" column="UserID"/>
         <property name="description" column="Description"/>
     </class>
 </hibernate-mapping>

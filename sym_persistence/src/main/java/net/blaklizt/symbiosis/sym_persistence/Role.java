@@ -1,38 +1,33 @@
 package net.blaklizt.symbiosis.sym_persistence;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
  * Created with IntelliJ IDEA.
- * User: tkaviya
+ * SymbiosisUser: tkaviya
  * Date: 8/7/13
  * Time: 9:01 PM
  */
-@Entity
-@Table (name = "Role")
+@javax.persistence.Entity
+@javax.persistence.Table (name = "Role")
 public class Role implements Serializable
 {
-	protected String roleID;
+	protected Integer roleID;
+	private String description;
 	protected boolean enabled;
 
 	@javax.persistence.Column(name = "RoleID")
-	@Id
-	public String getRoleID() {
+	@javax.persistence.Id
+	public Integer getRoleID() {
 		return roleID;
 	}
 
-	public void setRoleID(String roleID) {
+	public void setRoleID(Integer roleID) {
 		this.roleID = roleID;
 	}
 
-	private String description;
-
 	@javax.persistence.Column(name = "Description")
-	@Basic
+	@javax.persistence.Basic
 	public String getDescription() {
 		return description;
 	}
@@ -43,7 +38,7 @@ public class Role implements Serializable
 
 
 	@javax.persistence.Column(name = "Enabled")
-	@Basic
+	@javax.persistence.Basic
 	public boolean isEnabled() {
 		return enabled;
 	}

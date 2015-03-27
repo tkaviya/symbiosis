@@ -6,5 +6,6 @@
 
     <class name="net.blaklizt.symbiosis.sym_persistence.UserGroup" table="UserGroup" schema="" catalog="symbiosis">
         <id name="userGroupID" column="UserGroupID"/>
+        <property name="description" column="Description"/>
     </class>
 </hibernate-mapping>
