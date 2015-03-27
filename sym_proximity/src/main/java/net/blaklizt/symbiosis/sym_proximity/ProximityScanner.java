@@ -37,7 +37,7 @@ public class ProximityScanner implements Observer, Runnable {
 		{
 			proximityScanner = new ProximityScanner();
 
-			if (true)//Boolean.parseBoolean(Configuration.getProperty("bluetoothProximityAutostart")))
+			if (Boolean.parseBoolean(Configuration.getProperty("bluetooth", "bluetoothProximityAutostart")))
 			{
 				proximityScanner.start();
 			}

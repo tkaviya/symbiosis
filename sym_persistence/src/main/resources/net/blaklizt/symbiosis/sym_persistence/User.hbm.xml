@@ -4,8 +4,8 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="net.blaklizt.symbiosis.sym_persistence.User" table="User" schema="" catalog="symbiosis">
-        <id name="userID" column="UserID" unsaved-value="null" type="long">
+    <class name="net.blaklizt.symbiosis.sym_persistence.SymbiosisUser" table="User" schema="" catalog="symbiosis">
+        <id name="getAuthUserID" column="UserID" unsaved-value="null" type="long">
             <generator class="identity"/>
         </id>
         <property name="name" column="Name"/>

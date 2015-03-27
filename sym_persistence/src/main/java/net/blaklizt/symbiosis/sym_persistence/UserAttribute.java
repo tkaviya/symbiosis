@@ -1,29 +1,42 @@
 package net.blaklizt.symbiosis.sym_persistence;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created with IntelliJ IDEA.
- * User: tkaviya
+ * SymbiosisUser: tkaviya
  * Date: 8/29/13
  * Time: 12:21 AM
  */
 @Entity
 @Table (name = "UserAttribute")
 public class UserAttribute {
-	private Long userID;
 
-	@Column(name = "UserID", nullable = false, insertable = true, updatable = true, length = 10, precision = 0)
+	private Long authUserID;
+
+
+	@javax.persistence.OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@javax.persistence.JoinTable(name="SymbiosisUser",
+			   joinColumns = {@javax.persistence.JoinColumn(name="SymbiosisUserID", referencedColumnName="SymbiosisUserID")},
+		inverseJoinColumns = {@javax.persistence.JoinColumn(name="SymbiosisUserID", referencedColumnName="SymbiosisUserID")})
+	SymbiosisUser symbiosisUser;
+
+	@Column(name = "AuthUserID", nullable = false, insertable = true, updatable = true)
 	@Id
-	public Long getUserID() {
-		return userID;
+	public Long getAuthUserID() {
+		return authUserID;
 	}
 
-	public void setUserID(Long userId) {
-		this.userID = userId;
+	public void setAuthUserID(Long authUserID) {
+		this.authUserID = authUserID;
+	}
+
+	public SymbiosisUser getSymbiosisUser() {
+		return symbiosisUser;
+	}
+
+	public void setSymbiosisUser(SymbiosisUser symbiosisUser) {
+		this.symbiosisUser = symbiosisUser;
 	}
 
 	@Override
@@ -33,14 +46,14 @@ public class UserAttribute {
 
 		UserAttribute that = (UserAttribute) o;
 
-		if (userID != null ? !userID.equals(that.userID) : that.userID != null) return false;
+		if (authUserID != null ? !authUserID.equals(that.authUserID) : that.authUserID != null) return false;
 
 		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		int result = userID != null ? userID.hashCode() : 0;
+		int result = authUserID != null ? authUserID.hashCode() : 0;
 		return result;
 	}
 }

@@ -3,7 +3,7 @@ package net.blaklizt.symbiosis.sym_web.controllers;
 import net.blaklizt.symbiosis.sym_authentication.authentication.Authenticator;
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
 import net.blaklizt.symbiosis.sym_common.response.ResponseCode;
-import net.blaklizt.symbiosis.sym_persistence.User;
+import net.blaklizt.symbiosis.sym_persistence.dao.UserDao;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 import org.json.JSONObject;
 
@@ -25,6 +27,9 @@ public class DefaultController
 	@Autowired
 	Authenticator authenticator;
 
+	@Autowired UserDao userDao;
+
+	Logger logger = Configuration.getNewLogger(DefaultController.class.getSimpleName());
 	private Logger logger = Configuration.getNewLogger(DefaultController.class.getSimpleName());
 	
 	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -68,6 +73,25 @@ public class DefaultController
 			logger.error("Failed to authenticate:\n" + ex.getMessage());
 			jsonResponse = ResponseCode.GENERAL_ERROR.toJSONResponse();
 		}
+	}
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public String register(HttpServletRequest request)
+	{
+		String jsonResponse;
+		try
+		{
+			logger.info("Got registration request.");
+
+
+
+		}
+		catch (Exception ex)
+		{
+			logger.error("Failed to authenticate: " + ex.getMessage());
+			jsonResponse = ResponseCode.GENERAL_ERROR.toJSONResponse();
+		}
+		return jsonResponse;
 
 		response.setStatus(HttpStatus.OK.value());
 

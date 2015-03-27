@@ -32,23 +32,51 @@ public enum ResponseCode
 	INCOMPLETE_REQUEST
 	{
 		public int responseCode() {return 2;}
-		public String responseMsg() {return "Invlaid request specified";}
+		public String responseMsg() {return "Incomplete request specified";}
 	},
-	INVALID_MSISDN
+	INVALID_REQUEST
 	{
 		public int responseCode() {return 3;}
-		public String responseMsg() {return "Invalid mobile number";}
+		public String responseMsg() {return "Invalid request specified";}
 	},
 	INVALID_EMAIL
 	{
 		public int responseCode() {return 4;}
 		public String responseMsg() {return "Email provided was not valid";}
 	},
-	TIMEOUT
+	INVALID_MSISDN
 	{
-		public int responseCode() {return 10;}
-		public String responseMsg() {return "Timeout elapsed before transaction completion";}
+		public int responseCode() {return 5;}
+		public String responseMsg() {return "Phone number provided was not valid";}
 	},
+	INVALID_FIRST_NAME
+	{
+		public int responseCode() {return 6;}
+		public String responseMsg() {return "First name provided was not valid";}
+	},
+	INVALID_LAST_NAME
+	{
+		public int responseCode() {return 7;}
+		public String responseMsg() {return "Last name provided was not valid";}
+	},
+	INVALID_USERNAME
+	{
+		public int responseCode() {return 8;}
+		public String responseMsg() {return "Username provided was not valid";}
+	},
+	INVALID_PASSWORD
+	{
+		public int responseCode() {return 9;}
+		public String responseMsg() {return "Password provided was not valid";}
+	},
+	INVALID_NAME
+	{
+		public int responseCode() {return 9;}
+		public String responseMsg() {return "Name provided was not valid";}
+	},
+
+
+
 	INSUFFICIENT_PRIVILEGES
 	{
 		public int responseCode() {return 20;}
@@ -113,10 +141,15 @@ public enum ResponseCode
 		public int responseCode() {return 41;}
 		public String responseMsg() {return "Unknown host";}
 	},
-	UNKNOWN_REFUSED
+	CONNECTION_REFUSED
 	{
 		public int responseCode() {return 42;}
 		public String responseMsg() {return "Connection Refused";}
+	},
+	TIMEOUT
+	{
+		public int responseCode() {return 43;}
+		public String responseMsg() {return "Timeout elapsed before transaction completion";}
 	},
 
 	// Registration Codes

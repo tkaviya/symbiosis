@@ -13,6 +13,11 @@ import java.util.ResourceBundle;
  */
 public class CommonUtilities
 {
+	public static boolean isNullOrEmpty(String string)
+	{
+		return string == null || string.trim().equals("");
+	}
+
 	public static boolean isValidEmail(String emailAddress)
 	{
 		return emailAddress.matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$");

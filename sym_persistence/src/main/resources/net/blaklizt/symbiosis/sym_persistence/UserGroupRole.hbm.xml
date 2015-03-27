@@ -9,5 +9,6 @@
             <key-property name="userGroupID" column="UserGroupID"/>
             <key-property name="roleID" column="RoleID"/>
         </composite-id>
+        <property name="userGroupRoleDescription" column="UserGroupRoleDescription"/>
     </class>
 </hibernate-mapping>

@@ -5,6 +5,6 @@
 <hibernate-mapping>
 
     <class name="net.blaklizt.symbiosis.sym_persistence.UserAttribute" table="UserAttribute" schema="" catalog="symbiosis">
-        <id name="userID" column="UserID" length="10" />
+        <id name="symbiosisUserID" column="UserID" length="10" />
     </class>
 </hibernate-mapping>

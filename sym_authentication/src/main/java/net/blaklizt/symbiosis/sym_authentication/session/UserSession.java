@@ -2,7 +2,7 @@ package net.blaklizt.symbiosis.sym_authentication.session;
 
 /**
  * Created with IntelliJ IDEA.
- * User: tkaviya
+ * SymbiosisUser: tkaviya
  * Date: 2013/07/08
  * Time: 11:32 PM
  */
