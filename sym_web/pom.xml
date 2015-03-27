@@ -32,6 +32,12 @@
 
         <dependency>
             <groupId>net.blaklizt.symbiosis</groupId>
+            <artifactId>sym_authentication</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.blaklizt.symbiosis</groupId>
             <artifactId>sym_irc</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
@@ -39,6 +45,11 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
         </dependency>
 
         <!-- Spring Framework -->
@@ -88,7 +99,10 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

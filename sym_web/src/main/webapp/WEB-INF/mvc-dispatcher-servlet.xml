@@ -9,8 +9,11 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
+    <import resource="classpath*:sym_authentication-spring-context.xml" />
+
     <mvc:annotation-driven />
-    <context:component-scan base-package="net.blaklizt.symbiosis.sym_irc" />
+    <context:annotation-config/>
+
     <context:component-scan base-package="net.blaklizt.symbiosis.sym_web" />
 
     <mvc:resources mapping="/resources/**" location="/resources/" />

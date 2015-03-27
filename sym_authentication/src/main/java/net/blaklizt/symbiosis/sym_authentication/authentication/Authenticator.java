@@ -1,9 +1,9 @@
 package net.blaklizt.symbiosis.sym_authentication.authentication;
 
-import net.blaklizt.symbiosis.persistence.User;
-import net.blaklizt.symbiosis.persistence.UserGroupRole;
-import net.blaklizt.symbiosis.persistence.dao.UserDao;
-import net.blaklizt.symbiosis.persistence.dao.UserGroupRoleDao;
+import net.blaklizt.symbiosis.sym_persistence.User;
+import net.blaklizt.symbiosis.sym_persistence.UserGroupRole;
+import net.blaklizt.symbiosis.sym_persistence.dao.UserDao;
+import net.blaklizt.symbiosis.sym_persistence.dao.UserGroupRoleDao;
 import net.blaklizt.symbiosis.sym_authentication.security.Security;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
