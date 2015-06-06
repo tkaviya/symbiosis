@@ -4,13 +4,13 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>The Streets</title>
+    <title>Symbiosis</title>
     <script src="js/jquery.js"></script>
     <script type="text/javascript">
 
         var blink_count = 9;
         var blink_rate = 200;
-        var blink_loop_array = new Array();
+        var blink_loop_array = [];
 
         function blinkIt()
         {

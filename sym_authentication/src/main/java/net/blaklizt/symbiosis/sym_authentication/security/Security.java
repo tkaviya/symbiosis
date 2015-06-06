@@ -2,6 +2,7 @@ package net.blaklizt.symbiosis.sym_authentication.security;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 /**
  * Created with IntelliJ IDEA.
@@ -58,6 +59,11 @@ public class Security
 		catch (NoSuchAlgorithmException ex) { ex.printStackTrace(); }
 
 		return null;
+	}
+
+	public static String encrypt(String input)
+	{
+		return encrypt(input, "AES");
 	}
 	
 	public static String encryptWithSalt(String input, String encryptMode, byte[] salt)

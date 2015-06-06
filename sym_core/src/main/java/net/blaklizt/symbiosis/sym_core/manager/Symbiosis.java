@@ -4,20 +4,25 @@ import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
 import net.blaklizt.symbiosis.sym_proximity.ProximityScanner;
 import net.blaklizt.symbiosis.sym_tts_engine.TextToSpeechEngine;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Service;
 
+@Service
 public class Symbiosis implements Runnable
 {
 	private static final Logger log4j = Logger.getLogger(Symbiosis.class.getSimpleName());
 
-	private TextToSpeechEngine textToSpeechEngine;
+	@Autowired private TextToSpeechEngine textToSpeechEngine;
 
-	private ProximityScanner proximityScanner;
+	@Autowired private ProximityScanner proximityScanner;
 
 	private static Symbiosis symbiosis;
 
 	public static Symbiosis getInstance()
 	{
+		if (symbiosis == null)
+			symbiosis = new Symbiosis();
 		return symbiosis;
 	}
 

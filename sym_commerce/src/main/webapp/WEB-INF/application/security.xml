@@ -28,11 +28,9 @@
                 delete-cookies="JSESSIONID" invalidate-session="true" />
     </http>
 
-    <beans:bean id="authentication" class="net.blaklizt.streets.core.authentication.StreetAuthenticator" />
-
     <authentication-manager>
-        <authentication-provider user-service-ref="authentication">
-            <password-encoder ref="authentication" />
+        <authentication-provider user-service-ref="symbiosisAuthenticator">
+            <password-encoder ref="symbiosisAuthenticator" />
         </authentication-provider>
     </authentication-manager>
 

@@ -9,8 +9,6 @@
 
     <bean name="proximityScanner" id="proximityScanner" factory-method="getInstance"
           class="net.blaklizt.symbiosis.sym_proximity.ProximityScanner">
-        <property name="bluetoothManager" ref="bluetoothManager" />
-        <property name="textToSpeechEngine" ref="textToSpeechEngine" />
     </bean>
 
 </beans>

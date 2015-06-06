@@ -12,36 +12,31 @@ import javax.persistence.*;
 @Table (name = "UserAttribute")
 public class UserAttribute {
 
-	private Long authUserID;
+	private Long symbiosisUserID;
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String msisdn;
 	private Integer countryID;
-
-	@javax.persistence.OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@javax.persistence.JoinTable(name="SymbiosisUser",
-			   joinColumns = {@javax.persistence.JoinColumn(name="SymbiosisUserID", referencedColumnName="SymbiosisUserID")},
-		inverseJoinColumns = {@javax.persistence.JoinColumn(name="SymbiosisUserID", referencedColumnName="SymbiosisUserID")})
-	SymbiosisUser symbiosisUser;
+	private SymbiosisUser symbiosisUser;
 
 //	@javax.persistence.ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //	@javax.persistence.JoinTable(name="County",
 //			   joinColumns = {@javax.persistence.JoinColumn(name="CountryID", referencedColumnName="CountryID")},
-//	Country country;
+//	private Country country;
 
-	@Column(name = "AuthUserID", nullable = false, insertable = true, updatable = true)
-	@Id
-	public Long getAuthUserID() {
-		return authUserID;
+	@javax.persistence.Id
+	@javax.persistence.Column(name = "SymbiosisUserID", insertable = true, updatable = true)
+	public Long getSymbiosisUserID() {
+		return symbiosisUserID;
 	}
 
-	public void setAuthUserID(Long authUserID) {
-		this.authUserID = authUserID;
+	public void setSymbiosisUserID(Long symbiosisUserID) {
+		this.symbiosisUserID = symbiosisUserID;
 	}
 
-	@Column(name = "FirstName", nullable = false, insertable = true, updatable = true)
-	@Basic
+	@javax.persistence.Column(name = "FirstName", nullable = false, insertable = true, updatable = true)
+	@javax.persistence.Basic
 	public String getFirstName() {
 		return firstName;
 	}
@@ -50,8 +45,8 @@ public class UserAttribute {
 		this.firstName = firstName;
 	}
 
-	@Column(name = "LastName", nullable = false, insertable = true, updatable = true)
-	@Basic
+	@javax.persistence.Column(name = "LastName", nullable = false, insertable = true, updatable = true)
+	@javax.persistence.Basic
 	public String getLastName() {
 		return lastName;
 	}
@@ -60,8 +55,8 @@ public class UserAttribute {
 		this.lastName = lastName;
 	}
 
-	@Column(name = "Email", nullable = false, insertable = true, updatable = true)
-	@Basic
+	@javax.persistence.Column(name = "Email", nullable = false, insertable = true, updatable = true)
+	@javax.persistence.Basic
 	public String getEmail() {
 		return email;
 	}
@@ -70,8 +65,8 @@ public class UserAttribute {
 		this.email = email;
 	}
 
-	@Column(name = "Msisdn", nullable = false, insertable = true, updatable = true)
-	@Basic
+	@javax.persistence.Column(name = "Msisdn", nullable = false, insertable = true, updatable = true)
+	@javax.persistence.Basic
 	public String getMsisdn() {
 		return msisdn;
 	}
@@ -80,8 +75,8 @@ public class UserAttribute {
 		this.msisdn = msisdn;
 	}
 
-	@Column(name = "CountryID", nullable = false, insertable = true, updatable = true)
-	@Basic
+	@javax.persistence.Column(name = "CountryID", nullable = false, insertable = true, updatable = true)
+	@javax.persistence.Basic
 	public Integer getCountryID() {
 		return countryID;
 	}
@@ -90,6 +85,9 @@ public class UserAttribute {
 		this.countryID = countryID;
 	}
 
+	@javax.persistence.JoinTable(name="SymbiosisUser")
+	@javax.persistence.JoinColumn(name="SymbiosisUserID")
+	@OneToOne(targetEntity = SymbiosisUser.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	public SymbiosisUser getSymbiosisUser() {
 		return symbiosisUser;
 	}
@@ -105,14 +103,14 @@ public class UserAttribute {
 
 		UserAttribute that = (UserAttribute) o;
 
-		if (authUserID != null ? !authUserID.equals(that.authUserID) : that.authUserID != null) return false;
+		if (symbiosisUserID != null ? !symbiosisUserID.equals(that.symbiosisUserID) : that.symbiosisUserID != null) return false;
 
 		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		int result = authUserID != null ? authUserID.hashCode() : 0;
+		int result = symbiosisUserID != null ? symbiosisUserID.hashCode() : 0;
 		return result;
 	}
 }

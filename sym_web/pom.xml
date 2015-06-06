@@ -39,6 +39,12 @@
 
         <dependency>
             <groupId>net.blaklizt.symbiosis</groupId>
+            <artifactId>sym_common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.blaklizt.symbiosis</groupId>
             <artifactId>sym_authentication</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
@@ -46,6 +52,12 @@
         <dependency>
             <groupId>net.blaklizt.symbiosis</groupId>
             <artifactId>sym_irc</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.blaklizt.symbiosis</groupId>
+            <artifactId>sym_core</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 

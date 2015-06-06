@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
  * Time: 11:21 AM
  */
 
+
 public class Configuration
 {
     /* configuration core settings */

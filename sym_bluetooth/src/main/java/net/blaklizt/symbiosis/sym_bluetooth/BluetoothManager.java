@@ -1,5 +1,6 @@
 package net.blaklizt.symbiosis.sym_bluetooth;
 
+import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
 import org.apache.log4j.Logger;
 
 import javax.bluetooth.*;
@@ -12,7 +13,7 @@ import java.util.Observable;
 
 public class BluetoothManager extends Observable implements DiscoveryListener
 {
-	protected static final Logger log4j = Logger.getLogger(BluetoothManager.class.getSimpleName());
+	protected static final Logger logger = Configuration.getNewLogger(BluetoothManager.class.getSimpleName());
 	protected static final String BASE_UUID_VALUE = "fa87c0d0afac11de8a390800200c9a66";
 
 	public static Object lock = new Object();
@@ -79,7 +80,7 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 			{
 				if (serviceRecord.getHostDevice().getBluetoothAddress().equalsIgnoreCase(device.getBluetoothAddress()))
 				{
-					log4j.debug(device.getBluetoothAddress() + " | found service " + serviceRecord);
+					logger.debug(device.getBluetoothAddress() + " | found service " + serviceRecord);
 					device.addService(serviceRecord);
 				}
 			}
@@ -88,7 +89,7 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 
 	@Override
 	public void serviceSearchCompleted(int transID, int respCode) {
-		log4j.debug("Service search completed - code: " + respCode);
+		logger.debug("Service search completed - code: " + respCode);
 		synchronized (lock) {
 			lock.notify();
 		}
@@ -98,19 +99,19 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 	public void inquiryCompleted(int discType) {
 		switch (discType) {
 			case DiscoveryListener.INQUIRY_COMPLETED:
-				log4j.debug("INQUIRY_COMPLETED");
+				logger.debug("INQUIRY_COMPLETED");
 				break;
 
 			case DiscoveryListener.INQUIRY_TERMINATED:
-				log4j.debug("INQUIRY_TERMINATED");
+				logger.debug("INQUIRY_TERMINATED");
 				break;
 
 			case DiscoveryListener.INQUIRY_ERROR:
-				log4j.error("INQUIRY_ERROR");
+				logger.error("INQUIRY_ERROR");
 				break;
 
 			default:
-				log4j.warn("Unknown Response Code");
+				logger.warn("Unknown Response Code");
 				break;
 		}
 		synchronized (lock) {
@@ -145,7 +146,7 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 				localDevice = LocalDevice.getLocalDevice();
 			}
 			catch (Exception ex) {
-				ex.printStackTrace();
+				logger.warn("Bluetooth not available. Bluetooth services will not run");
 				localDevice = null;
 			}
 		}
@@ -154,7 +155,7 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 
 	protected static DiscoveryAgent getDiscoveryAgent()
 	{
-		if (agent == null) {
+		if (agent == null && getLocalDevice() != null) {
 			try {
 				agent = getLocalDevice().getDiscoveryAgent();
 			} catch (Exception ex) {
@@ -169,16 +170,16 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 	{
 		try
 		{
-			log4j.info("Getting local device address & name...");
+			logger.info("Getting local device address & name...");
 			setLocalBluetoothAddress(getLocalDevice().getBluetoothAddress());
 			setLocalBluetoothName(getLocalDevice().getFriendlyName());
-			log4j.info("Local Bluetooth Address: " + getLocalBluetoothAddress());
-			log4j.info("Local Bluetooth Name: " + getLocalBluetoothName());
+			logger.info("Local Bluetooth Address: " + getLocalBluetoothAddress());
+			logger.info("Local Bluetooth Name: " + getLocalBluetoothName());
 		}
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-			log4j.error("Failed to get local device address and name: " + ex.getMessage());
+			logger.error("Failed to get local device address and name: " + ex.getMessage());
 		}
 	}
 
@@ -186,7 +187,7 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 	{
 		try
 		{
-			log4j.info("Starting device inquiry...");
+			logger.info("Starting device inquiry...");
 			getDiscoveryAgent().startInquiry(DiscoveryAgent.GIAC, getBluetoothManagerInstance());
 			synchronized (lock) { lock.wait(); }
 		}
@@ -194,12 +195,12 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 			e.printStackTrace();
 		}
 
-		log4j.info("Device inquiry completed.");
+		logger.info("Device inquiry completed.");
 	}
 
 	public static void enquireServices(String macAddress)
 	{
-		log4j.info("Starting service inquiry...");
+		logger.info("Starting service inquiry...");
 
 		if (macAddress == null) return;
 
@@ -207,14 +208,14 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 		{
 			if (bluetoothDevice.getBluetoothAddress().equalsIgnoreCase(macAddress))
 			{
-				log4j.info("Enquiring services from: " + bluetoothDevice.getBluetoothAddress());
+				logger.info("Enquiring services from: " + bluetoothDevice.getBluetoothAddress());
 
 				try
 				{
 					int transactionID = getDiscoveryAgent().searchServices(null, new UUID[] { new UUID(UUIDs.AudioSource.value) }, //uuids,
 							bluetoothDevice.getRemoteDevice(), getBluetoothManagerInstance());
 
-					log4j.debug("Finished querying services. TransactionID = " + transactionID);
+					logger.debug("Finished querying services. TransactionID = " + transactionID);
 
 					synchronized (lock) { lock.wait(); }
 				}
@@ -223,33 +224,33 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 			}
 			else
 			{
-				log4j.debug("Skipping device: " + bluetoothDevice.getBluetoothAddress());
+				logger.debug("Skipping device: " + bluetoothDevice.getBluetoothAddress());
 			}
 		}
-		log4j.debug("Service Inquiry Completed. ");
+		logger.debug("Service Inquiry Completed. ");
 	}
 
 //	protected static void printDevices()
 //	{
 //		int deviceCount = getBluetoothDevices().size();
 //
-//		if (deviceCount <= 0) { log4j.info("No Devices Found ."); }
+//		if (deviceCount <= 0) { logger.info("No Devices Found ."); }
 //		else
 //		{
-//			log4j.info("Listing devices:");
+//			logger.info("Listing devices:");
 //			int count = 1;
 //			for (RemoteDevice remoteDevice : getBluetoothDevices())
 //			{
 //				try
 //				{
-//					log4j.info(count + ". "
+//					logger.info(count + ". "
 //							   + remoteDevice.getBluetoothAddress() + " ("
 //							   + remoteDevice.getFriendlyName(false) + ")");
 //					count++; //if query succeeds, then increment count
 //				}
 //				catch (IOException ix) {
 //					//not within range anymore
-//					log4j.error(remoteDevice.getBluetoothAddress() + " is no longer in range");
+//					logger.error(remoteDevice.getBluetoothAddress() + " is no longer in range");
 //				}
 //				catch (Exception ex) {
 //					ex.printStackTrace();
@@ -261,14 +262,14 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 //
 	public static boolean connectService(ServiceRecord serviceRecord)
 	{
-		log4j.info("Connecting service [" + serviceRecord.toString() + "]");
+		logger.info("Connecting service [" + serviceRecord.toString() + "]");
 		try
 		{
 			String url = serviceRecord.getConnectionURL(ServiceRecord.NOAUTHENTICATE_NOENCRYPT, false);
 
 			StreamConnection conn = (StreamConnection) Connector.open(url, Connector.READ_WRITE);
 
-			log4j.debug(url + " ----=" + conn);
+			logger.debug(url + " ----=" + conn);
 
 			DataInputStream din = new DataInputStream(conn.openDataInputStream());
 
@@ -285,7 +286,7 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 			while (din.available() != 0)
 				response += din.readChar();
 
-			log4j.debug("RESPONSE: " + response);
+			logger.debug("RESPONSE: " + response);
 			return true;
 		}
 		catch (IOException e)

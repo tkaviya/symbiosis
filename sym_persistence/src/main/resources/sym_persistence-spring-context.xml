@@ -1,9 +1,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="
-        http://www.springframework.org/schema/beans
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd
@@ -15,9 +14,9 @@
     <context:annotation-config />
     <context:component-scan base-package="net.blaklizt.symbiosis.sym_persistence" />
 
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:properties/database.properties"/>
-    </bean>
+    <!--<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
+        <!--<property name="location" value="classpath:properties/database.properties"/>-->
+    <!--</bean>-->
 
     <bean id="symbiosisDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
         <property name="jndiName" value="java:jboss/datasources/symbiosis"/>
@@ -26,6 +25,7 @@
     <bean id="symbiosisSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
         <property name="annotatedClasses">
             <list>
+                <value>net.blaklizt.symbiosis.sym_persistence.Channel</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.EventLog</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.Role</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUser</value>
@@ -33,6 +33,7 @@
                 <value>net.blaklizt.symbiosis.sym_persistence.UserGroup</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.UserGroupRole</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.UserGroupRolePK</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.UserStatus</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.dao.AbstractDao</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.dao.EventLogDao</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.dao.RoleDao</value>

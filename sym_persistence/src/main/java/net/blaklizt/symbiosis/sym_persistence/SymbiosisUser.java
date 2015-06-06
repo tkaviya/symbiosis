@@ -1,50 +1,13 @@
 package net.blaklizt.symbiosis.sym_persistence;
 
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-
-;
 
 @javax.persistence.Entity
 @javax.persistence.Table(name = "SymbiosisUser")
 public class SymbiosisUser implements Serializable
 {
-	private enum UserStatus
-	{
-		INACTIVE(0),
-		ACTIVE(1),
-		PENDING(2),
-		SUSPENDED(3),
-		BLOCKED(4),
-		UNKNOWN(10);
-
-		private int value;
-
-		UserStatus(int value)
-		{
-			this.value = value;
-		}
-
-		public int getValue()
-		{
-			return value;
-		}
-
-		public static UserStatus fromValue(int status)
-		{
-			for (UserStatus userStatus : UserStatus.values())
-			{
-				if (userStatus.getValue() == status)
-					return userStatus;
-			}
-			return UNKNOWN;
-		}
-	}
-
 	private Long symbiosisUserID;
 	private String username;
 	private String password;
@@ -55,28 +18,16 @@ public class SymbiosisUser implements Serializable
 	private String accessSystemID;
 	private String authToken;
 	private Integer userStatusID;
+	private Date registrationDate;
+	private Date lastAuthDate;
 	private Date lastLoginDate;
-
-	@javax.persistence.OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@javax.persistence.JoinTable(name="UserAttribute",
-			joinColumns = {@javax.persistence.JoinColumn(name="SymbiosisUserID", referencedColumnName="SymbiosisUserID")},
-	 inverseJoinColumns = {@javax.persistence.JoinColumn(name="SymbiosisUserID", referencedColumnName="SymbiosisUserID")})
 	private UserAttribute userAttribute;
-
-	@javax.persistence.ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@javax.persistence.JoinTable(name="UserGroup", joinColumns = {@javax.persistence.JoinColumn(name="UserGroupID", referencedColumnName="UserGroupID")})
 	private UserGroup userGroup;
-
-	@javax.persistence.ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@javax.persistence.JoinTable(name="Channel", joinColumns = {@javax.persistence.JoinColumn(name="ChannelID", referencedColumnName="ChannelID")})
 	private Channel channel;
-
-	@javax.persistence.ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@javax.persistence.JoinTable(name="UserStatus", joinColumns = {@javax.persistence.JoinColumn(name="UserStatusID", referencedColumnName="UserStatusID")})
 	private UserStatus userStatus;
 
-	@javax.persistence.Column(name = "UserID")
 	@javax.persistence.Id
+	@javax.persistence.Column(name = "SymbiosisUserID", insertable = false, updatable = false)
 	@javax.persistence.GeneratedValue(strategy = GenerationType.SEQUENCE)
 	public Long getSymbiosisUserID() {
 		return symbiosisUserID;
@@ -177,6 +128,27 @@ public class SymbiosisUser implements Serializable
 		this.userStatusID = userStatusID;
 	}
 
+	@javax.persistence.Column(name = "RegistrationDate")
+	@javax.persistence.Basic
+	public Date getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
+	}
+
+	@javax.persistence.Column(name = "LastAuthDate")
+	@javax.persistence.Basic
+	public Date getLastAuthDate() {
+		return lastAuthDate;
+	}
+
+	public void setLastAuthDate(Date lastAuthDate) {
+		this.lastAuthDate = lastAuthDate;
+	}
+
+
 	@javax.persistence.Column(name = "LastLoginDate")
 	@javax.persistence.Basic
 	public Date getLastLoginDate() {
@@ -187,6 +159,9 @@ public class SymbiosisUser implements Serializable
 		this.lastLoginDate = lastLoginDate;
 	}
 
+	@javax.persistence.JoinTable(name="UserAttribute")
+	@javax.persistence.JoinColumn(name="SymbiosisUserID")
+	@OneToOne(targetEntity = UserAttribute.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	public UserAttribute getUserAttribute() {
 		return userAttribute;
 	}
@@ -195,6 +170,9 @@ public class SymbiosisUser implements Serializable
 		this.userAttribute = userAttribute;
 	}
 
+	@javax.persistence.JoinTable(name="UserStatus")
+	@javax.persistence.JoinColumn(name="UserStatusID")
+	@ManyToOne(targetEntity = UserStatus.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	public UserStatus getUserStatus() {
 		return userStatus;
 	}
@@ -203,7 +181,10 @@ public class SymbiosisUser implements Serializable
 		this.userStatus = userStatus;
 	}
 
-	public List<UserGroup> getUserGroup() {
+	@javax.persistence.JoinTable(name="UserGroup")
+	@javax.persistence.JoinColumn(name="UserGroupID")
+	@ManyToOne(targetEntity = UserGroup.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	public UserGroup getUserGroup() {
 		return userGroup;
 	}
 
@@ -211,7 +192,10 @@ public class SymbiosisUser implements Serializable
 		this.userGroup = userGroup;
 	}
 
-	public List<Channel> getChannel() {
+	@javax.persistence.JoinTable(name="Channel")
+	@javax.persistence.JoinColumn(name="ChannelID")
+	@ManyToOne(targetEntity = Channel.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	public Channel getChannel() {
 		return channel;
 	}
 

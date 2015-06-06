@@ -1,13 +1,13 @@
 package net.blaklizt.symbiosis.sym_web.controllers;
 
-import net.blaklizt.symbiosis.sym_authentication.authentication.Authenticator;
+import net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator;
+import net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisUserDetails;
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
 import net.blaklizt.symbiosis.sym_common.response.ResponseCode;
 import net.blaklizt.symbiosis.sym_persistence.dao.UserDao;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,18 +16,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.json.JSONObject;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 public class DefaultController
 {
-	@Autowired
-	Authenticator authenticator;
+	@Autowired SymbiosisAuthenticator symbiosisAuthenticator;
 
 	@Autowired UserDao userDao;
 
-	Logger logger = Configuration.getNewLogger(DefaultController.class.getSimpleName());
 	private Logger logger = Configuration.getNewLogger(DefaultController.class.getSimpleName());
 	
 	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -45,20 +43,20 @@ public class DefaultController
 		String jsonResponse;
 		try
 		{
-			SymbiosisUserDetails userDetails = authenticator.loadUserByUsername(request.getParameter("username"));
+			SymbiosisUserDetails userDetails = symbiosisAuthenticator.loadUserByUsername(request.getParameter("username"));
 			
-			Date lastAccessDate = userDetails.getSymbiosisUser().getLastAccessDate();
+			Date lastAccessDate = userDetails.getSymbiosisUser().getLastLoginDate();
 			
-			ResponseCode authResponse = authenticator.authenticateUser();
+			ResponseCode authResponse = symbiosisAuthenticator.authenticateUser(userDetails);
 			
 			
 			if (authResponse == ResponseCode.SUCCESS)
 			{
-				logger.info("Authentiation successful.");
+				logger.info("Authentication successful.");
 				JSONObject responseJSON = new JSONObject(ResponseCode.SUCCESS.toJSONResponse());
 				responseJSON.put("auth_token", userDetails.getSymbiosisUser().getAuthToken());
 				responseJSON.put("last_access_date", sdf.format(lastAccessDate));
-				jsonResponse = responseJSON.toJSONString();
+				jsonResponse = responseJSON.toString();
 				
 			}
 			else
@@ -71,27 +69,37 @@ public class DefaultController
 			logger.error("Failed to authenticate:\n" + ex.getMessage());
 			jsonResponse = ResponseCode.GENERAL_ERROR.toJSONResponse();
 		}
+		return jsonResponse;
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(HttpServletRequest request)
 	{
+		logger.info("Got registration request.");
+
+		SymbiosisUserDetails userDetails = symbiosisAuthenticator.loadUserByUsername(request.getParameter("username"));
+
+		ResponseCode responseCode;
 		String jsonResponse;
-		try
-		{
-			logger.info("Got registration request.");
 
+		if (userDetails != null) jsonResponse = ResponseCode.PREVIOUS_REGISTRATION_FOUND.toString();
+		else
+		{
+			try
+			{
+				logger.info("Got registration request.");
+				jsonResponse = ResponseCode.SUCCESS.toJSONResponse();
+				//response.setStatus(HttpStatus.OK.value());
+			}
+			catch (Exception ex)
+			{
+				logger.error("Failed to authenticate: " + ex.getMessage());
+				jsonResponse = ResponseCode.GENERAL_ERROR.toJSONResponse();
+			}
+			return jsonResponse;
 
 
 		}
-		catch (Exception ex)
-		{
-			logger.error("Failed to authenticate: " + ex.getMessage());
-			jsonResponse = ResponseCode.GENERAL_ERROR.toJSONResponse();
-		}
-		return jsonResponse;
-
-		response.setStatus(HttpStatus.OK.value());
 
 		logger.info("Returning response:\n" + jsonResponse);
 		return jsonResponse;

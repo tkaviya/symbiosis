@@ -28,6 +28,11 @@
             <artifactId>sym_common</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>net.blaklizt.symbiosis</groupId>
+            <artifactId>sym_tts_engine</artifactId>
+        </dependency>
+
         <!-- Other dependencies -->
         <dependency>
             <groupId>log4j</groupId>
