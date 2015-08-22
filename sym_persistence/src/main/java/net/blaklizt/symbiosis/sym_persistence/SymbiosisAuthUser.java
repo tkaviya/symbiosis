@@ -1,5 +1,6 @@
 package net.blaklizt.symbiosis.sym_persistence;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
