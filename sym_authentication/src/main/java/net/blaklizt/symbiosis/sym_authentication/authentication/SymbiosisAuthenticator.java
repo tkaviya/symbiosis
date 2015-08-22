@@ -6,9 +6,9 @@ import net.blaklizt.symbiosis.sym_common.response.ResponseObject;
 import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
 import net.blaklizt.symbiosis.sym_common.utilities.Validator;
 import net.blaklizt.symbiosis.sym_persistence.SymbiosisUser;
-import net.blaklizt.symbiosis.sym_persistence.UserGroupRole;
-import net.blaklizt.symbiosis.sym_persistence.dao.UserDao;
-import net.blaklizt.symbiosis.sym_persistence.dao.UserGroupRoleDao;
+import net.blaklizt.symbiosis.sym_persistence.SymbiosisUserGroupSystemRole;
+import net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisUserDao;
+import net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisUserGroupSystemRoleDao;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +34,10 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 	protected HashMap<String, List<SimpleGrantedAuthority>> grantedAuthoritiesCache = new HashMap<>();
 
 	@Autowired
-	private UserDao userDao;
+	private SymbiosisUserDao userDao;
 
 	@Autowired
-	private UserGroupRoleDao userGroupRoleDao;
+	private SymbiosisUserGroupSystemRoleDao symbiosisUserGroupSystemRoleDao;
 	
 
 	private static final Logger logger = Logger.getLogger(SymbiosisAuthenticator.class.getSimpleName());
@@ -146,23 +146,23 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 		ResponseCode registrationResponse = ResponseCode.GENERAL_ERROR;
 			 if (!Validator.isValidUsername(registerUser.getUsername()))      {   registrationResponse = ResponseCode.INVALID_USERNAME;  }
 		else if (!Validator.isValidPassword(registerUser.getPassword()))      {   registrationResponse = ResponseCode.INVALID_PASSWORD;  }
-		else if (CommonUtilities.isNullOrEmpty(registerUser.getUserAttribute().getEmail())
-	         || !Validator.isValidEmailAddress(registerUser.getUserAttribute().getEmail()))
+		else if (CommonUtilities.isNullOrEmpty(registerUser.getEmail())
+	         || !Validator.isValidEmailAddress(registerUser.getEmail()))
 		{
 			registrationResponse = ResponseCode.INVALID_EMAIL;
 		}
-		else if (CommonUtilities.isNullOrEmpty(registerUser.getUserAttribute().getMsisdn())
-	         ||       !Validator.isValidMsisdn(registerUser.getUserAttribute().getMsisdn()))
+		else if (CommonUtilities.isNullOrEmpty(registerUser.getMsisdn())
+	         ||       !Validator.isValidMsisdn(registerUser.getMsisdn()))
 		{
 			registrationResponse = ResponseCode.INVALID_MSISDN;
 		}
-		else if (CommonUtilities.isNullOrEmpty(registerUser.getUserAttribute().getFirstName())
-	         ||    !Validator.isValidFirstName(registerUser.getUserAttribute().getFirstName()))
+		else if (CommonUtilities.isNullOrEmpty(registerUser.getFirstName())
+	         ||    !Validator.isValidFirstName(registerUser.getFirstName()))
 		{
 			registrationResponse = ResponseCode.INVALID_FIRST_NAME;
 		}
-		else if (CommonUtilities.isNullOrEmpty(registerUser.getUserAttribute().getLastName())
-	         ||     !Validator.isValidLastName(registerUser.getUserAttribute().getLastName()))
+		else if (CommonUtilities.isNullOrEmpty(registerUser.getLastName())
+	         ||     !Validator.isValidLastName(registerUser.getLastName()))
 		{
 			registrationResponse = ResponseCode.INVALID_LAST_NAME;
 		}
@@ -173,11 +173,11 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 			{
 				registrationResponse = ResponseCode.PREVIOUS_REGISTRATION_FOUND;
 			}
-			else if (userDao.findByEmail(registerUser.getUserAttribute().getEmail()) != null)
+			else if (userDao.findByEmail(registerUser.getEmail()) != null)
 			{
 				registrationResponse = ResponseCode.PREVIOUS_EMAIL_FOUND;
 			}
-			else if (userDao.findByMsisdn(registerUser.getUserAttribute().getMsisdn()) != null)
+			else if (userDao.findByMsisdn(registerUser.getMsisdn()) != null)
 			{
 				registrationResponse = ResponseCode.PREVIOUS_MSISDN_FOUND;
 			}
@@ -218,12 +218,12 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 		{
 			logger.debug("Getting authorities for access group " + userGroup);
 
-			List<UserGroupRole> userGroupRoles = userGroupRoleDao.findByUserGroup(userGroup);
+			List<SymbiosisUserGroupSystemRole> userGroupRoles = symbiosisUserGroupSystemRoleDao.findByUserGroup(userGroup);
 
-			for (UserGroupRole userGroupRole : userGroupRoles)
+			for (SymbiosisUserGroupSystemRole userGroupRole : userGroupRoles)
 			{
-				logger.debug("Caching role " + userGroupRole.getRoleID());
-				authList.add(new SimpleGrantedAuthority(userGroupRole.getRoleID()));
+				logger.debug("Caching role " + userGroupRole.getSymbiosisRoleId());
+				authList.add(new SimpleGrantedAuthority(userGroupRole.getSymbiosisRoleId().toString()));
 			}
 
 			//cache the authorities to avoid future db hits.

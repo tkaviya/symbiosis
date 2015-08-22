@@ -1,6 +1,6 @@
 package net.blaklizt.symbiosis.sym_persistence.dao;
 
-import net.blaklizt.symbiosis.sym_persistence.Role;
+import net.blaklizt.symbiosis.sym_persistence.SymbiosisRole;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -14,14 +14,14 @@ import java.util.List;
  */
 
 @Repository
-public class RoleDao extends AbstractDao<Role, Long>
+public class SymbiosisRoleDao extends AbstractDao<SymbiosisRole, Long>
 {
-	protected RoleDao() { super(Role.class); }
+	protected SymbiosisRoleDao() { super(SymbiosisRole.class); }
 
-	public Role findEnabled()
+	public SymbiosisRole findEnabled()
 	{
 		List result = findByCriterion(Restrictions.eq("Enabled", 1));
 		if (result == null || result.size() != 1) return null;
-		return (Role)result.get(0);
+		return (SymbiosisRole)result.get(0);
 	}
 }

@@ -25,25 +25,48 @@
     <bean id="symbiosisSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
         <property name="annotatedClasses">
             <list>
-                <value>net.blaklizt.symbiosis.sym_persistence.Channel</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.EventLog</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.Role</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUser</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.UserAttribute</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.UserGroup</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.UserGroupRole</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.UserGroupRolePK</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.UserStatus</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.dao.AbstractDao</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.dao.EventLogDao</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.dao.RoleDao</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.dao.UserAttributeDao</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.dao.UserDao</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.dao.UserGroupRoleDao</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisEventLogDao</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisRoleDao</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisUserDao</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisUserGroupSystemRoleDao</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisChannel</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisCountry</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisEventLog</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisEventType</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisLanguage</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisRole</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisSystem</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUser</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUserGroup</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUserGroupSystemRole</value>
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUserGroupSystemRolePK</value>-->
+                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUserStatus</value>
             </list>
         </property>
 
         <property name="dataSource" ref="symbiosisDataSource"/>
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:net/blaklizt/symbiosis/sym_persistence/SymbiosisChannel.hbm.xml</value>
+                <value>classpath:net/blaklizt/symbiosis/sym_persistence/SymbiosisCountry.hbm.xml</value>
+                <value>classpath:net/blaklizt/symbiosis/sym_persistence/SymbiosisEventLog.hbm.xml</value>
+                <value>classpath:net/blaklizt/symbiosis/sym_persistence/SymbiosisEventType.hbm.xml</value>
+                <value>classpath:net/blaklizt/symbiosis/sym_persistence/SymbiosisLanguage.hbm.xml</value>
+                <value>classpath:net/blaklizt/symbiosis/sym_persistence/SymbiosisRole.hbm.xml</value>
+                <value>classpath:net/blaklizt/symbiosis/sym_persistence/SymbiosisSystem.hbm.xml</value>
+                <value>classpath:net/blaklizt/symbiosis/sym_persistence/SymbiosisUser.hbm.xml</value>
+                <value>classpath:net/blaklizt/symbiosis/sym_persistence/SymbiosisUserGroup.hbm.xml</value>
+                <value>classpath:net/blaklizt/symbiosis/sym_persistence/SymbiosisUserGroupSystemRole.hbm.xml</value>
+                <value>classpath:net/blaklizt/symbiosis/sym_persistence/SymbiosisUserStatus.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306</prop>
+                <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
+            </props>
+        </property>
 
         <!--<property name="hibernateProperties">-->
             <!--<props>-->
@@ -71,6 +94,7 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="dataSource" ref="symbiosisDataSource"/>
         <property name="sessionFactory" ref="symbiosisSessionFactory"/>
     </bean>
 

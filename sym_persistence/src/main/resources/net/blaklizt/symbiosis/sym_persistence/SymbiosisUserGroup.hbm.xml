@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="net.blaklizt.symbiosis.sym_persistence.SymbiosisUserGroup" table="SymbiosisUserGroup" schema=""
+           catalog="symbiosis">
+        <id name="symbiosisUserGroupId">
+            <column name="SymbiosisUserGroupID" sql-type="int" not-null="true"/>
+        </id>
+        <property name="description">
+            <column name="Description" sql-type="varchar" length="20"/>
+        </property>
+    </class>
+</hibernate-mapping>

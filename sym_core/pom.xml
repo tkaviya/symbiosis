@@ -21,7 +21,7 @@
         <finalName>sym_core</finalName>
         <plugins>
             <plugin>
-                <artifactId>d /m    n   </artifactId>
+                <artifactId>maven-ear-plugin</artifactId>
                 <version>${maven.ear.plugin.version}</version>
             </plugin>
         </plugins>

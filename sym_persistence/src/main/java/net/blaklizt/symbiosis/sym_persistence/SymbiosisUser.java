@@ -2,10 +2,11 @@ package net.blaklizt.symbiosis.sym_persistence;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
-@javax.persistence.Entity
-@javax.persistence.Table(name = "SymbiosisUser")
+@Entity
+@Table(name = "SymbiosisUser")
 public class SymbiosisUser implements Serializable
 {
 	private Long symbiosisUserID;
@@ -21,14 +22,36 @@ public class SymbiosisUser implements Serializable
 	private Date registrationDate;
 	private Date lastAuthDate;
 	private Date lastLoginDate;
-	private UserAttribute userAttribute;
-	private UserGroup userGroup;
-	private Channel channel;
-	private UserStatus userStatus;
+	private SymbiosisUserGroup symbiosisUserGroup;
+	private SymbiosisChannel symbiosisChannel;
+	private SymbiosisUserStatus symbiosisUserStatus;
+	private Long symbiosisUserId;
+	private String firstName;
+	private String lastName;
+	private String email;
+	private String msisdn;
+	private String symbiosisUserGroupId;
+	private String symbiosisChannelId;
+	private Integer symbiosisUserStatusId;
+	private String deviceId;
+	private String accessSystemId;
+	private Integer symbiosisCountryId;
+	private Integer symbiosisLanguageId;
 
-	@javax.persistence.Id
-	@javax.persistence.Column(name = "SymbiosisUserID", insertable = false, updatable = false)
-	@javax.persistence.GeneratedValue(strategy = GenerationType.SEQUENCE)
+	public void setRegistrationDate(Timestamp registrationDate) {
+		this.registrationDate = registrationDate;
+	}
+
+	public void setLastAuthDate(Timestamp lastAuthDate) {
+		this.lastAuthDate = lastAuthDate;
+	}
+
+	public void setLastLoginDate(Timestamp lastLoginDate) {
+		this.lastLoginDate = lastLoginDate;
+	}
+
+	@Id
+	@Column(name = "SymbiosisUserID", insertable = false, updatable = false)
 	public Long getSymbiosisUserID() {
 		return symbiosisUserID;
 	}
@@ -37,8 +60,8 @@ public class SymbiosisUser implements Serializable
 		this.symbiosisUserID = symbiosisUserID;
 	}
 
-	@javax.persistence.Column(name = "Username")
-	@javax.persistence.Basic
+	@Column(name = "Username")
+	@Basic
 	public String getUsername() {
 		return username;
 	}
@@ -47,8 +70,8 @@ public class SymbiosisUser implements Serializable
 		this.username = username;
 	}
 
-	@javax.persistence.Column(name = "Password")
-	@javax.persistence.Basic
+	@Column(name = "Password")
+	@Basic
 	public String getPassword() {
 		return password;
 	}
@@ -57,8 +80,8 @@ public class SymbiosisUser implements Serializable
 		this.password = password;
 	}
 
-	@javax.persistence.Column(name = "Salt")
-	@javax.persistence.Basic
+	@Column(name = "Salt")
+	@Basic
 	public String getSalt() {
 		return salt;
 	}
@@ -67,8 +90,8 @@ public class SymbiosisUser implements Serializable
 		this.salt = salt;
 	}
 
-	@javax.persistence.Column(name = "UserGroupID")
-	@javax.persistence.Basic
+	@Column(name = "UserGroupID")
+	@Basic
 	public Integer getUserGroupID() {
 		return userGroupID;
 	}
@@ -77,8 +100,8 @@ public class SymbiosisUser implements Serializable
 		this.userGroupID = userGroupID;
 	}
 
-	@javax.persistence.Column(name = "ChannelID")
-	@javax.persistence.Basic
+	@Column(name = "ChannelID")
+	@Basic
 	public Integer getChannelID() {
 		return channelID;
 	}
@@ -87,8 +110,8 @@ public class SymbiosisUser implements Serializable
 		this.channelID = channelID;
 	}
 
-	@javax.persistence.Column(name = "DeviceID")
-	@javax.persistence.Basic
+	@Column(name = "DeviceID")
+	@Basic
 	public String getDeviceID() {
 		return deviceID;
 	}
@@ -97,8 +120,8 @@ public class SymbiosisUser implements Serializable
 		this.deviceID = deviceID;
 	}
 
-	@javax.persistence.Column(name = "AccessSystemID")
-	@javax.persistence.Basic
+	@Column(name = "AccessSystemID")
+	@Basic
 	public String getAccessSystemID() {
 		return accessSystemID;
 	}
@@ -107,9 +130,8 @@ public class SymbiosisUser implements Serializable
 		this.accessSystemID = accessSystemID;
 	}
 
-
-	@javax.persistence.Column(name = "AuthToken")
-	@javax.persistence.Basic
+	@Column(name = "AuthToken")
+	@Basic
 	public String getAuthToken() {
 		return authToken;
 	}
@@ -118,8 +140,8 @@ public class SymbiosisUser implements Serializable
 		this.authToken = authToken;
 	}
 
-	@javax.persistence.Column(name = "UserStatusID")
-	@javax.persistence.Basic
+	@Column(name = "UserStatusID")
+	@Basic
 	public Integer getUserStatusID() {
 		return userStatusID;
 	}
@@ -128,8 +150,8 @@ public class SymbiosisUser implements Serializable
 		this.userStatusID = userStatusID;
 	}
 
-	@javax.persistence.Column(name = "RegistrationDate")
-	@javax.persistence.Basic
+	@Column(name = "RegistrationDate")
+	@Basic
 	public Date getRegistrationDate() {
 		return registrationDate;
 	}
@@ -138,8 +160,8 @@ public class SymbiosisUser implements Serializable
 		this.registrationDate = registrationDate;
 	}
 
-	@javax.persistence.Column(name = "LastAuthDate")
-	@javax.persistence.Basic
+	@Column(name = "LastAuthDate")
+	@Basic
 	public Date getLastAuthDate() {
 		return lastAuthDate;
 	}
@@ -148,9 +170,8 @@ public class SymbiosisUser implements Serializable
 		this.lastAuthDate = lastAuthDate;
 	}
 
-
-	@javax.persistence.Column(name = "LastLoginDate")
-	@javax.persistence.Basic
+	@Column(name = "LastLoginDate")
+	@Basic
 	public Date getLastLoginDate() {
 		return lastLoginDate;
 	}
@@ -159,92 +180,132 @@ public class SymbiosisUser implements Serializable
 		this.lastLoginDate = lastLoginDate;
 	}
 
-	@javax.persistence.JoinTable(name="UserAttribute")
-	@javax.persistence.JoinColumn(name="SymbiosisUserID")
-	@OneToOne(targetEntity = UserAttribute.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-	public UserAttribute getUserAttribute() {
-		return userAttribute;
+	@JoinTable(name="SymbiosisUserStatus")
+	@JoinColumn(name="SymbiosisUserStatusID")
+	@ManyToOne(targetEntity = SymbiosisUserStatus.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	public SymbiosisUserStatus getUserStatus() {
+		return symbiosisUserStatus;
 	}
 
-	public void setUserAttribute(UserAttribute userAttribute) {
-		this.userAttribute = userAttribute;
+	public void setUserStatus(SymbiosisUserStatus symbiosisUserStatus) {
+		this.symbiosisUserStatus = symbiosisUserStatus;
 	}
 
-	@javax.persistence.JoinTable(name="UserStatus")
-	@javax.persistence.JoinColumn(name="UserStatusID")
-	@ManyToOne(targetEntity = UserStatus.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-	public UserStatus getUserStatus() {
-		return userStatus;
+	@JoinTable(name="SymbiosisUserGroup")
+	@JoinColumn(name="SymbiosisUserGroupID")
+	@ManyToOne(targetEntity = SymbiosisUserGroup.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	public SymbiosisUserGroup getUserGroup() {
+		return symbiosisUserGroup;
 	}
 
-	public void setUserStatus(UserStatus userStatus) {
-		this.userStatus = userStatus;
+	public void setUserGroup(SymbiosisUserGroup userGroup) {
+		this.symbiosisUserGroup = symbiosisUserGroup;
 	}
 
-	@javax.persistence.JoinTable(name="UserGroup")
-	@javax.persistence.JoinColumn(name="UserGroupID")
-	@ManyToOne(targetEntity = UserGroup.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-	public UserGroup getUserGroup() {
-		return userGroup;
+	@JoinTable(name="SymbiosisChannel")
+	@JoinColumn(name="SymbiosisChannelID")
+	@ManyToOne(targetEntity = SymbiosisChannel.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	public SymbiosisChannel getChannel() {
+		return symbiosisChannel;
 	}
 
-	public void setUserGroup(UserGroup userGroup) {
-		this.userGroup = userGroup;
+	public void setChannel(SymbiosisChannel symbiosisChannel) {
+		this.symbiosisChannel = symbiosisChannel;
 	}
 
-	@javax.persistence.JoinTable(name="Channel")
-	@javax.persistence.JoinColumn(name="ChannelID")
-	@ManyToOne(targetEntity = Channel.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-	public Channel getChannel() {
-		return channel;
+	public Long getSymbiosisUserId() {
+		return symbiosisUserId;
 	}
 
-	public void setChannel(Channel channel) {
-		this.channel = channel;
+	public void setSymbiosisUserId(Long symbiosisUserId) {
+		this.symbiosisUserId = symbiosisUserId;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-
-		SymbiosisUser symbiosisUser = (SymbiosisUser) o;
-
-		if (symbiosisUserID != symbiosisUser.symbiosisUserID) return false;
-		if (username != null ? !username.equals(symbiosisUser.username) : symbiosisUser.username != null) return false;
-		if (password != null ? !password.equals(symbiosisUser.password) : symbiosisUser.password != null) return false;
-		if (salt != null ? !salt.equals(symbiosisUser.salt) : symbiosisUser.salt != null) return false;
-		if (userGroupID != null ? !userGroupID.equals(symbiosisUser.userGroupID) : symbiosisUser.userGroupID != null) return false;
-		if (channelID != null ? !channelID.equals(symbiosisUser.channelID) : symbiosisUser.channelID != null) return false;
-		if (deviceID != null ? !deviceID.equals(symbiosisUser.deviceID) : symbiosisUser.deviceID != null) return false;
-		if (accessSystemID != null ? !accessSystemID.equals(symbiosisUser.accessSystemID) : symbiosisUser.accessSystemID != null) return false;
-		if (authToken != null ? !authToken.equals(symbiosisUser.authToken) : symbiosisUser.authToken != null) return false;
-		if (userStatusID != null ? !userStatusID.equals(symbiosisUser.userStatusID) : symbiosisUser.userStatusID != null) return false;
-		if (lastLoginDate != null ? !lastLoginDate.equals(symbiosisUser.lastLoginDate) : symbiosisUser.lastLoginDate != null) return false;
-		if (userAttribute != null ? !userAttribute.equals(symbiosisUser.userAttribute) : symbiosisUser.userAttribute != null) return false;
-		if (userGroup != null ? !userGroup.equals(symbiosisUser.userGroup) : symbiosisUser.userGroup != null) return false;
-		if (channel != null ? !channel.equals(symbiosisUser.channel) : symbiosisUser.channel != null) return false;
-		if (userStatus != null ? !userStatus.equals(symbiosisUser.userStatus) : symbiosisUser.userStatus != null) return false;
-		return true;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	@Override
-	public int hashCode() {
-		Long result = symbiosisUserID;
-		result = 31 * result + (username != null ? username.hashCode() : 0);
-		result = 31 * result + (password != null ? password.hashCode() : 0);
-		result = 31 * result + (salt != null ? salt.hashCode() : 0);
-		result = 31 * result + (userGroupID != null ? userGroupID.hashCode() : 0);
-		result = 31 * result + (channelID != null ? channelID.hashCode() : 0);
-		result = 31 * result + (deviceID != null ? deviceID.hashCode() : 0);
-		result = 31 * result + (accessSystemID != null ? accessSystemID.hashCode() : 0);
-		result = 31 * result + (authToken != null ? authToken.hashCode() : 0);
-		result = 31 * result + (userStatusID != null ? userStatusID.hashCode() : 0);
-		result = 31 * result + (lastLoginDate != null ? lastLoginDate.hashCode() : 0);
-		result = 31 * result + (userAttribute != null ? userAttribute.hashCode() : 0);
-		result = 31 * result + (userGroup != null ? userGroup.hashCode() : 0);
-		result = 31 * result + (channel != null ? channel.hashCode() : 0);
-		result = 31 * result + (userStatus != null ? userStatus.hashCode() : 0);
-		return result.intValue();
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getMsisdn() {
+		return msisdn;
+	}
+
+	public void setMsisdn(String msisdn) {
+		this.msisdn = msisdn;
+	}
+
+	public String getSymbiosisUserGroupId() {
+		return symbiosisUserGroupId;
+	}
+
+	public void setSymbiosisUserGroupId(String symbiosisUserGroupId) {
+		this.symbiosisUserGroupId = symbiosisUserGroupId;
+	}
+
+	public String getSymbiosisChannelId() {
+		return symbiosisChannelId;
+	}
+
+	public void setSymbiosisChannelId(String symbiosisChannelId) {
+		this.symbiosisChannelId = symbiosisChannelId;
+	}
+
+	public Integer getSymbiosisUserStatusId() {
+		return symbiosisUserStatusId;
+	}
+
+	public void setSymbiosisUserStatusId(Integer symbiosisUserStatusId) {
+		this.symbiosisUserStatusId = symbiosisUserStatusId;
+	}
+
+	public String getDeviceId() {
+		return deviceId;
+	}
+
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
+
+	public String getAccessSystemId() {
+		return accessSystemId;
+	}
+
+	public void setAccessSystemId(String accessSystemId) {
+		this.accessSystemId = accessSystemId;
+	}
+
+	public Integer getSymbiosisCountryId() {
+		return symbiosisCountryId;
+	}
+
+	public void setSymbiosisCountryId(Integer symbiosisCountryId) {
+		this.symbiosisCountryId = symbiosisCountryId;
+	}
+
+	public Integer getSymbiosisLanguageId() {
+		return symbiosisLanguageId;
+	}
+
+	public void setSymbiosisLanguageId(Integer symbiosisLanguageId) {
+		this.symbiosisLanguageId = symbiosisLanguageId;
 	}
 }
