@@ -5,8 +5,10 @@ import net.blaklizt.symbiosis.sym_common.response.ResponseCode;
 import net.blaklizt.symbiosis.sym_common.response.ResponseObject;
 import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
 import net.blaklizt.symbiosis.sym_common.utilities.Validator;
+import net.blaklizt.symbiosis.sym_persistence.SymbiosisAuthUser;
 import net.blaklizt.symbiosis.sym_persistence.SymbiosisUser;
 import net.blaklizt.symbiosis.sym_persistence.SymbiosisUserGroupSystemRole;
+import net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisAuthUserDao;
 import net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisUserDao;
 import net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisUserGroupSystemRoleDao;
 import org.apache.log4j.Logger;
@@ -37,6 +39,9 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 	private SymbiosisUserDao userDao;
 
 	@Autowired
+	private SymbiosisAuthUserDao authUserDao;
+
+	@Autowired
 	private SymbiosisUserGroupSystemRoleDao symbiosisUserGroupSystemRoleDao;
 	
 
@@ -50,14 +55,14 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 
 		if (dbSymbiosisUser == null) throw new UsernameNotFoundException("Could not find username " + username);
 
-		boolean active;
+		boolean active = true;
 
-		if (dbSymbiosisUser.getUserStatusID() == ResponseCode.ACTIVE.responseCode()) active = true;
-		else
-		{
-			active = false;
-			logger.warn("Cannot login " + dbSymbiosisUser.getUsername() + " : Account is not active.");
-		}
+//		if (dbSymbiosisUser.getSymbiosisUserStatusID() == ResponseCode.ACTIVE.responseCode()) active = true;
+//		else
+//		{
+//			active = false;
+//			logger.warn("Cannot login " + dbSymbiosisUser.getUsername() + " : Account is not active.");
+//		}
 				
 		return new SymbiosisUserDetails(dbSymbiosisUser, active, getAuthorities(dbSymbiosisUser.getUserGroup().getDescription()));
 	}
@@ -81,7 +86,7 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 	public ResponseCode registerUser(User symbiosisUser)
 	{
 		SymbiosisUser newSymbiosisUser = new SymbiosisUser();
-
+		SymbiosisAuthUser newSymbiosisAuthUser = new SymbiosisAuthUser();
 
 		//generate password salt
 		byte[] passwordSalt = Security.generateSecureRandomBytes();
@@ -89,13 +94,21 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 		//update object to new data
 		newSymbiosisUser.setSalt(String.valueOf(passwordSalt));
 		newSymbiosisUser.setPassword(encodePassword(symbiosisUser.getPassword(), passwordSalt));
-		newSymbiosisUser.setLastLoginDate(new Date());
-		newSymbiosisUser.setUserStatusID(ResponseCode.ACTIVE.responseCode());
-		
-		//write event log
+
 		
 		//persist new data
-		
+		userDao.saveOrUpdate(newSymbiosisUser);
+
+		newSymbiosisAuthUser.setSymbiosisUser(newSymbiosisUser);
+		newSymbiosisAuthUser.setSymbiosisUserID(newSymbiosisUser.getSymbiosisUserID());
+		newSymbiosisAuthUser.setLastLoginDate(new Date());
+		newSymbiosisAuthUser.setLastAuthDate(new Date());
+		newSymbiosisAuthUser.setSymbiosisUserStatusID(ResponseCode.ACTIVE.responseCode());
+
+		authUserDao.saveOrUpdate(newSymbiosisAuthUser);
+
+		//write event log
+
 		return ResponseCode.SUCCESS;
 	}
 
@@ -112,11 +125,11 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 
 			if (symAuthUser == null) return ResponseCode.INVALID_USERNAME;
 
-			if (symAuthUser.getSymbiosisUser().getUserStatusID() != ResponseCode.ACTIVE.responseCode())
-			{
-				//write event log
-				return ResponseCode.valueOf(symAuthUser.getSymbiosisUser().getUserStatusID());
-			}
+//			if (symAuthUser.getSymbiosisUser().getUserStatusID() != ResponseCode.ACTIVE.responseCode())
+//			{
+//				//write event log
+//				return ResponseCode.valueOf(symAuthUser.getSymbiosisUser().getUserStatusID());
+//			}
 			if (isPasswordValid(authUser.getPassword(),
 			                    encodePassword(password, authUser.getPassword()),
 			                    symAuthUser.getSymbiosisUser().getSalt()))
@@ -187,7 +200,7 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 
 				//if name is not passed, use firstname or lastname or both
 				registerUser.setPassword(this.encodePassword(registerUser.getPassword(), Security.generateSecureRandomBytes()));
-				registerUser.setLastLoginDate(new Date());
+//				registerUser.setLastLoginDate(new Date());
 				registerUser.setAuthToken(String.valueOf(Security.generateSecureRandomBytes()));
 
 				userDao.saveOrUpdate(registerUser);
