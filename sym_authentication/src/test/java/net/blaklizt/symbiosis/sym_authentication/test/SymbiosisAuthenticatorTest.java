@@ -4,7 +4,6 @@ import net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthent
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Created with IntelliJ IDEA.
