@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="net.blaklizt.symbiosis.sym_persistence.SymbiosisUserGroupSystemRole"
+           table="SymbiosisUserGroupSystemRole" schema="" catalog="symbiosis">
+        <composite-id mapped="true" class="net.blaklizt.symbiosis.sym_persistence.SymbiosisUserGroupSystemRolePK">
+            <key-property name="symbiosisUserGroupId">
+                <column name="SymbiosisUserGroupID" sql-type="int" not-null="true"/>
+            </key-property>
+            <key-property name="symbiosisSystemId">
+                <column name="SymbiosisSystemID" sql-type="int" not-null="true"/>
+            </key-property>
+            <key-property name="symbiosisRoleId">
+                <column name="SymbiosisRoleID" sql-type="int" not-null="true"/>
+            </key-property>
+        </composite-id>
+        <property name="symbiosisUserGroupSystemRoleDescription">
+            <column name="SymbiosisUserGroupSystemRoleDescription" sql-type="varchar" length="20" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

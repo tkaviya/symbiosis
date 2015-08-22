@@ -26,7 +26,7 @@ public class Symbiosis implements Runnable
 		return symbiosis;
 	}
 
-	private Symbiosis() { symbiosis = this; }
+	private Symbiosis() { symbiosis = this; new Thread(Symbiosis.getInstance()).start(); }
 
 	public void run()
 	{

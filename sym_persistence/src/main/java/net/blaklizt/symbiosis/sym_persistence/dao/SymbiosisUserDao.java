@@ -14,9 +14,9 @@ import java.util.List;
  */
 
 @Repository
-public class UserDao extends AbstractDao<SymbiosisUser, Long>
+public class SymbiosisUserDao extends AbstractDao<SymbiosisUser, Long>
 {
-	protected UserDao() { super(SymbiosisUser.class); }
+	protected SymbiosisUserDao() { super(SymbiosisUser.class); }
 
 	public SymbiosisUser findByUsername(String username)
 	{

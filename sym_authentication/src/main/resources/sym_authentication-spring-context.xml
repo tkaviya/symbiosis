@@ -12,7 +12,6 @@
     <context:annotation-config />
     <context:component-scan base-package="net.blaklizt.symbiosis.sym_authentication" />
 
-    <bean class="net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator"
-          id="symbiosisAuthenticator" name="symbiosisAuthenticator" />
+    <bean class="net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator" id="symbiosisAuthenticator" name="symbiosisAuthenticator" />
 
 </beans>

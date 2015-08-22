@@ -122,6 +122,10 @@
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
