@@ -1,0 +1,32 @@
+package net.blaklizt.symbiosis.sym_persistence.dao;
+
+import net.blaklizt.streets.persistence.dao.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: tkaviya
+ * Date: 11/14/13
+ * Time: 8:00 PM
+ */
+
+public class DaoManager
+{
+	@Autowired private EventLogDao eventLogDao;
+	@Autowired private UserDao userDao;
+	@Autowired private UserAttributeDao userAttributeDao;
+
+	private static CoreDaoManager coreDaoManager = null;
+
+	private CoreDaoManager() { coreDaoManager = this; }
+
+	public static CoreDaoManager getInstance()
+	{
+		if (coreDaoManager == null) coreDaoManager = new CoreDaoManager();
+		return coreDaoManager;
+	}
+
+	public EventLogDao getEventLogDao() { return eventLogDao; }
+	public UserDao getUserDao() { return userDao; }
+	public UserAttributeDao getUserAttributeDao() { return userAttributeDao; }
+}
