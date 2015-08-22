@@ -2,8 +2,6 @@ package net.blaklizt.symbiosis.sym_persistence;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Date;
 
 @Entity
 @Table(name = "SymbiosisUser")

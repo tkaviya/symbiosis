@@ -2,21 +2,21 @@ package net.blaklizt.symbiosis.sym_sync;
 
 import net.blaklizt.symbiosis.sym_common.utilities.Format;
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import javax.jms.*;
 import java.util.Enumeration;
 
 public class SymSyncServerTest extends SymSyncServer implements ExceptionListener
 {
-	@Before
+	@BeforeClass
 	public void setUp() throws Exception
 	{
 	}
 
-	@After
+	@AfterClass
 	public void tearDown() throws Exception
 	{
 		apacheMQueSession.close();

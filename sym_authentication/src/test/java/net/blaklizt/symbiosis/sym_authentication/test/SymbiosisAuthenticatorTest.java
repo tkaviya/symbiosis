@@ -1,9 +1,10 @@
 package net.blaklizt.symbiosis.sym_authentication.test;
 
 import net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +17,7 @@ public class SymbiosisAuthenticatorTest {
 
 	private SymbiosisAuthenticator symbiosisAuthenticator;
 
-	@Before
+	@BeforeClass
 	public void setUp() throws Exception
 	{
 		try
@@ -30,33 +31,38 @@ public class SymbiosisAuthenticatorTest {
 		}
 	}
 
-	@After
+	@AfterClass
 	public void tearDown() throws Exception {
 
 	}
 
-	@Test
+	@Test(enabled=false, dependsOnMethods={"testAuthenticateUser"})
 	public void testLoadUserByUsername() throws Exception {
-//		System.out.print("Doing null check on loadUserByUsername");
-//		assert (symbiosisAuthenticator.loadUserByUsername(null) == null);
+		System.out.print("Doing null check on loadUserByUsername");
+		Assert.assertNotNull(symbiosisAuthenticator.loadUserByUsername(null));
 	}
 
+	@Test(enabled=false)
 	public void testEncodePassword() throws Exception {
 
 	}
 
+	@Test(enabled=false)
 	public void testIsPasswordValid() throws Exception {
 
 	}
 
+	@Test(enabled=false)
 	public void testRegisterUser() throws Exception {
 
 	}
 
+	@Test(enabled=false)
 	public void testRegisterNewUser() throws Exception {
 
 	}
 
+	@Test(enabled=false, dependsOnMethods={"method1"})
 	public void testAuthenticateUser() throws Exception {
 
 	}
