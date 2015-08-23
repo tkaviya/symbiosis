@@ -1,6 +1,7 @@
 package net.blaklizt.symbiosis.sym_authentication.test;
 
 import net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -17,13 +18,13 @@ public class SymbiosisAuthenticatorTest {
 
 	private SymbiosisAuthenticator symbiosisAuthenticator;
 
-	@BeforeClass
+	@BeforeClass(enabled = false)
 	public void setUp() throws Exception
 	{
 		try
 		{
-//			ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("sym_authentication-spring-context.xml");
-//			symbiosisAuthenticator = (SymbiosisAuthenticator)classPathXmlApplicationContext.getBean("symbiosisAuthenticator");
+			ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("sym_authentication-spring-context.xml");
+			symbiosisAuthenticator = (SymbiosisAuthenticator)classPathXmlApplicationContext.getBean("symbiosisAuthenticator");
 		}
 		catch (Exception e)
 		{
@@ -36,7 +37,7 @@ public class SymbiosisAuthenticatorTest {
 
 	}
 
-	@Test(enabled=false, dependsOnMethods={"testAuthenticateUser"})
+	@Test(enabled=false, dependsOnMethods={"testRegisterUser", "testRegisterNewUser"})
 	public void testLoadUserByUsername() throws Exception {
 		System.out.print("Doing null check on loadUserByUsername");
 		Assert.assertNotNull(symbiosisAuthenticator.loadUserByUsername(null));
@@ -47,7 +48,7 @@ public class SymbiosisAuthenticatorTest {
 
 	}
 
-	@Test(enabled=false)
+	@Test(enabled=true, dependsOnMethods={"testRegisterNewUser"})
 	public void testIsPasswordValid() throws Exception {
 
 	}
@@ -57,12 +58,12 @@ public class SymbiosisAuthenticatorTest {
 
 	}
 
-	@Test(enabled=false)
+	@Test(enabled=true)
 	public void testRegisterNewUser() throws Exception {
 
 	}
 
-	@Test(enabled=false, dependsOnMethods={"method1"})
+	@Test(enabled=true, dependsOnMethods={"testRegisterNewUser"})
 	public void testAuthenticateUser() throws Exception {
 
 	}

@@ -20,7 +20,7 @@ public class CommonUtilities
 
 	public static boolean isValidEmail(String emailAddress)
 	{
-		return emailAddress.matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$");
+		return !isNullOrEmpty(emailAddress) && emailAddress.matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$");
 	}
 
 	public static void RefreshBundles()
@@ -129,7 +129,13 @@ public class CommonUtilities
 	public static String formatDoubleToMoney(double value, String currencySymbol)
 	{
 		DecimalFormat df = new DecimalFormat("###,##0.00");
-		return currencySymbol + df.format(value);
+
+		String formattedString = df.format(value);
+
+		if (!formattedString.startsWith("-"))
+			return currencySymbol + formattedString;
+		else
+			return "-" + currencySymbol + formattedString.replaceFirst("-", "");
 	}
 
 	public static int round(double d)

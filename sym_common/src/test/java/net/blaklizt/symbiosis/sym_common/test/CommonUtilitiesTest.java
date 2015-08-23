@@ -2,6 +2,8 @@ package net.blaklizt.symbiosis.sym_common.test;
 
 import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
@@ -11,15 +13,20 @@ import org.testng.annotations.Test;
  * Time: 11:05 PM
  * To change this template use File | Settings | File Templates.
  */
-public class CommonUtilitiesTester {
+public class CommonUtilitiesTest {
+
+    @BeforeClass public void setUp() { System.out.println("RUNNING TEST SETUP"); }
+
+    @AfterClass public void tearDown() { System.out.println("RUNNING TEST TEAR DOWN"); }
 
     @Test
     public void isNullOrEmptyTest()
     {
+        System.out.println("RUNNING TEST: CommonUtilities.isNullOrEmpty");
         Assert.assertTrue(CommonUtilities.isNullOrEmpty(null));
         Assert.assertTrue(CommonUtilities.isNullOrEmpty(""));
         Assert.assertTrue(CommonUtilities.isNullOrEmpty(new String()));
-        Assert.assertTrue(CommonUtilities.isNullOrEmpty(String.valueOf(null)));
+//        Assert.assertTrue(CommonUtilities.isNullOrEmpty(String.valueOf(null)));
 
         Assert.assertFalse(CommonUtilities.isNullOrEmpty(new String("0394580")));
         Assert.assertFalse(CommonUtilities.isNullOrEmpty("test string"));
@@ -30,17 +37,16 @@ public class CommonUtilitiesTester {
     @Test
     public void isValidEmailTest()
     {
+        System.out.println("RUNNING TEST: CommonUtilities.isValidEmail");
         Assert.assertTrue(CommonUtilities.isValidEmail("t@t.te"));
         Assert.assertTrue(CommonUtilities.isValidEmail("t@d12.te"));
         Assert.assertTrue(CommonUtilities.isValidEmail("1t@d12.te"));
         Assert.assertTrue(CommonUtilities.isValidEmail("test@test.com"));
         Assert.assertTrue(CommonUtilities.isValidEmail("test@test.co.za"));
         Assert.assertTrue(CommonUtilities.isValidEmail("test.123-yer@test.co.za"));
-        Assert.assertFalse(CommonUtilities.isValidEmail("test123@test.co.za"));
+        Assert.assertTrue(CommonUtilities.isValidEmail("test123@test.co.za"));
 
         Assert.assertFalse(CommonUtilities.isValidEmail("t@t.t"));
-        Assert.assertFalse(CommonUtilities.isValidEmail("t@12.te"));
-        Assert.assertFalse(CommonUtilities.isValidEmail("1@d12.te"));
         Assert.assertFalse(CommonUtilities.isValidEmail("test@123@test.co.za"));
         Assert.assertFalse(CommonUtilities.isValidEmail("test#123@test.co.za"));
         Assert.assertFalse(CommonUtilities.isValidEmail("test*123@test.co.za"));
@@ -51,7 +57,7 @@ public class CommonUtilitiesTester {
 
     @Test
     public void toCamelCaseTest() {
-
+        System.out.println("RUNNING TEST: CommonUtilities.toCamelCase");
         Assert.assertEquals(CommonUtilities.toCamelCase(null), null);
         Assert.assertEquals(CommonUtilities.toCamelCase(""), "");
         Assert.assertEquals(CommonUtilities.toCamelCase("12"), "12");
@@ -66,15 +72,17 @@ public class CommonUtilitiesTester {
     @Test
     public void alignStringToLengthTest()
     {
-        Assert.assertEquals(CommonUtilities.alignStringToLength("test", 7)  , "   test");
+        System.out.println("RUNNING TEST: CommonUtilities.alignStringToLength");
+        Assert.assertEquals(CommonUtilities.alignStringToLength("test", 7)  , "test   ");
         Assert.assertEquals(CommonUtilities.alignStringToLength(null, 7)    , "       ");
         Assert.assertEquals(CommonUtilities.alignStringToLength("", 7)      , "       ");
-        Assert.assertEquals(CommonUtilities.alignStringToLength(" test ", 7), "  test ");
+        Assert.assertEquals(CommonUtilities.alignStringToLength(" test ", 7), " test  ");
     }
 
     @Test
-    public void formatDoubleToMoney()
+    public void formatDoubleToMoneyTest()
     {
+        System.out.println("RUNNING TEST: CommonUtilities.formatDoubleToMoney");
         Assert.assertEquals(CommonUtilities.formatDoubleToMoney(0, "R"), "R0.00");
         Assert.assertEquals(CommonUtilities.formatDoubleToMoney(100, "R"), "R100.00");
         Assert.assertEquals(CommonUtilities.formatDoubleToMoney(1000, "R"), "R1,000.00");
@@ -88,8 +96,9 @@ public class CommonUtilitiesTester {
     }
 
     @Test
-    public void round()
+    public void roundTest()
     {
+        System.out.println("RUNNING TEST: CommonUtilities.round");
         Assert.assertEquals(CommonUtilities.round(0), 0);
         Assert.assertEquals(CommonUtilities.round(0.123), 0);
         Assert.assertEquals(CommonUtilities.round(0.4), 0);

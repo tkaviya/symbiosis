@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Controller
 public class DefaultController
@@ -45,7 +44,7 @@ public class DefaultController
 		{
 			SymbiosisUserDetails userDetails = symbiosisAuthenticator.loadUserByUsername(request.getParameter("username"));
 			
-			Date lastAccessDate = userDetails.getSymbiosisUser().getLastLoginDate();
+//			Date lastAccessDate = userDetails.getSymbiosisUser().getLastLoginDate();
 			
 			ResponseCode authResponse = symbiosisAuthenticator.authenticateUser(userDetails);
 			
@@ -55,7 +54,7 @@ public class DefaultController
 				logger.info("Authentication successful.");
 				JSONObject responseJSON = new JSONObject(ResponseCode.SUCCESS.toJSONResponse());
 				responseJSON.put("auth_token", userDetails.getSymbiosisUser().getAuthToken());
-				responseJSON.put("last_access_date", sdf.format(lastAccessDate));
+//				responseJSON.put("last_access_date", sdf.format(lastAccessDate));
 				jsonResponse = responseJSON.toString();
 				
 			}
