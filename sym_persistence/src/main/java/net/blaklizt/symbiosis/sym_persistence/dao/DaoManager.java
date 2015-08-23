@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class DaoManager
 {
-	@Autowired private SymbiosisEventLogDao eventLogDao;
-	@Autowired private SymbiosisUserDao userDao;
+	@Autowired private SymbiosisEventLogDao symbiosisEventLogDao;
+	@Autowired private SymbiosisUserDao symbiosisUserDao;
+	@Autowired private SymbiosisAuthUserDao symbiosisAuthUserDao;
+	@Autowired private SymbiosisRoleDao symbiosisRoleDao;
+	@Autowired private SymbiosisUserGroupSystemRoleDao symbiosisUserGroupSystemRoleDao;
 
 	private static DaoManager daoManager = null;
 
@@ -24,6 +27,10 @@ public class DaoManager
 		return daoManager;
 	}
 
-	public SymbiosisEventLogDao getEventLogDao() { return eventLogDao; }
-	public SymbiosisUserDao getUserDao() { return userDao; }
+	public SymbiosisEventLogDao getEventLogDao() { return symbiosisEventLogDao; }
+	public SymbiosisUserDao getUserDao() { return symbiosisUserDao; }
+	public SymbiosisAuthUserDao getAuthUserDao() { return symbiosisAuthUserDao; }
+	public SymbiosisRoleDao getRoleDao() { return symbiosisRoleDao; }
+	public SymbiosisUserGroupSystemRoleDao getUserGroupSystemRoleDao() { return symbiosisUserGroupSystemRoleDao; }
+
 }

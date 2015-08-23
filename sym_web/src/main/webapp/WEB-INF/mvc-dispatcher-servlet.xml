@@ -10,7 +10,7 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <import resource="classpath*:sym_common-spring-context.xml" />
-    <import resource="classpath*:sym_persistence-spring-context.xml" />
+    <import resource="classpath*:src/test/sym_persistence-spring-context.xml" />
     <import resource="classpath*:sym_authentication-spring-context.xml" />
     <import resource="classpath*:sym_core-spring-context.xml" />
 
