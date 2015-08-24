@@ -363,16 +363,16 @@
         <module>sym_common</module>
         <module>sym_persistence</module>
         <module>sym_authentication</module>
-        <module>sym_tts_engine</module>
-        <module>sym_translator</module>
-        <module>sym_bluetooth</module>
-        <module>sym_nlp_engine</module>
-        <module>sym_proximity</module>
-        <module>sym_core</module>
-        <module>sym_irc</module>
-        <module>sym_web</module>
-        <module>sym_commerce</module>
-        <module>sym_sync</module>
+        <!--<module>sym_tts_engine</module>-->
+        <!--<module>sym_translator</module>-->
+        <!--<module>sym_bluetooth</module>-->
+        <!--<module>sym_nlp_engine</module>-->
+        <!--<module>sym_proximity</module>-->
+        <!--<module>sym_core</module>-->
+        <!--<module>sym_irc</module>-->
+        <!--<module>sym_web</module>-->
+        <!--<module>sym_commerce</module>-->
+        <!--<module>sym_sync</module>-->
     </modules>
 
 

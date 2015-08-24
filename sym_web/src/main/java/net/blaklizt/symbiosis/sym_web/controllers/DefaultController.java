@@ -4,7 +4,7 @@ import net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthent
 import net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisUserDetails;
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
 import net.blaklizt.symbiosis.sym_common.response.ResponseCode;
-import net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisUserDao;
+import net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisUserDaoImpl;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,8 @@ public class DefaultController
 {
 	@Autowired SymbiosisAuthenticator symbiosisAuthenticator;
 
-	@Autowired SymbiosisUserDao userDao;
+	@Autowired
+	SymbiosisUserDaoImpl userDao;
 
 	private Logger logger = Configuration.getNewLogger(DefaultController.class.getSimpleName());
 	

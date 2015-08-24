@@ -1,5 +1,7 @@
 package net.blaklizt.symbiosis.sym_persistence.dao;
 
+import net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisEventLogDaoImpl;
+import net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisUserDaoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -11,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class DaoManager
 {
-	@Autowired private SymbiosisEventLogDao eventLogDao;
-	@Autowired private SymbiosisUserDao userDao;
+	@Autowired private SymbiosisEventLogDaoImpl eventLogDao;
+	@Autowired private SymbiosisUserDaoImpl userDao;
 
 	private static DaoManager daoManager = null;
 
@@ -24,6 +26,6 @@ public class DaoManager
 		return daoManager;
 	}
 
-	public SymbiosisEventLogDao getEventLogDao() { return eventLogDao; }
-	public SymbiosisUserDao getUserDao() { return userDao; }
+	public SymbiosisEventLogDaoImpl getEventLogDao() { return eventLogDao; }
+	public SymbiosisUserDaoImpl getUserDao() { return userDao; }
 }

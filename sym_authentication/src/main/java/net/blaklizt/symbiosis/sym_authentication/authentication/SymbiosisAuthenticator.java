@@ -8,9 +8,9 @@ import net.blaklizt.symbiosis.sym_common.utilities.Validator;
 import net.blaklizt.symbiosis.sym_persistence.SymbiosisAuthUser;
 import net.blaklizt.symbiosis.sym_persistence.SymbiosisUser;
 import net.blaklizt.symbiosis.sym_persistence.SymbiosisUserGroupSystemRole;
-import net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisAuthUserDao;
-import net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisUserDao;
-import net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisUserGroupSystemRoleDao;
+import net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisAuthUserDaoImpl;
+import net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisUserDaoImpl;
+import net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisUserGroupSystemRoleDaoImpl;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +36,13 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 	protected HashMap<String, List<SimpleGrantedAuthority>> grantedAuthoritiesCache = new HashMap<>();
 
 	@Autowired
-	private SymbiosisUserDao userDao;
+	private SymbiosisUserDaoImpl userDao;
 
 	@Autowired
-	private SymbiosisAuthUserDao authUserDao;
+	private SymbiosisAuthUserDaoImpl authUserDao;
 
 	@Autowired
-	private SymbiosisUserGroupSystemRoleDao symbiosisUserGroupSystemRoleDao;
+	private SymbiosisUserGroupSystemRoleDaoImpl symbiosisUserGroupSystemRoleDaoImpl;
 	
 
 	private static final Logger logger = Logger.getLogger(SymbiosisAuthenticator.class.getSimpleName());
@@ -79,8 +79,8 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 	@Override
 	public boolean isPasswordValid(String encPass, String rawPass, Object salt) {
 		//implement hectic encryption here
-		logger.info("Comparing [ " + new String(Security.encrypt(rawPass)) + " | " + rawPass + " ]");
-		return encPass.matches(new String(Security.encrypt(rawPass)));
+		logger.info("Comparing [ " + Security.encrypt(rawPass) + " | " + rawPass + " ]");
+		return encPass.matches(Security.encrypt(rawPass));
 	}
 
 	public ResponseCode registerUser(User symbiosisUser)
@@ -92,7 +92,7 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 		byte[] passwordSalt = Security.generateSecureRandomBytes();
 		
 		//update object to new data
-		newSymbiosisUser.setSalt(String.valueOf(passwordSalt));
+		newSymbiosisUser.setSalt(new String(passwordSalt));
 		newSymbiosisUser.setPassword(encodePassword(symbiosisUser.getPassword(), passwordSalt));
 
 		
@@ -201,7 +201,7 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 				//if name is not passed, use firstname or lastname or both
 				registerUser.setPassword(this.encodePassword(registerUser.getPassword(), Security.generateSecureRandomBytes()));
 //				registerUser.setLastLoginDate(new Date());
-				registerUser.setAuthToken(String.valueOf(Security.generateSecureRandomBytes()));
+				registerUser.setAuthToken(new String(Security.generateSecureRandomBytes()));
 
 				userDao.saveOrUpdate(registerUser);
 
@@ -231,7 +231,7 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 		{
 			logger.debug("Getting authorities for access group " + userGroup);
 
-			List<SymbiosisUserGroupSystemRole> userGroupRoles = symbiosisUserGroupSystemRoleDao.findByUserGroup(userGroup);
+			List<SymbiosisUserGroupSystemRole> userGroupRoles = symbiosisUserGroupSystemRoleDaoImpl.findByUserGroup(userGroup);
 
 			for (SymbiosisUserGroupSystemRole userGroupRole : userGroupRoles)
 			{
