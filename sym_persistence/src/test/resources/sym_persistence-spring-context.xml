@@ -33,11 +33,11 @@
         <property name="annotatedClasses">
             <list>
                 <value>net.blaklizt.symbiosis.sym_persistence.dao.AbstractDao</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisAuthUserDao</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisEventLogDao</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisRoleDao</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisUserDao</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisUserGroupSystemRoleDao</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisAuthUserDaoImpl</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisEventLogDaoImpl</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisRoleDaoImpl</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisUserDaoImpl</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisUserGroupSystemRoleDaoImpl</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisAuthUser</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisChannel</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisCountry</value>
