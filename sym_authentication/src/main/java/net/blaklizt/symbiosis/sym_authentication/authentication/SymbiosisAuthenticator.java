@@ -64,7 +64,7 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 //			logger.warn("Cannot login " + dbSymbiosisUser.getUsername() + " : Account is not active.");
 //		}
 				
-		return new SymbiosisUserDetails(dbSymbiosisUser, active, getAuthorities(dbSymbiosisUser.getUserGroup().getDescription()));
+		return new SymbiosisUserDetails(dbSymbiosisUser, active, getAuthorities(dbSymbiosisUser.getSymbiosisUserGroup().getDescription()));
 	}
 
 	@Override

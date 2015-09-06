@@ -117,7 +117,7 @@ public class SymbiosisUser implements Serializable
 		return symbiosisCountryID;
 	}
 
-	public void setSymbiosisCountryId(Integer symbiosisCountryID) {
+	public void setSymbiosisCountryID(Integer symbiosisCountryID) {
 		this.symbiosisCountryID = symbiosisCountryID;
 	}
 
@@ -144,7 +144,7 @@ public class SymbiosisUser implements Serializable
 	@JoinTable(name="SymbiosisUserGroup")
 	@JoinColumn(name="SymbiosisUserGroupID")
 	@ManyToOne(targetEntity = SymbiosisUserGroup.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-	public SymbiosisUserGroup getUserGroup() {
+	public SymbiosisUserGroup getSymbiosisUserGroup() {
 		return symbiosisUserGroup;
 	}
 

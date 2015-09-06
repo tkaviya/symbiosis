@@ -9,8 +9,10 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
+    <import resource="classpath*:sym_authentication-spring-context.xml" />
+
     <mvc:annotation-driven />
-    <context:component-scan base-package="net.blaklizt.symbiosis.sym_commerce" />
+    <context:component-scan base-package="net.blaklizt.symbiosis.sym_commerce.controllers" />
 
     <mvc:resources mapping="/resources/**" location="/resources/" />
     <mvc:resources mapping="/js/**" location="/WEB-INF/js/" />

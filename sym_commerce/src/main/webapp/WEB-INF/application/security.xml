@@ -7,8 +7,6 @@
             http://www.springframework.org/schema/security
             http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <beans:import resource="classpath*:sym_authentication-spring-context.xml" />
-
     <http pattern="/register" security="none" />
     <http pattern="/registerSuccess" security="none" />
     <http pattern="/doRegister" security="none" />

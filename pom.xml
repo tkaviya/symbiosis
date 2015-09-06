@@ -39,8 +39,15 @@
         <spring.version>4.1.5.RELEASE</spring.version>
         <spring.security.version>3.2.6.RELEASE</spring.security.version>
 
-        <hibernate.core.version>3.6.4.Final</hibernate.core.version>
-        <hibernate.annotations.version>3.5.5-Final</hibernate.annotations.version>
+        <!--<hibernate.core.version>3.6.4.Final</hibernate.core.version>-->
+        <!--<hibernate.annotations.version>3.5.5-Final</hibernate.annotations.version>-->
+        <!--<hibernate.commons.annotations.version>4.0.4.Final</hibernate.commons.annotations.version>-->
+        <!--<hibernate.entitymanager.version>4.3.6.Final</hibernate.entitymanager.version>-->
+        <!--<hibernate.javax.persistence.jpa.version>1.0.1.Final</hibernate.javax.persistence.jpa.version>-->
+
+
+        <hibernate.core.version>4.2.4.Final</hibernate.core.version>
+        <!--<hibernate.annotations.version>3.5.6-Final</hibernate.annotations.version>-->
         <hibernate.commons.annotations.version>4.0.4.Final</hibernate.commons.annotations.version>
         <hibernate.entitymanager.version>4.3.6.Final</hibernate.entitymanager.version>
         <hibernate.javax.persistence.jpa.version>1.0.1.Final</hibernate.javax.persistence.jpa.version>
@@ -181,11 +188,11 @@
                 <version>${hibernate.core.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-annotations</artifactId>
-                <version>${hibernate.annotations.version}</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.hibernate</groupId>-->
+                <!--<artifactId>hibernate-annotations</artifactId>-->
+                <!--<version>${hibernate.annotations.version}</version>-->
+            <!--</dependency>-->
 
             <dependency>
                 <groupId>org.hibernate.common</groupId>
@@ -380,7 +387,7 @@
         <!--<module>sym_core</module>-->
         <!--<module>sym_irc</module>-->
         <!--<module>sym_web</module>-->
-        <!--<module>sym_commerce</module>-->
+        <module>sym_commerce</module>
         <!--<module>sym_sync</module>-->
     </modules>
 

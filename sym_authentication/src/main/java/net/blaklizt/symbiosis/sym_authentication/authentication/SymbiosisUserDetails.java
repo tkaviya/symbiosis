@@ -1,6 +1,5 @@
 package net.blaklizt.symbiosis.sym_authentication.authentication;
 
-import net.blaklizt.symbiosis.sym_common.response.ResponseCode;
 import net.blaklizt.symbiosis.sym_persistence.SymbiosisUser;
 import org.springframework.security.core.GrantedAuthority;
 
