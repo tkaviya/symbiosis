@@ -78,41 +78,41 @@
                 <artifactId>sym_persistence</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <dependency>
-                <groupId>net.blaklizt.symbiosis</groupId>
-                <artifactId>sym_bluetooth</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.blaklizt.symbiosis</groupId>
-                <artifactId>sym_tts_engine</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.blaklizt.symbiosis</groupId>
-                <artifactId>sym_nlp_engine</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.blaklizt.symbiosis</groupId>
-                <artifactId>sym_translator</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.blaklizt.symbiosis</groupId>
-                <artifactId>sym_web</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.blaklizt.symbiosis</groupId>
-                <artifactId>sym_irc</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.blaklizt.symbiosis</groupId>
-                <artifactId>sym_proximity</artifactId>
-                <version>${project.version}</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>net.blaklizt.symbiosis</groupId>-->
+                <!--<artifactId>sym_bluetooth</artifactId>-->
+                <!--<version>${project.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>net.blaklizt.symbiosis</groupId>-->
+                <!--<artifactId>sym_tts_engine</artifactId>-->
+                <!--<version>${project.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>net.blaklizt.symbiosis</groupId>-->
+                <!--<artifactId>sym_nlp_engine</artifactId>-->
+                <!--<version>${project.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>net.blaklizt.symbiosis</groupId>-->
+                <!--<artifactId>sym_translator</artifactId>-->
+                <!--<version>${project.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>net.blaklizt.symbiosis</groupId>-->
+                <!--<artifactId>sym_web</artifactId>-->
+                <!--<version>${project.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>net.blaklizt.symbiosis</groupId>-->
+                <!--<artifactId>sym_irc</artifactId>-->
+                <!--<version>${project.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>net.blaklizt.symbiosis</groupId>-->
+                <!--<artifactId>sym_proximity</artifactId>-->
+                <!--<version>${project.version}</version>-->
+            <!--</dependency>-->
 
             <dependency>
                 <groupId>javax.servlet</groupId>
