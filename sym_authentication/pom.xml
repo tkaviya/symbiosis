@@ -32,14 +32,6 @@
             <groupId>net.blaklizt.symbiosis</groupId>
             <artifactId>sym_persistence</artifactId>
         </dependency>
-        <dependency>
-            <groupId>net.blaklizt.symbiosis</groupId>
-            <artifactId>sym_tts_engine</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.blaklizt.symbiosis</groupId>
-            <artifactId>sym_nlp_engine</artifactId>
-        </dependency>
 
         <!-- Spring Framework -->
         <dependency>
