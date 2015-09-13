@@ -12,22 +12,22 @@ import javax.persistence.Id;
  * Time: 3:56 PM
  */
 @Entity
-public class SymbiosisUserStatus {
-	private Integer symbiosisUserStatusID;
+public class SymbiosisOption {
+	private Long symbiosisOptionID;
 	private String description;
 
 	@Id
-	@Column(name = "SymbiosisUserStatusID", nullable = false, insertable = true, updatable = true)
-	public Integer getSymbiosisUserStatusID() {
-		return symbiosisUserStatusID;
+	@Column(name = "SymbiosisOptionID", nullable = false, insertable = true, updatable = true)
+	public Long getSymbiosisOptionID() {
+		return symbiosisOptionID;
 	}
 
-	public void setSymbiosisUserStatusID(Integer symbiosisUserStatusID) {
-		this.symbiosisUserStatusID = symbiosisUserStatusID;
+	public void setSymbiosisOptionID(Long symbiosisOptionID) {
+		this.symbiosisOptionID = symbiosisOptionID;
 	}
 
 	@Basic
-	@Column(name = "Description", nullable = false, insertable = true, updatable = true, length = 50)
+	@Column(name = "Description", nullable = true, insertable = true, updatable = true, length = 20)
 	public String getDescription() {
 		return description;
 	}

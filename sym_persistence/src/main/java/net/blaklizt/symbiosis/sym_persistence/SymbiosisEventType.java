@@ -13,17 +13,17 @@ import javax.persistence.Id;
  */
 @Entity
 public class SymbiosisEventType {
-	private Long symbiosisEventTypeId;
+	private Long symbiosisEventTypeID;
 	private String description;
 
 	@Id
 	@Column(name = "SymbiosisEventTypeID", nullable = false, insertable = true, updatable = true)
-	public Long getSymbiosisEventTypeId() {
-		return symbiosisEventTypeId;
+	public Long getSymbiosisEventTypeID() {
+		return symbiosisEventTypeID;
 	}
 
-	public void setSymbiosisEventTypeId(Long symbiosisEventTypeId) {
-		this.symbiosisEventTypeId = symbiosisEventTypeId;
+	public void setSymbiosisEventTypeID(Long symbiosisEventTypeID) {
+		this.symbiosisEventTypeID = symbiosisEventTypeID;
 	}
 
 	@Basic

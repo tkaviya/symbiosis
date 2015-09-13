@@ -13,17 +13,17 @@ import javax.persistence.Id;
  */
 @Entity
 public class SymbiosisChannel {
-	private Integer symbiosisChannelId;
+	private Integer symbiosisChannelID;
 	private String description;
 
 	@Id
 	@Column(name = "SymbiosisChannelID", nullable = false, insertable = true, updatable = true)
-	public Integer getSymbiosisChannelId() {
-		return symbiosisChannelId;
+	public Integer getSymbiosisChannelID() {
+		return symbiosisChannelID;
 	}
 
-	public void setSymbiosisChannelId(Integer symbiosisChannelId) {
-		this.symbiosisChannelId = symbiosisChannelId;
+	public void setSymbiosisChannelID(Integer symbiosisChannelID) {
+		this.symbiosisChannelID = symbiosisChannelID;
 	}
 
 	@Basic

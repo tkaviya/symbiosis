@@ -44,7 +44,7 @@ public class Configuration
 	{
 		if (SystemUtils.IS_OS_LINUX)	property = "linux_" + property;
 		if (SystemUtils.IS_OS_WINDOWS)	property = "windows_" + property;
-		if (SystemUtils.IS_OS_MAC)		property = "windows_" + property;
+		if (SystemUtils.IS_OS_MAC)		property = "mac_" + property;
 
 		return ResourceBundle.getBundle("properties/" + bundle, Locale.ENGLISH).getString(property);
 	}

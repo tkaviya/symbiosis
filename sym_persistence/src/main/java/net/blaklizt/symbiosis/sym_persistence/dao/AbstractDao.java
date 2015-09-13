@@ -1,5 +1,6 @@
 package net.blaklizt.symbiosis.sym_persistence.dao;
 
+import net.blaklizt.symbiosis.sym_persistence.helper.TypeHelper;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -31,9 +32,10 @@ public abstract class AbstractDao<E, I extends Serializable> {
 	protected AbstractDao(Class<E> entityClass) {
 		this.entityClass = entityClass;
 		this.className = entityClass.getSimpleName();
+		TypeHelper.registerHelper(entityClass, "get" + className + "ID");
 	}
 
-	private Session getCurrentSession() {
+	public Session getCurrentSession() {
 		try { return sessionFactory.getCurrentSession(); } catch (Exception e) { e.printStackTrace(); return null; }
 	}
 

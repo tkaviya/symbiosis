@@ -30,13 +30,4 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-
-    <jsp-config>
-        <jsp-property-group>
-            <url-pattern>/WEB-INF/jsp/*</url-pattern>
-            <include-prelude>/WEB-INF/jsp/header.jsp</include-prelude>
-            <include-coda>/WEB-INF/jsp/footer.jsp</include-coda>
-        </jsp-property-group>
-    </jsp-config>
-
 </web-app>

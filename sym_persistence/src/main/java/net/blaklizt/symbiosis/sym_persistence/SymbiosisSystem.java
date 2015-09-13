@@ -13,21 +13,21 @@ import javax.persistence.Id;
  */
 @Entity
 public class SymbiosisSystem {
-	private Integer symbiosisSystemId;
+	private Integer symbiosisSystemID;
 	private String description;
 
 	@Id
 	@Column(name = "SymbiosisSystemID", nullable = false, insertable = true, updatable = true)
-	public Integer getSymbiosisSystemId() {
-		return symbiosisSystemId;
+	public Integer getSymbiosisSystemID() {
+		return symbiosisSystemID;
 	}
 
-	public void setSymbiosisSystemId(Integer symbiosisSystemId) {
-		this.symbiosisSystemId = symbiosisSystemId;
+	public void setSymbiosisSystemID(Integer symbiosisSystemID) {
+		this.symbiosisSystemID = symbiosisSystemID;
 	}
 
 	@Basic
-	@Column(name = "Description", nullable = false, insertable = true, updatable = true, length = 128)
+	@Column(name = "Description", nullable = false, insertable = true, updatable = true)
 	public String getDescription() {
 		return description;
 	}

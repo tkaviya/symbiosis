@@ -18,7 +18,8 @@ import java.util.List;
  */
 
 @Repository
-public class SymbiosisUserGroupSystemRoleDaoImpl extends AbstractDao<SymbiosisUserGroupSystemRole, SymbiosisUserGroupSystemRolePK> implements SymbiosisUserGroupSystemRoleDao
+public class SymbiosisUserGroupSystemRoleDaoImpl extends
+		AbstractDao<SymbiosisUserGroupSystemRole, SymbiosisUserGroupSystemRolePK> implements SymbiosisUserGroupSystemRoleDao
 {
 	public SymbiosisUserGroupSystemRoleDaoImpl() { super(SymbiosisUserGroupSystemRole.class); }
 

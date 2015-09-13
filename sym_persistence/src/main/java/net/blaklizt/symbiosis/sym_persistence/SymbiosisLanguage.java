@@ -13,17 +13,17 @@ import javax.persistence.Id;
  */
 @Entity
 public class SymbiosisLanguage {
-	private Integer symbiosisLanguageId;
+	private Integer symbiosisLanguageID;
 	private String symbiosisLanguageName;
 
 	@Id
 	@Column(name = "SymbiosisLanguageID", nullable = false, insertable = true, updatable = true)
-	public Integer getSymbiosisLanguageId() {
-		return symbiosisLanguageId;
+	public Integer getSymbiosisLanguageID() {
+		return symbiosisLanguageID;
 	}
 
-	public void setSymbiosisLanguageId(Integer symbiosisLanguageId) {
-		this.symbiosisLanguageId = symbiosisLanguageId;
+	public void setSymbiosisLanguageID(Integer symbiosisLanguageID) {
+		this.symbiosisLanguageID = symbiosisLanguageID;
 	}
 
 	@Basic

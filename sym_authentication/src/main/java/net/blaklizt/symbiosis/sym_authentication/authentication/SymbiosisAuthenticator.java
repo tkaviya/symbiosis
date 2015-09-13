@@ -235,8 +235,8 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 
 			for (SymbiosisUserGroupSystemRole userGroupRole : userGroupRoles)
 			{
-				logger.fine("Caching role " + userGroupRole.getSymbiosisRoleId());
-				authList.add(new SimpleGrantedAuthority(userGroupRole.getSymbiosisRoleId().toString()));
+				logger.fine("Caching role " + userGroupRole.getSymbiosisRoleID());
+				authList.add(new SimpleGrantedAuthority(userGroupRole.getSymbiosisRoleID().toString()));
 			}
 
 			//cache the authorities to avoid future db hits.

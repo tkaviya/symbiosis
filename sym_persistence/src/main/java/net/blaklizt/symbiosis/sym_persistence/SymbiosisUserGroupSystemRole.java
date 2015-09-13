@@ -11,43 +11,43 @@ import javax.persistence.*;
 @Entity
 @IdClass(SymbiosisUserGroupSystemRolePK.class)
 public class SymbiosisUserGroupSystemRole {
-	private Integer symbiosisUserGroupId;
-	private Integer symbiosisSystemId;
-	private Integer symbiosisRoleId;
+	private Integer symbiosisUserGroupID;
+	private Integer symbiosisSystemID;
+	private Integer symbiosisRoleID;
 	private String symbiosisUserGroupSystemRoleDescription;
 
 	@Id
 	@Column(name = "SymbiosisUserGroupID", nullable = false, insertable = true, updatable = true)
-	public Integer getSymbiosisUserGroupId() {
-		return symbiosisUserGroupId;
+	public Integer getSymbiosisUserGroupID() {
+		return symbiosisUserGroupID;
 	}
 
-	public void setSymbiosisUserGroupId(Integer symbiosisUserGroupId) {
-		this.symbiosisUserGroupId = symbiosisUserGroupId;
+	public void setSymbiosisUserGroupID(Integer symbiosisUserGroupId) {
+		this.symbiosisUserGroupID = symbiosisUserGroupId;
 	}
 
 	@Id
 	@Column(name = "SymbiosisSystemID", nullable = false, insertable = true, updatable = true)
-	public Integer getSymbiosisSystemId() {
-		return symbiosisSystemId;
+	public Integer getSymbiosisSystemID() {
+		return symbiosisSystemID;
 	}
 
-	public void setSymbiosisSystemId(Integer symbiosisSystemId) {
-		this.symbiosisSystemId = symbiosisSystemId;
+	public void setSymbiosisSystemID(Integer symbiosisSystemId) {
+		this.symbiosisSystemID = symbiosisSystemId;
 	}
 
 	@Id
 	@Column(name = "SymbiosisRoleID", nullable = false, insertable = true, updatable = true)
-	public Integer getSymbiosisRoleId() {
-		return symbiosisRoleId;
+	public Integer getSymbiosisRoleID() {
+		return symbiosisRoleID;
 	}
 
-	public void setSymbiosisRoleId(Integer symbiosisRoleId) {
-		this.symbiosisRoleId = symbiosisRoleId;
+	public void setSymbiosisRoleID(Integer symbiosisRoleId) {
+		this.symbiosisRoleID = symbiosisRoleId;
 	}
 
 	@Basic
-	@Column(name = "SymbiosisUserGroupSystemRoleDescription", nullable = false, insertable = true, updatable = true, length = 20)
+	@Column(name = "SymbiosisUserGroupSystemRoleDescription", nullable = false, insertable = true, updatable = true)
 	public String getSymbiosisUserGroupSystemRoleDescription() {
 		return symbiosisUserGroupSystemRoleDescription;
 	}

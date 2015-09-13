@@ -6,8 +6,8 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <import resource="classpath*:sym_common-spring-context.xml" />
+    <import resource="classpath*:sym_persistence-spring-context.xml" />
 
+    <context:annotation-config/>
     <context:component-scan base-package="net.blaklizt.symbiosis.sym_sync" />
-
 </beans>

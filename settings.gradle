@@ -8,6 +8,7 @@ include ':sym_bluetooth'
 include ':sym_nlp_engine'
 include ':sym_proximity'
 include ':sym_core'
+include ':sym_bounce'
 include ':sym_irc'
 include ':sym_web'
 include ':sym_commerce'
@@ -22,6 +23,7 @@ project(':sym_bluetooth').projectDir = "$rootDir/sym_bluetooth" as File
 project(':sym_nlp_engine').projectDir = "$rootDir/sym_nlp_engine" as File
 project(':sym_proximity').projectDir = "$rootDir/sym_proximity" as File
 project(':sym_core').projectDir = "$rootDir/sym_core" as File
+project(':sym_bounce').projectDir = "$rootDir/sym_bounce" as File
 project(':sym_irc').projectDir = "$rootDir/sym_irc" as File
 project(':sym_web').projectDir = "$rootDir/sym_web" as File
 project(':sym_commerce').projectDir = "$rootDir/sym_commerce" as File

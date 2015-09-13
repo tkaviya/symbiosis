@@ -13,21 +13,21 @@ import javax.persistence.Id;
  */
 @Entity
 public class SymbiosisUserGroup {
-	private Integer symbiosisUserGroupId;
+	private Integer symbiosisUserGroupID;
 	private String description;
 
 	@Id
 	@Column(name = "SymbiosisUserGroupID", nullable = false, insertable = true, updatable = true)
-	public Integer getSymbiosisUserGroupId() {
-		return symbiosisUserGroupId;
+	public Integer getSymbiosisUserGroupID() {
+		return symbiosisUserGroupID;
 	}
 
-	public void setSymbiosisUserGroupId(Integer symbiosisUserGroupId) {
-		this.symbiosisUserGroupId = symbiosisUserGroupId;
+	public void setSymbiosisUserGroupID(Integer symbiosisUserGroupID) {
+		this.symbiosisUserGroupID = symbiosisUserGroupID;
 	}
 
 	@Basic
-	@Column(name = "Description", nullable = true, insertable = true, updatable = true, length = 20)
+	@Column(name = "Description", nullable = true, insertable = true, updatable = true)
 	public String getDescription() {
 		return description;
 	}

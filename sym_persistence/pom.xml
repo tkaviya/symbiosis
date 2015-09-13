@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven.xsd">
     <parent>
         <groupId>net.blaklizt</groupId>
         <artifactId>symbiosis</artifactId>
@@ -22,16 +21,16 @@
     </build>
 
     <dependencies>
-
         <dependency>
             <groupId>net.blaklizt.symbiosis</groupId>
             <artifactId>sym_common</artifactId>
         </dependency>
 
-        <!-- MySQL database driver -->
+        <!-- database driver -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Spring Framework -->
@@ -61,11 +60,6 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
         </dependency>
-
-        <!--<dependency>-->
-            <!--<groupId>org.hibernate</groupId>-->
-            <!--<artifactId>hibernate-annotations</artifactId>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>org.hibernate.common</groupId>

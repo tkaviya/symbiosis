@@ -13,18 +13,18 @@ import javax.persistence.Id;
  */
 @Entity
 public class SymbiosisCountry {
-	private Integer symbiosisCountryId;
+	private Integer symbiosisCountryID;
 	private String countryName;
 	private Integer countryCodePrefix;
 
 	@Id
 	@Column(name = "SymbiosisCountryID", nullable = false, insertable = true, updatable = true)
-	public Integer getSymbiosisCountryId() {
-		return symbiosisCountryId;
+	public Integer getSymbiosisCountryID() {
+		return symbiosisCountryID;
 	}
 
-	public void setSymbiosisCountryId(Integer symbiosisCountryId) {
-		this.symbiosisCountryId = symbiosisCountryId;
+	public void setSymbiosisCountryID(Integer symbiosisCountryID) {
+		this.symbiosisCountryID = symbiosisCountryID;
 	}
 
 	@Basic
