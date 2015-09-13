@@ -1,9 +1,9 @@
 package net.blaklizt.symbiosis.sym_common.utilities;
 
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
-import org.apache.log4j.Logger;
 
 import java.io.*;
+import java.util.logging.Logger;
 
 import static org.apache.commons.codec.binary.Base64.decodeBase64;
 import static org.apache.commons.codec.binary.Base64.encodeBase64;
@@ -66,7 +66,7 @@ public class Format {
 		}
 		catch (Exception ex)
 		{
-			logger.error("Failed to serialize object: " + ex.getMessage());
+			logger.severe("Failed to serialize object: " + ex.getMessage());
 			return null;
 		}
 	}
@@ -84,7 +84,7 @@ public class Format {
 		}
 		catch (Exception ex)
 		{
-			logger.error("Failed to serialize object: " + ex.getMessage());
+			logger.severe("Failed to serialize object: " + ex.getMessage());
 			return null;
 		}
 	}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <groupId>net.blaklizt</groupId>
+        <artifactId>symbiosis</artifactId>
+        <version>2.0.0</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.blaklizt.symbiosis</groupId>
+    <artifactId>sym_bounce</artifactId>
+    <version>${project.parent.version}</version>
+    <packaging>jar</packaging>
+    <name>Symbiosis Bounce</name>
+    <description>Symbiosis Bounce</description>
+
+    <build>
+        <finalName>sym_bounce</finalName>
+    </build>
+    <dependencies>
+        <!-- Other dependencies -->
+        <dependency>
+            <groupId>net.blaklizt.symbiosis</groupId>
+            <artifactId>sym_common</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

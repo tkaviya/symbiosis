@@ -5,7 +5,6 @@ import net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisUserDet
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
 import net.blaklizt.symbiosis.sym_common.response.ResponseCode;
 import net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisUserDaoImpl;
-import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
+import java.util.logging.Logger;
 
 @Controller
 public class DefaultController
@@ -66,7 +66,7 @@ public class DefaultController
 		}
 		catch (Exception ex)
 		{
-			logger.error("Failed to authenticate:\n" + ex.getMessage());
+			logger.severe("Failed to authenticate:\n" + ex.getMessage());
 			jsonResponse = ResponseCode.GENERAL_ERROR.toJSONResponse();
 		}
 		return jsonResponse;
@@ -93,7 +93,7 @@ public class DefaultController
 			}
 			catch (Exception ex)
 			{
-				logger.error("Failed to authenticate: " + ex.getMessage());
+				logger.severe("Failed to authenticate: " + ex.getMessage());
 				jsonResponse = ResponseCode.GENERAL_ERROR.toJSONResponse();
 			}
 			return jsonResponse;

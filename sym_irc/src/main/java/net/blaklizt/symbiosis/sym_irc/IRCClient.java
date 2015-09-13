@@ -3,7 +3,6 @@ package net.blaklizt.symbiosis.sym_irc;
 import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
 import net.blaklizt.symbiosis.sym_irc.dcc.DCCServerManager;
 import net.blaklizt.symbiosis.sym_irc.session.UserSession;
-import org.apache.log4j.Logger;
 
 import java.net.InetSocketAddress;
 import java.nio.channels.ServerSocketChannel;
@@ -11,6 +10,7 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.

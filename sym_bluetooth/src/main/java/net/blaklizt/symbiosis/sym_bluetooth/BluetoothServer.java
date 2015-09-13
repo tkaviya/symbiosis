@@ -1,10 +1,9 @@
 package net.blaklizt.symbiosis.sym_bluetooth;
 
-import org.apache.log4j.Logger;
-
 import javax.bluetooth.BluetoothStateException;
 import javax.bluetooth.DiscoveryAgent;
 import javax.bluetooth.LocalDevice;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.

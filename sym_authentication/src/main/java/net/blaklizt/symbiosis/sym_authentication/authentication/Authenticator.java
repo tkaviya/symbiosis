@@ -6,7 +6,7 @@ import net.blaklizt.symbiosis.sym_persistence.User;
 import net.blaklizt.symbiosis.sym_persistence.UserGroupRole;
 import net.blaklizt.symbiosis.sym_persistence.dao.UserDao;
 import net.blaklizt.symbiosis.sym_persistence.dao.UserGroupRoleDao;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.GrantedAuthority;

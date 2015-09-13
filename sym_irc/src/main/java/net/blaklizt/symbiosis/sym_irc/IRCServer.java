@@ -2,7 +2,6 @@ package net.blaklizt.symbiosis.sym_irc;
 
 import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
 import net.blaklizt.symbiosis.sym_irc.dcc.DCCClientManager;
-import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -12,6 +11,7 @@ import java.nio.channels.UnresolvedAddressException;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Observable;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.

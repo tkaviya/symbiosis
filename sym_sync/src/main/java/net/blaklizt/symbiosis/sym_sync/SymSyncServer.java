@@ -4,12 +4,12 @@ import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
 import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
 import net.blaklizt.symbiosis.sym_common.utilities.Format;
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.log4j.Logger;
 
 import javax.jms.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.security.MessageDigest;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -77,7 +77,7 @@ class SymSyncServer {
 		{
 			messageDigest = MessageDigest.getInstance("SHA-512");
 
-			String allFolderData = Configuration.getProperty("sync", "locations");
+			String allFolderData = Configuration.getOSProperty("sync", "locations");
 			logger.info("Got all folder data: " + allFolderData);
 			String[] folderData = allFolderData.split("\\|");
 			for (String folder : folderData)
@@ -94,12 +94,12 @@ class SymSyncServer {
 					}
 					catch (Exception ex)
 					{
-						logger.error("Invalid configuration specified: " + folder);
+						logger.severe("Invalid configuration specified: " + folder);
 					}
 				}
 				else
 				{
-					logger.error("Invalid configuration specified: " + folder);
+					logger.severe("Invalid configuration specified: " + folder);
 					logger.info("folderInfo[0] = " + folderInfo[0]);
 					logger.info("folderInfo[1] = " + folderInfo[1]);
 				}
@@ -109,13 +109,13 @@ class SymSyncServer {
 		{
 			ex.printStackTrace();
 
-			logger.error("Failed to get file data: " + ex.getMessage());
+			logger.severe("Failed to get file data: " + ex.getMessage());
 		}
 	}
 
 	private void processFolder(String full_path, boolean recursive)
 	{
-		if (countProcessed >= MAX_FILES) { logger.debug("Processing limit reached! Skipping " + full_path); return; }
+		if (countProcessed >= MAX_FILES) { logger.fine("Processing limit reached! Skipping " + full_path); return; }
 
 		logger.info("Recursive = " + (recursive ? 1 : 0) + " | Processing path " + full_path);
 
@@ -154,13 +154,13 @@ class SymSyncServer {
 			}
 			catch (Exception ex)
 			{
-				logger.error("Failed to process file " + full_path + ": " + ex.getMessage());
+				logger.severe("Failed to process file " + full_path + ": " + ex.getMessage());
 			}
 
 		}
 		else
 		{
-			logger.warn("Skipping file: " + full_path);
+			logger.warning("Skipping file: " + full_path);
 		}
 	}
 
@@ -197,7 +197,7 @@ class SymSyncServer {
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-			logger.error("Failed to initialize publisher MQueue: " + ex.getMessage());
+			logger.severe("Failed to initialize publisher MQueue: " + ex.getMessage());
 			return false;
 		}
 	}

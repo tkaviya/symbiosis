@@ -244,12 +244,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>${org.slf4j.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>javax.transaction</groupId>
                 <artifactId>jta</artifactId>
                 <version>1.1</version>
@@ -336,6 +330,11 @@
                 <version>1.6</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.1</version>
+            </dependency>
+            <dependency>
                 <groupId>org.json</groupId>
                 <artifactId>json</artifactId>
                 <version>20080701</version>
@@ -379,6 +378,7 @@
         <module>sym_common</module>
         <module>sym_persistence</module>
         <module>sym_authentication</module>
+        <module>sym_bounce</module>
         <!--<module>sym_tts_engine</module>-->
         <!--<module>sym_translator</module>-->
         <!--<module>sym_bluetooth</module>-->
@@ -388,7 +388,7 @@
         <!--<module>sym_irc</module>-->
         <!--<module>sym_web</module>-->
         <module>sym_commerce</module>
-        <!--<module>sym_sync</module>-->
+        <module>sym_sync</module>
     </modules>
 
 
