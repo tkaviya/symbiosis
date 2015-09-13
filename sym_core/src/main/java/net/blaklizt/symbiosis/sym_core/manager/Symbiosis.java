@@ -1,6 +1,7 @@
 package net.blaklizt.symbiosis.sym_core.manager;
 
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
+import net.blaklizt.symbiosis.sym_common.configuration.ThreadPoolManager;
 import net.blaklizt.symbiosis.sym_proximity.ProximityScanner;
 import net.blaklizt.symbiosis.sym_tts_engine.TextToSpeechEngine;
 import org.apache.log4j.Logger;
@@ -26,7 +27,11 @@ public class Symbiosis implements Runnable
 		return symbiosis;
 	}
 
-	private Symbiosis() { symbiosis = this; new Thread(Symbiosis.getInstance()).start(); }
+	private Symbiosis()
+	{
+		symbiosis = this;
+		ThreadPoolManager.schedule(Symbiosis.getInstance());
+	}
 
 	public void run()
 	{
@@ -41,7 +46,7 @@ public class Symbiosis implements Runnable
 		{
 			new ClassPathXmlApplicationContext("sym_core-spring-context.xml");
 			Symbiosis.getInstance();
-			new Thread(Symbiosis.getInstance()).start();
+			ThreadPoolManager.schedule(Symbiosis.getInstance());
 		}
 		catch (Exception e)
 		{

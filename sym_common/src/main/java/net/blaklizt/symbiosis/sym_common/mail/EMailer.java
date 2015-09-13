@@ -1,5 +1,6 @@
 package net.blaklizt.symbiosis.sym_common.mail;
 
+import net.blaklizt.symbiosis.sym_common.configuration.ThreadPoolManager;
 import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
 import org.apache.log4j.Logger;
 
@@ -15,9 +16,7 @@ import java.io.File;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-public class EMailer extends Thread{
-
-	public final static String DEFAULT_CONTENT_TYPE = "text/html";
+public class EMailer implements Runnable{
 
 	String host="null";
 	String recipients[];
@@ -282,7 +281,7 @@ public class EMailer extends Thread{
     //test main
     public static void main(String[] args)
     {
-    	new EMailer(new String []{"bhpenetrator@gmail.com"},"Street password.","Testing",
-				"blaklizt@gmail.com","smtp.gmail.com","text/html").start();
+	    ThreadPoolManager.schedule(
+		    new EMailer(new String []{"bhpenetrator@gmail.com"},"Street password.","Testing", "blaklizt@gmail.com","smtp.gmail.com","text/html"));
     }
 }

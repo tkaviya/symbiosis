@@ -8,7 +8,7 @@ import java.util.Calendar;
  * Date: 8/12/13
  * Time: 10:11 PM
  */
-public class ReferenceGenerator extends Thread {
+public class ReferenceGenerator {
 	public void run()
 	{
 		System.out.println(Gen());

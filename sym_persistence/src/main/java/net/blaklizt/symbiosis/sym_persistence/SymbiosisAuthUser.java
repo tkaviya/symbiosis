@@ -13,7 +13,7 @@ public class SymbiosisAuthUser implements Serializable
 	private Integer symbiosisChannelID;
 	private Integer symbiosisUserStatusID;
 	private String deviceID;
-	private String accessSystemID;
+	private Integer accessSystemID;
 	private Date registrationDate;
 	private Date lastAuthDate;
 	private Date lastLoginDate;
@@ -73,11 +73,11 @@ public class SymbiosisAuthUser implements Serializable
 
 	@Column(name = "AccessSystemID")
 	@Basic
-	public String getAccessSystemID() {
+	public Integer getAccessSystemID() {
 		return accessSystemID;
 	}
 
-	public void setAccessSystemID(String accessSystemID) {
+	public void setAccessSystemID(int accessSystemID) {
 		this.accessSystemID = accessSystemID;
 	}
 
