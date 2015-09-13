@@ -163,7 +163,7 @@ public class IRCServer extends Observable implements Runnable
 	protected static final Integer IRC_ERR_USERSDONTMATCH = 502;	//:Cannot change mode for other users
 
 
-	protected static final Logger log4j = Logger.getLogger(IRCServer.class.getSimpleName());
+	protected static final Logger logger = Logger.getLogger(IRCServer.class.getSimpleName());
 	protected static final String VERSION_RESPONSE = CommonUtilities.getConfiguration("irc", "VERSION_RESPONSE");
 	protected static final String PING_RESPONSE = CommonUtilities.getConfiguration("irc", "PONG_RESPONSE");
 	protected IRCClient ircClient;
@@ -183,7 +183,7 @@ public class IRCServer extends Observable implements Runnable
 
 	public void closeSession()
 	{
-		log4j.info("Closing connection to " + ircServerAddress + ":" + ircServerPort);
+		logger.info("Closing connection to " + ircServerAddress + ":" + ircServerPort);
 		try { if (socketChannel != null) socketChannel.close(); this.finalize(); }
 		catch (Throwable e) { e.printStackTrace(); }
 	}
@@ -208,7 +208,7 @@ public class IRCServer extends Observable implements Runnable
 	{
 		String message = ">>> Connecting to server " + ircServerAddress + ":" + ircServerPort;
 		notifyObservers(new ResponseMessage(message, ResponseMessage.IRC_MSG_TYPE.SERVER,ircServerAddress,message));
-		log4j.info(message);
+		logger.info(message);
 
 		Thread connectThread = new Thread()
 		{
@@ -225,7 +225,7 @@ public class IRCServer extends Observable implements Runnable
 						//connection succeeded, get local hostname/IP
 						String message = ">>> Connected to server, sending nick, name & host...";
 						notifyObservers(new ResponseMessage(message, ResponseMessage.IRC_MSG_TYPE.SERVER, ircServerAddress, message));
-						log4j.info(message);
+						logger.info(message);
 
 						InetSocketAddress localAddress = (InetSocketAddress)socketChannel.getLocalAddress();
 						localHostAddress = localAddress.getAddress().getHostAddress();
@@ -241,13 +241,13 @@ public class IRCServer extends Observable implements Runnable
 				{
 					String message = "!!! Failed to resolve host " + ircServerAddress + ". " + u.getMessage();
 					notifyObservers(new ResponseMessage(message, ResponseMessage.IRC_MSG_TYPE.SERVER, ircServerAddress, message));
-					log4j.info(message);
+					logger.info(message);
 				}
 				catch (IOException e)
 				{
 					String message = "!!! Failed to connect to " + ircServerAddress + ":" + ircServerPort;
 					notifyObservers(new ResponseMessage(message, ResponseMessage.IRC_MSG_TYPE.SERVER, ircServerAddress, message));
-					log4j.info(message);
+					logger.info(message);
 				}
 			}
 		};
@@ -256,7 +256,7 @@ public class IRCServer extends Observable implements Runnable
 
 	public boolean ircSendRaw(String command)
 	{
-		log4j.info("*** [" + command.replaceAll("\r\n","") + "]");
+		logger.info("*** [" + command.replaceAll("\r\n","") + "]");
 		ByteBuffer buffer = ByteBuffer.wrap(command.getBytes());
 		try { return socketChannel.write(buffer) > 0; } catch (Exception e) { e.printStackTrace(); return false; }
 	}
@@ -265,7 +265,7 @@ public class IRCServer extends Observable implements Runnable
 	{
 		String message = ">>> Joining channel " + channel;
 		notifyObservers(new ResponseMessage(message, ResponseMessage.IRC_MSG_TYPE.SERVER, ircServerAddress, message));
-		log4j.info(message);
+		logger.info(message);
 
 		//check if channel is valid
 		if (channel == null || channel.trim().length() == 0) return false;
@@ -287,7 +287,7 @@ public class IRCServer extends Observable implements Runnable
 
 		String message = ">>> Leaving channel " + channel;
 		notifyObservers(new ResponseMessage(message, ResponseMessage.IRC_MSG_TYPE.SERVER, ircServerAddress, message));
-		log4j.info(message);
+		logger.info(message);
 
 		//check if channel is valid
 		if (channel == null || channel.trim().length() == 0) return false;
@@ -322,7 +322,7 @@ public class IRCServer extends Observable implements Runnable
 	{
 		String message = ">>> Setting nick to " + newNick;
 		notifyObservers(new ResponseMessage(message, ResponseMessage.IRC_MSG_TYPE.SERVER, ircServerAddress, message));
-		log4j.info(message);
+		logger.info(message);
 
 		//check if nick is valid
 		if (newNick == null || newNick.trim().length() == 0) return false;
@@ -393,7 +393,7 @@ public class IRCServer extends Observable implements Runnable
 						String receivedStr = "", sentIdentity, sentNick, sentArgs;
 						for (int c = 0; c < count; c++) receivedStr += (char)buffer.get(c);
 
-						log4j.info(receivedStr);
+						logger.info(receivedStr);
 
 						//test if numeric response code
 						if (receivedStr.matches("^[0-9]{3}+\\."))

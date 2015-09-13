@@ -37,12 +37,12 @@
 //	@Autowired
 //	private UserGroupRoleDao userGroupRoleDao;
 //
-//	private static final Logger log4j = Logger.getLogger(SymbiosisAuthenticator.class.getSimpleName());
+//	private static final Logger logger = Logger.getLogger(SymbiosisAuthenticator.class.getSimpleName());
 //
 //	@Override
 //	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 //	{
-//		log4j.info("Logging in user: " + username);
+//		logger.info("Logging in user: " + username);
 //		User dbUser = userDao.findByUsername(username);
 //
 //		if (dbUser == null) throw new UsernameNotFoundException("Could not find username " + username);
@@ -53,7 +53,7 @@
 //		else
 //		{
 //			active = false;
-//			log4j.warn("Cannot login " + dbUser.getUsername() + " : Account is not active.");
+//			logger.warn("Cannot login " + dbUser.getUsername() + " : Account is not active.");
 //		}
 //
 //		return new org.springframework.security.core.userdetails.User(username, dbUser.getPassword(),
@@ -66,13 +66,13 @@
 //
 //		if (!grantedAuthoritiesCache.containsKey(userGroup))
 //		{
-//			log4j.debug("Getting authorities for access group " + userGroup);
+//			logger.fine("Getting authorities for access group " + userGroup);
 //
 //			List<UserGroupRole> userGroupRoles = userGroupRoleDao.findByUserGroup(userGroup);
 //
 //			for (UserGroupRole userGroupRole : userGroupRoles)
 //			{
-//				log4j.debug("Caching role " + userGroupRole.getRoleID());
+//				logger.fine("Caching role " + userGroupRole.getRoleID());
 //				authList.add(new SimpleGrantedAuthority(userGroupRole.getRoleID()));
 //			}
 //
@@ -85,14 +85,14 @@
 //	@Override
 //	public String encodePassword(String rawPass, Object salt) {
 //		//implement hectic encryption here
-//		log4j.info("Encrypting [ " + rawPass + " with salt " + salt + " ]");
+//		logger.info("Encrypting [ " + rawPass + " with salt " + salt + " ]");
 //		return new String(Security.encrypt(rawPass.getBytes()));
 //	}
 //
 //	@Override
 //	public boolean isPasswordValid(String encPass, String rawPass, Object salt) {
 //		//implement hectic encryption here
-//		log4j.info("Comparing [ " + new String(Security.encrypt(rawPass.getBytes())) + " | " + rawPass + " ]");
+//		logger.info("Comparing [ " + new String(Security.encrypt(rawPass.getBytes())) + " | " + rawPass + " ]");
 //		return encPass.matches(new String(Security.encrypt(rawPass.getBytes())));
 //	}
 //}

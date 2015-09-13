@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 
 public class IRCClient implements Observer
 {
-	private static final Logger log4j = Logger.getLogger(IRCClient.class.getSimpleName());
+	private static final Logger logger = Logger.getLogger(IRCClient.class.getSimpleName());
 	public static final String CLIENT = "CLIENT";
 	protected ServerSocketChannel dccAcceptSocket;
 	protected IRCServer currentServer;
@@ -44,7 +44,7 @@ public class IRCClient implements Observer
 							 DCCServerManager.LOCALPORT;
 
 			serverResponses.get(CLIENT).get(CLIENT).add(message);
-			log4j.info(message);
+			logger.info(message);
 			dccAcceptSocket = ServerSocketChannel.open();
 			dccAcceptSocket = dccAcceptSocket.bind(new InetSocketAddress(DCCServerManager.LOCALHOST,
 					Integer.parseInt(DCCServerManager.LOCALPORT)));
@@ -56,12 +56,12 @@ public class IRCClient implements Observer
 							 DCCServerManager.LOCALHOST + ":" +
 							 DCCServerManager.LOCALPORT;
 			serverResponses.get(CLIENT).get(CLIENT).add(message);
-			log4j.error(message);
+			logger.error(message);
 		}
 
 		for (String server : servers)
 		{
-			log4j.info("Found configuration for server " + server);
+			logger.info("Found configuration for server " + server);
 			try
 			{
 				String[] serverOpts = CommonUtilities.getConfiguration("irc", server).split(",");
@@ -92,7 +92,7 @@ public class IRCClient implements Observer
 							 DCCServerManager.LOCALPORT;
 
 			serverResponses.get(CLIENT).get(CLIENT).add(message);
-			log4j.info(message);
+			logger.info(message);
 			dccAcceptSocket = ServerSocketChannel.open();
 			dccAcceptSocket = dccAcceptSocket.bind(new InetSocketAddress(DCCServerManager.LOCALHOST,
 					Integer.parseInt(DCCServerManager.LOCALPORT)));
@@ -104,12 +104,12 @@ public class IRCClient implements Observer
 							 DCCServerManager.LOCALHOST + ":" +
 							 DCCServerManager.LOCALPORT;
 			serverResponses.get(CLIENT).get(CLIENT).add(message);
-			log4j.error(message);
+			logger.error(message);
 		}
 
 		for (String server : servers)
 		{
-			log4j.info("Found configuration for server " + server);
+			logger.info("Found configuration for server " + server);
 			try
 			{
 				String[] serverOpts = CommonUtilities.getConfiguration("irc", server).split(",");
@@ -141,7 +141,7 @@ public class IRCClient implements Observer
 		{
 			String response = "!!! Failed to join " + channel + " on server " + currentServer.getIrcServerAddress();
 			serverResponses.get(currentServer.getIrcServerAddress()).get(currentServer.getIrcServerAddress()).addLast(response);
-			log4j.error(response);
+			logger.error(response);
 			return false;
 		}
 	}
@@ -157,7 +157,7 @@ public class IRCClient implements Observer
 		{
 			String response = "!!! Failed to leave " + channel + " on server " + currentServer.getIrcServerAddress();
 			serverResponses.get(currentServer.getIrcServerAddress()).get(currentServer.getIrcServerAddress()).addLast(response);
-			log4j.error(response);
+			logger.error(response);
 			return false;
 		}
 	}
@@ -191,7 +191,7 @@ public class IRCClient implements Observer
 		{
 			String response = "!!! Failed to identify nick " + currentServer.getIrcCurrentNick() + " on server " + currentServer.getIrcServerAddress();
 			serverResponses.get(currentServer.getIrcServerAddress()).get(currentServer.getIrcServerAddress()).addLast(response);
-			log4j.error(response);
+			logger.error(response);
 		}
 	}
 
@@ -209,7 +209,7 @@ public class IRCClient implements Observer
 							  currentServer.getIrcCurrentNick() + " on channel " + channel +
 							  currentServer.getIrcCurrentNick() + " on server " + currentServer.getIrcServerAddress();
 			serverResponses.get(currentServer.getIrcServerAddress()).get(channel).addLast(response);
-			log4j.error(response);
+			logger.error(response);
 		}
 	}
 
@@ -236,23 +236,23 @@ public class IRCClient implements Observer
 		{
 			case CHANNEL:
 			{
-				log4j.info(data.getIrcMsgType().name() + " >>> " + data.getSource() + " | " + data.getMessage());
+				logger.info(data.getIrcMsgType().name() + " >>> " + data.getSource() + " | " + data.getMessage());
 				break;
 			}
 			case PRIVATE:
 			{
-				log4j.info(data.getIrcMsgType().name() + " >>> " + data.getSource() + " | " + data.getMessage());
+				logger.info(data.getIrcMsgType().name() + " >>> " + data.getSource() + " | " + data.getMessage());
 				if (data.getSource().equals(currentServer.getIrcCurrentNick())) handleBotCommands(source, data);
 				break;
 			}
 			case SERVER:
 			{
-				log4j.info(currentServer.getIrcServerAddress() + " | " + data.getMessage());
+				logger.info(currentServer.getIrcServerAddress() + " | " + data.getMessage());
 				break;
 			}
 			case DCC:
 			{
-				log4j.info(data.getIrcMsgType().name() + " >>> " + data.getSource() + " | " + data.getMessage());
+				logger.info(data.getIrcMsgType().name() + " >>> " + data.getSource() + " | " + data.getMessage());
 				break;
 			}
 		}
@@ -288,7 +288,7 @@ public class IRCClient implements Observer
 
 	private void handleBotCommands(IRCServer server, ResponseMessage responseMessage)
 	{
-		log4j.info(">>> Handling response " + responseMessage.getRawResponse());
+		logger.info(">>> Handling response " + responseMessage.getRawResponse());
 
 		//TODO check if nick is identified by nickserv
 

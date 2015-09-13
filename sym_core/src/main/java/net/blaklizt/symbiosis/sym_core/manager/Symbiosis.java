@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 @Service
 public class Symbiosis implements Runnable
 {
-	private static final Logger log4j = Logger.getLogger(Symbiosis.class.getSimpleName());
+	private static final Logger logger = Logger.getLogger(Symbiosis.class.getSimpleName());
 
 	@Autowired private TextToSpeechEngine textToSpeechEngine;
 
@@ -56,12 +56,12 @@ public class Symbiosis implements Runnable
     }
 
 	public void setTextToSpeechEngine(TextToSpeechEngine textToSpeechEngine) {
-		log4j.debug("Assigning textToSpeechEngine to Symbiosis");
+		logger.fine("Assigning textToSpeechEngine to Symbiosis");
 		this.textToSpeechEngine = textToSpeechEngine;
 	}
 
 	public void setProximityScanner(ProximityScanner proximityScanner) {
-		log4j.debug("Assigning proximityScanner to Symbiosis");
+		logger.fine("Assigning proximityScanner to Symbiosis");
 		this.proximityScanner = proximityScanner;
 	}
 

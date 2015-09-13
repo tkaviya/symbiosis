@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class DCCClientManager extends Observable implements Runnable
 {
-	private static final Logger log4j = Logger.getLogger(DCCClientManager.class.getSimpleName());
+	private static final Logger logger = Logger.getLogger(DCCClientManager.class.getSimpleName());
 	protected String nick;
 	protected String remoteHost;
 	protected short remotePort;
@@ -45,7 +45,7 @@ public class DCCClientManager extends Observable implements Runnable
 				//connection succeeded, get local hostname/IP
 				String message = ">>> Connected to nick " + nick + " via DCC";
 				notifyObservers(new ResponseMessage(message, ResponseMessage.IRC_MSG_TYPE.DCC, nick, message));
-				log4j.info(message);
+				logger.info(message);
 
 				int count;
 				ByteBuffer buffer = ByteBuffer.allocate(10240);
@@ -57,7 +57,7 @@ public class DCCClientManager extends Observable implements Runnable
 					notifyObservers(new ResponseMessage(
 							receivedStr, ResponseMessage.IRC_MSG_TYPE.DCC,
 							receivedStr.split(" ")[0], receivedStr));
-					log4j.info("DCC: " + receivedStr);
+					logger.info("DCC: " + receivedStr);
 					buffer.clear();
 				}
 			}
@@ -66,13 +66,13 @@ public class DCCClientManager extends Observable implements Runnable
 		{
 			String message = "!!! Failed to resolve host " + remoteHost + ". " + u.getMessage();
 			notifyObservers(new ResponseMessage(message, ResponseMessage.IRC_MSG_TYPE.DCC, nick, message));
-			log4j.info(message);
+			logger.info(message);
 		}
 		catch (IOException e)
 		{
 			String message = "!!! Failed to connect to " + remoteHost + ":" + remotePort;
 			notifyObservers(new ResponseMessage(message, ResponseMessage.IRC_MSG_TYPE.DCC, nick, message));
-			log4j.info(message);
+			logger.info(message);
 		}
 	}
 

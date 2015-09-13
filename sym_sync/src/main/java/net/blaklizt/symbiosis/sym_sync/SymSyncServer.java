@@ -4,6 +4,7 @@ import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
 import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
 import net.blaklizt.symbiosis.sym_common.utilities.Format;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.springframework.stereotype.Service;
 
 import javax.jms.*;
 import java.io.File;
@@ -17,6 +18,7 @@ import java.util.logging.Logger;
  * Date: 2015/03/21
  * Time: 5:24 AM
  */
+@Service
 class SymSyncServer {
 
 	protected static final Logger logger = Configuration.getNewLogger(SymSyncServer.class.getSimpleName());

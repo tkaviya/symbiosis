@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class DCCServerManager extends Observable implements Runnable
 {
-	protected static final Logger log4j = Logger.getLogger(DCCServerManager.class.getSimpleName());
+	protected static final Logger logger = Logger.getLogger(DCCServerManager.class.getSimpleName());
 	public static final String LOCALHOST = CommonUtilities.getConfiguration("irc", "dccBindAddress");
 	public static final String LOCALPORT = CommonUtilities.getConfiguration("irc", "dccLocalPort");
 	private static DCCServerManager dccServerManager;
@@ -70,7 +70,7 @@ public class DCCServerManager extends Observable implements Runnable
 		{
 			String message = ">>> Ready for DCC Connection.";
 			notifyObservers(new ResponseMessage(message, ResponseMessage.IRC_MSG_TYPE.DCC, IRCClient.CLIENT, message));
-			log4j.info(message);
+			logger.info(message);
 
 			SocketChannel sock = acceptSocket.accept();
 
@@ -84,7 +84,7 @@ public class DCCServerManager extends Observable implements Runnable
 				notifyObservers(new ResponseMessage(
 						receivedStr, ResponseMessage.IRC_MSG_TYPE.DCC,
 						receivedStr.split(" ")[0], receivedStr));
-				log4j.info("DCC: " + receivedStr);
+				logger.info("DCC: " + receivedStr);
 				buffer.clear();
 			}
 		}

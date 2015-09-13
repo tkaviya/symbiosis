@@ -21,13 +21,13 @@ import java.util.logging.Logger;
 @Controller
 public class IRCWebController
 {
-	private static final Logger log4j = Logger.getLogger(IRCWebController.class.getSimpleName());
+	private static final Logger logger = Logger.getLogger(IRCWebController.class.getSimpleName());
 
     @RequestMapping(value="/process", method = { RequestMethod.GET , RequestMethod.POST } )
     public @ResponseBody String process(HttpServletRequest request, @ModelAttribute(value="menu_response") String response)
     {
 		UserSession userSession = (UserSession)request.getSession().getAttribute("userSession");
-		log4j.info("Got user input: " + response);
+		logger.info("Got user input: " + response);
 
 		if (response.startsWith("/"))
 		{

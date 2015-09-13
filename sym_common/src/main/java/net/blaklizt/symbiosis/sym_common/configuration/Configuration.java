@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class Configuration
 {
     /* configuration core settings */
-    protected static final Logger log4j = Logger.getLogger(Configuration.class.getSimpleName());
+    protected static final Logger logger = Logger.getLogger(Configuration.class.getSimpleName());
     protected static Configuration configuration = null;
 
 	public static Configuration getInstance()

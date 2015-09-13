@@ -13,21 +13,21 @@ import java.util.logging.Logger;
  */
 public class BluetoothServer
 {
-	Logger log4j = Logger.getLogger(this.getClass().getSimpleName());
+	Logger logger = Logger.getLogger(this.getClass().getSimpleName());
 
 	private void initDevice()
 	{
 		try
 		{ // make the server's device discoverable
 			LocalDevice local = LocalDevice.getLocalDevice();
-			log4j.info("Device name: " + local.getFriendlyName());
-			log4j.info("Bluetooth Address: " + local.getBluetoothAddress());
+			logger.info("Device name: " + local.getFriendlyName());
+			logger.info("Bluetooth Address: " + local.getBluetoothAddress());
 			boolean res = local.setDiscoverable(DiscoveryAgent.GIAC);
-			log4j.info("Discoverability set: " + res);
+			logger.info("Discoverability set: " + res);
 		}
 		catch (BluetoothStateException e) {
 			e.printStackTrace();
-			log4j.error(e.getMessage());
+			logger.error(e.getMessage());
 			System.exit(1);
 		}
 	} // end of initDevice()
