@@ -11,7 +11,6 @@ import net.blaklizt.symbiosis.sym_persistence.SymbiosisUserGroupSystemRole;
 import net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisAuthUserDaoImpl;
 import net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisUserDaoImpl;
 import net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisUserGroupSystemRoleDaoImpl;
-import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
@@ -23,6 +22,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
 * Created with IntelliJ IDEA.
@@ -61,7 +61,7 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 //		else
 //		{
 //			active = false;
-//			logger.warn("Cannot login " + dbSymbiosisUser.getUsername() + " : Account is not active.");
+//			logger.warning("Cannot login " + dbSymbiosisUser.getUsername() + " : Account is not active.");
 //		}
 				
 		return new SymbiosisUserDetails(dbSymbiosisUser, active, getAuthorities(dbSymbiosisUser.getSymbiosisUserGroup().getDescription()));
@@ -72,7 +72,7 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 		//implement hectic encryption here
 		logger.info("Encrypting [ " + rawPass + " with salt " + salt + " ]");
 		String encryptedPassword = Security.encryptWithSalt(rawPass, "SHA512", String.valueOf(salt).getBytes());
-		logger.debug("Encrypted password: " + encryptedPassword);
+		logger.fine("Encrypted password: " + encryptedPassword);
 		return encryptedPassword;
 	}
 
@@ -229,13 +229,13 @@ public class SymbiosisAuthenticator implements UserDetailsService, PasswordEncod
 
 		if (!grantedAuthoritiesCache.containsKey(userGroup))
 		{
-			logger.debug("Getting authorities for access group " + userGroup);
+			logger.fine("Getting authorities for access group " + userGroup);
 
 			List<SymbiosisUserGroupSystemRole> userGroupRoles = symbiosisUserGroupSystemRoleDaoImpl.findByUserGroup(userGroup);
 
 			for (SymbiosisUserGroupSystemRole userGroupRole : userGroupRoles)
 			{
-				logger.debug("Caching role " + userGroupRole.getSymbiosisRoleId());
+				logger.fine("Caching role " + userGroupRole.getSymbiosisRoleId());
 				authList.add(new SimpleGrantedAuthority(userGroupRole.getSymbiosisRoleId().toString()));
 			}
 

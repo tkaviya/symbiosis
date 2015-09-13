@@ -1,7 +1,6 @@
 package net.blaklizt.symbiosis.sym_irc.dcc;
 
 import net.blaklizt.symbiosis.sym_irc.ResponseMessage;
-import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -9,6 +8,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.UnresolvedAddressException;
 import java.util.Observable;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.

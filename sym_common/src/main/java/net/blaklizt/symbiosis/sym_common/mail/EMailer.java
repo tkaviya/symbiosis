@@ -1,7 +1,6 @@
 package net.blaklizt.symbiosis.sym_common.mail;
 
 import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
-import org.apache.log4j.Logger;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -14,6 +13,7 @@ import javax.mail.internet.MimeMultipart;
 import java.io.File;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 public class EMailer extends Thread{
 
@@ -30,7 +30,7 @@ public class EMailer extends Thread{
 	boolean isMultipart=false;
 	String attachmentfilenames[]=null;
 	MimeMultipart multipart;
-	Logger log = Logger.getLogger(this.getClass());
+	Logger logger = Logger.getLogger(this.getClass().getSimpleName());
 	
     public EMailer(String recipients[], String subject, String message , String from,String host,String contentType) 
     {
@@ -155,7 +155,7 @@ public class EMailer extends Thread{
 		    }
 		    addresses += "}";
 		    
-			log.info("Sending email with subject: " + subject + " to addresses " + addresses + " using host: " + host);
+			logger.info("Sending email with subject: " + subject + " to addresses " + addresses + " using host: " + host);
 
 		    msg.setRecipients(Message.RecipientType.TO, addressTo);
 		    msg.setSubject(subject);
@@ -176,13 +176,13 @@ public class EMailer extends Thread{
 				allRecipients += recipient + ",";
 			}
 
-		    log.info("Email with subject: " + subject + " sent to: {" +
-					 allRecipients.substring(0,allRecipients.length() - 1) + "}");
+		    logger.info("Email with subject: " + subject + " sent to: {" +
+					allRecipients.substring(0, allRecipients.length() - 1) + "}");
 		}
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
-			log.error("An error occurred sending mail. Message: " + ex.getMessage());
+			logger.severe("An error occurred sending mail. Message: " + ex.getMessage());
 		}
 	} 
     

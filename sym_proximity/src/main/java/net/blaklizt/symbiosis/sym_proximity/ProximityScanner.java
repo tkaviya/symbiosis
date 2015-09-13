@@ -4,13 +4,13 @@ import net.blaklizt.symbiosis.sym_bluetooth.BluetoothDevice;
 import net.blaklizt.symbiosis.sym_bluetooth.BluetoothManager;
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
 import net.blaklizt.symbiosis.sym_tts_engine.TextToSpeechEngine;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.bluetooth.ServiceRecord;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -88,13 +88,13 @@ public class ProximityScanner implements Observer, Runnable {
 							{
 								masterBluetoothDevice = bluetoothDevice;
 								logger.info("Monitoring proximity of " + masterBluetoothDevice.getFriendlyName());
-								logger.debug("--> Polling period: " + Configuration.getProperty("bluetooth", "bluetoothPollPeriod"));
-								logger.debug("--> Proximity range: " + Configuration.getProperty("bluetooth", "bluetoothProximityRange"));
+								logger.fine("--> Polling period: " + Configuration.getProperty("bluetooth", "bluetoothPollPeriod"));
+								logger.fine("--> Proximity range: " + Configuration.getProperty("bluetooth", "bluetoothProximityRange"));
 
 								if (!connectServices(masterBluetoothDevice))
 								{
 									//device no longer in range
-									logger.debug("Failed to connect services. Assuming the device has left proximity");
+									logger.fine("Failed to connect services. Assuming the device has left proximity");
 									masterBluetoothDevice = null;
 								}
 							}
@@ -104,12 +104,12 @@ public class ProximityScanner implements Observer, Runnable {
 				else if (!connectServices(masterBluetoothDevice))
 				{
 					//device no longer in range
-					logger.debug("Failed to connect services. Assuming the device has left proximity");
+					logger.fine("Failed to connect services. Assuming the device has left proximity");
 					masterBluetoothDevice = null;
 				}
 				else
 				{
-					logger.debug("Device within proximity");
+					logger.fine("Device within proximity");
 					//device in range, lets do some cool stuff.
 
 					//unlock pc here
@@ -137,7 +137,7 @@ public class ProximityScanner implements Observer, Runnable {
 		{
 			for (ServiceRecord serviceRecord : remoteDevice.getServices())
 			{
-				logger.debug("Connecting Service Record: " + serviceRecord.toString());
+				logger.fine("Connecting Service Record: " + serviceRecord.toString());
 				boolean success = BluetoothManager.connectService(serviceRecord);
 				if (success) return success;
 			}
@@ -155,7 +155,7 @@ public class ProximityScanner implements Observer, Runnable {
 
 //		RemoteDevice remoteDevice = (RemoteDevice)arg;
 //
-//		logger.debug("Device discovered: " + remoteDevice.getBluetoothAddress());
+//		logger.fine("Device discovered: " + remoteDevice.getBluetoothAddress());
 //
 //		if (remoteDevice.getBluetoothAddress().equalsIgnoreCase(configurationEngine.getBluetoothMasterMac()))
 //		{
@@ -167,20 +167,20 @@ public class ProximityScanner implements Observer, Runnable {
 //			catch (Exception ex)
 //			{
 //				ex.printStackTrace();
-//				logger.error("Failed to get friendly name: " + ex.getMessage());
+//				logger.severe("Failed to get friendly name: " + ex.getMessage());
 //			}
 //		}
 	}
 
 //	public void setBluetoothManager(BluetoothManager bluetoothManager)
 //	{
-//		logger.debug("Assigning bluetoothManager to proximityScanner");
+//		logger.fine("Assigning bluetoothManager to proximityScanner");
 //		ProximityScanner.bluetoothManager = bluetoothManager;
 //	}
 //
 //	public void setTextToSpeechEngine(TextToSpeechEngine textToSpeechEngine)
 //	{
-//		logger.debug("Assigning textToSpeechEngine to proximityScanner");
+//		logger.fine("Assigning textToSpeechEngine to proximityScanner");
 //		ProximityScanner.textToSpeechEngine = textToSpeechEngine;
 //	}
 

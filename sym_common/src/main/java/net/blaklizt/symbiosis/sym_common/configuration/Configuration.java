@@ -1,9 +1,10 @@
 package net.blaklizt.symbiosis.sym_common.configuration;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.lang3.SystemUtils;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +17,7 @@ import java.util.ResourceBundle;
 public class Configuration
 {
     /* configuration core settings */
-    protected static final Logger log4j = Logger.getLogger(Configuration.class);
+    protected static final Logger log4j = Logger.getLogger(Configuration.class.getSimpleName());
     protected static Configuration configuration = null;
 
 	public static Configuration getInstance()
@@ -37,6 +38,15 @@ public class Configuration
 	{
 		//return getProperty("symbiosis", property);
 		return ResourceBundle.getBundle("properties/symbiosis", Locale.ENGLISH).getString(property);
+	}
+
+	public static String getOSProperty(String bundle, String property)
+	{
+		if (SystemUtils.IS_OS_LINUX)	property = "linux_" + property;
+		if (SystemUtils.IS_OS_WINDOWS)	property = "windows_" + property;
+		if (SystemUtils.IS_OS_MAC)		property = "windows_" + property;
+
+		return ResourceBundle.getBundle("properties/" + bundle, Locale.ENGLISH).getString(property);
 	}
 
 	public static String getProperty(String bundle, String property)

@@ -1,7 +1,6 @@
 package net.blaklizt.symbiosis.sym_bluetooth;
 
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
-import org.apache.log4j.Logger;
 
 import javax.bluetooth.*;
 import javax.microedition.io.Connector;
@@ -10,6 +9,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Observable;
+import java.util.logging.Logger;
 
 public class BluetoothManager extends Observable implements DiscoveryListener
 {
@@ -80,7 +80,7 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 			{
 				if (serviceRecord.getHostDevice().getBluetoothAddress().equalsIgnoreCase(device.getBluetoothAddress()))
 				{
-					logger.debug(device.getBluetoothAddress() + " | found service " + serviceRecord);
+					logger.fine(device.getBluetoothAddress() + " | found service " + serviceRecord);
 					device.addService(serviceRecord);
 				}
 			}
@@ -89,7 +89,7 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 
 	@Override
 	public void serviceSearchCompleted(int transID, int respCode) {
-		logger.debug("Service search completed - code: " + respCode);
+		logger.fine("Service search completed - code: " + respCode);
 		synchronized (lock) {
 			lock.notify();
 		}
@@ -99,19 +99,19 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 	public void inquiryCompleted(int discType) {
 		switch (discType) {
 			case DiscoveryListener.INQUIRY_COMPLETED:
-				logger.debug("INQUIRY_COMPLETED");
+				logger.fine("INQUIRY_COMPLETED");
 				break;
 
 			case DiscoveryListener.INQUIRY_TERMINATED:
-				logger.debug("INQUIRY_TERMINATED");
+				logger.fine("INQUIRY_TERMINATED");
 				break;
 
 			case DiscoveryListener.INQUIRY_ERROR:
-				logger.error("INQUIRY_ERROR");
+				logger.severe("INQUIRY_ERROR");
 				break;
 
 			default:
-				logger.warn("Unknown Response Code");
+				logger.warning("Unknown Response Code");
 				break;
 		}
 		synchronized (lock) {
@@ -146,7 +146,7 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 				localDevice = LocalDevice.getLocalDevice();
 			}
 			catch (Exception ex) {
-				logger.warn("Bluetooth not available. Bluetooth services will not run");
+				logger.warning("Bluetooth not available. Bluetooth services will not run");
 				localDevice = null;
 			}
 		}
@@ -179,7 +179,7 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-			logger.error("Failed to get local device address and name: " + ex.getMessage());
+			logger.severe("Failed to get local device address and name: " + ex.getMessage());
 		}
 	}
 
@@ -215,7 +215,7 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 					int transactionID = getDiscoveryAgent().searchServices(null, new UUID[] { new UUID(UUIDs.AudioSource.value) }, //uuids,
 							bluetoothDevice.getRemoteDevice(), getBluetoothManagerInstance());
 
-					logger.debug("Finished querying services. TransactionID = " + transactionID);
+					logger.fine("Finished querying services. TransactionID = " + transactionID);
 
 					synchronized (lock) { lock.wait(); }
 				}
@@ -224,10 +224,10 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 			}
 			else
 			{
-				logger.debug("Skipping device: " + bluetoothDevice.getBluetoothAddress());
+				logger.fine("Skipping device: " + bluetoothDevice.getBluetoothAddress());
 			}
 		}
-		logger.debug("Service Inquiry Completed. ");
+		logger.fine("Service Inquiry Completed. ");
 	}
 
 //	protected static void printDevices()
@@ -250,7 +250,7 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 //				}
 //				catch (IOException ix) {
 //					//not within range anymore
-//					logger.error(remoteDevice.getBluetoothAddress() + " is no longer in range");
+//					logger.severe(remoteDevice.getBluetoothAddress() + " is no longer in range");
 //				}
 //				catch (Exception ex) {
 //					ex.printStackTrace();
@@ -269,7 +269,7 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 
 			StreamConnection conn = (StreamConnection) Connector.open(url, Connector.READ_WRITE);
 
-			logger.debug(url + " ----=" + conn);
+			logger.fine(url + " ----=" + conn);
 
 			DataInputStream din = new DataInputStream(conn.openDataInputStream());
 
@@ -286,7 +286,7 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 			while (din.available() != 0)
 				response += din.readChar();
 
-			logger.debug("RESPONSE: " + response);
+			logger.fine("RESPONSE: " + response);
 			return true;
 		}
 		catch (IOException e)

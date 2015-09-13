@@ -3,10 +3,11 @@ package net.blaklizt.symbiosis.sym_core.manager;
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
 import net.blaklizt.symbiosis.sym_proximity.ProximityScanner;
 import net.blaklizt.symbiosis.sym_tts_engine.TextToSpeechEngine;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
+
+import java.util.logging.Logger;
 
 @Service
 public class Symbiosis implements Runnable

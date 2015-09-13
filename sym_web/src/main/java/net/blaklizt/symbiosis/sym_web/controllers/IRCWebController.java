@@ -2,7 +2,6 @@ package net.blaklizt.symbiosis.sym_web.controllers;
 
 import net.blaklizt.symbiosis.sym_common.utilities.Format;
 import net.blaklizt.symbiosis.sym_irc.session.UserSession;
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
