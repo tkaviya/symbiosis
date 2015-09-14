@@ -27,7 +27,7 @@ public class BluetoothServer
 		}
 		catch (BluetoothStateException e) {
 			e.printStackTrace();
-			logger.error(e.getMessage());
+			logger.severe(e.getMessage());
 			System.exit(1);
 		}
 	} // end of initDevice()
