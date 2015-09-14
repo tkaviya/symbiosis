@@ -19,7 +19,7 @@
     </bean>
 
     <bean id="symbiosisDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="java:jboss/datasources/symbiosisRAM"/>
+        <property name="jndiName" value="java:jboss/datasources/saHSQLDB"/>
     </bean>
 
     <bean id="symbiosisSessionFactory" name="" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
