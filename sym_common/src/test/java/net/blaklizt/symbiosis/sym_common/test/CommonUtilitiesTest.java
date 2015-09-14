@@ -1,10 +1,14 @@
 package net.blaklizt.symbiosis.sym_common.test;
 
 import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
+import net.blaklizt.symbiosis.sym_common.utilities.IOUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import java.io.File;
+import java.io.InputStream;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,6 +18,8 @@ import org.testng.annotations.Test;
  * To change this template use File | Settings | File Templates.
  */
 public class CommonUtilitiesTest {
+
+	private static final String TEST_IMG_NAME = "test.png";
 
     @BeforeClass public void setUp() { System.out.println("RUNNING TEST SETUP"); }
 
@@ -25,10 +31,9 @@ public class CommonUtilitiesTest {
         System.out.println("RUNNING TEST: CommonUtilities.isNullOrEmpty");
         Assert.assertTrue(CommonUtilities.isNullOrEmpty(null));
         Assert.assertTrue(CommonUtilities.isNullOrEmpty(""));
-        Assert.assertTrue(CommonUtilities.isNullOrEmpty(new String()));
-//        Assert.assertTrue(CommonUtilities.isNullOrEmpty(String.valueOf(null)));
 
-        Assert.assertFalse(CommonUtilities.isNullOrEmpty(new String("0394580")));
+	    Assert.assertFalse(CommonUtilities.isNullOrEmpty(String.valueOf(0)));
+	    Assert.assertFalse(CommonUtilities.isNullOrEmpty("0394580"));
         Assert.assertFalse(CommonUtilities.isNullOrEmpty("test string"));
         Assert.assertFalse(CommonUtilities.isNullOrEmpty(String.valueOf(false)));
 
@@ -112,4 +117,35 @@ public class CommonUtilitiesTest {
         Assert.assertEquals(CommonUtilities.round(-50.4), -50);
         Assert.assertEquals(CommonUtilities.round(-50.6), -51);
     }
+
+	public InputStream getInputStream() {
+		return getClass().getResourceAsStream("/" + TEST_IMG_NAME);
+	}
+
+    @Test
+    public void testFileIO()
+    {
+
+	    int count = 0;
+
+	    try
+	    {
+		    IOUtils.writeToFile(getInputStream(), IOUtils.getOSDefaultTempDir() + TEST_IMG_NAME + ++count);
+		    IOUtils.writeToFile(getInputStream(), IOUtils.getOSDefaultTempDir() + TEST_IMG_NAME + ++count, true, 1024L);
+		    IOUtils.writeToFile(getInputStream(), IOUtils.getOSDefaultTempDir() + TEST_IMG_NAME + ++count, true, 10240L);
+		    IOUtils.writeToFile(getInputStream(), IOUtils.getOSDefaultTempDir() + TEST_IMG_NAME + ++count, true, 100L);
+		    IOUtils.writeToFile(getInputStream(), IOUtils.getOSDefaultTempDir() + TEST_IMG_NAME + ++count, false);
+
+	    }
+	    catch (Exception e) { e.printStackTrace(); Assert.fail(); }
+	    finally
+	    {
+		    File fileToDelete;
+		    for (int c = count; c > 0; c++) {
+			    if ((fileToDelete = new File(IOUtils.getOSDefaultTempDir() + TEST_IMG_NAME + count)).exists()) {
+				    fileToDelete.delete();
+			    }
+		    }
+	    }
+	}
 }
