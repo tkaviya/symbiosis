@@ -22,7 +22,7 @@ public class DaoManager
 
 	private static DaoManager daoManager = null;
 
-	private DaoManager() { }
+	private DaoManager() { daoManager = this; }
 
 	public static DaoManager getInstance()
 	{

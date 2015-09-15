@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 
 /******************************************************************************
  *                                                                            *
- *    Project:     ${PROJECT_NAME}                                            *
  *    Created:     13 / 09 / 2015                                            *
  *    Platform:    Red Hat Linux 9                                            *
  *    Author:      Tich de Blak (Tsungai Kaviya)                              *

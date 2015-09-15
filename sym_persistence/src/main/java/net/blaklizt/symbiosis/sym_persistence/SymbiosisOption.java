@@ -1,5 +1,7 @@
 package net.blaklizt.symbiosis.sym_persistence;
 
+import net.blaklizt.symbiosis.sym_persistence.helper.SymbiosisEnumEntity;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +14,7 @@ import javax.persistence.Id;
  * Time: 3:56 PM
  */
 @Entity
-public class SymbiosisOption {
+public class SymbiosisOption implements SymbiosisEnumEntity {
 	private Long symbiosisOptionID;
 	private String description;
 
@@ -26,7 +28,7 @@ public class SymbiosisOption {
 		this.symbiosisOptionID = symbiosisOptionID;
 	}
 
-	@Basic
+    @Basic
 	@Column(name = "Description", nullable = true, insertable = true, updatable = true, length = 20)
 	public String getDescription() {
 		return description;

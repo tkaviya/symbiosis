@@ -24,10 +24,8 @@
 package net.blaklizt.symbiosis.sym_sync.service.impl;
 
 import net.blaklizt.symbiosis.sym_persistence.SymbiosisUserOption;
-import net.blaklizt.symbiosis.sym_persistence.dao.AbstractDao;
 import net.blaklizt.symbiosis.sym_persistence.dao.DaoManager;
 import net.blaklizt.symbiosis.sym_persistence.helper.OptionHelper;
-import net.blaklizt.symbiosis.sym_persistence.helper.TypeHelper;
 import net.blaklizt.symbiosis.sym_sync.SymSyncServer;
 import net.blaklizt.symbiosis.sym_sync.service.SymSyncService;
 import org.springframework.stereotype.Service;
@@ -38,9 +36,13 @@ public class SymSyncServiceImpl implements SymSyncService {
     @Override
     public void getFileList(Long symbiosisUserId) {
 
-        Long id = TypeHelper.getIdByDescription((AbstractDao) DaoManager.getInstance().getOptionDao(), OptionHelper.SYNC_FOLDER);
-
-        SymbiosisUserOption symbiosisUserOption = DaoManager.getInstance().getUserOptionDao().findByUserIDAndOption(symbiosisUserId, id);
+        SymbiosisUserOption symbiosisUserOption = DaoManager
+                .getInstance()
+                .getUserOptionDao()
+                .findByUserIDAndOption(symbiosisUserId,
+                        OptionHelper
+                                .SYNC_FOLDER
+                                .value());
 
         SymSyncServer.getInstance().getFileHashes(symbiosisUserId, symbiosisUserOption.getOptionValue(), true);
     }

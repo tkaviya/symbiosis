@@ -1,6 +1,6 @@
 package net.blaklizt.symbiosis.sym_persistence.dao;
 
-import net.blaklizt.symbiosis.sym_persistence.helper.TypeHelper;
+import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Logger;
+
+import static java.lang.String.format;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,18 +25,24 @@ import java.util.List;
 @Transactional
 public abstract class AbstractDao<E, I extends Serializable> {
 
-	@Autowired(required = true)
 	private SessionFactory sessionFactory;
 
 	private Class<E> entityClass;
 
 	private String className;
-
+    
+    private Logger logger = Configuration.getNewLogger(AbstractDao.class.getSimpleName());
+    
 	protected AbstractDao(Class<E> entityClass) {
 		this.entityClass = entityClass;
 		this.className = entityClass.getSimpleName();
-		TypeHelper.registerHelper(entityClass, "get" + className + "ID");
 	}
+
+    @Autowired(required = true)
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+        logger.info(format("Initialized new DAO %s with sessionFactory %s.", className, sessionFactory));
+    }
 
 	public Session getCurrentSession() {
 		try { return sessionFactory.getCurrentSession(); } catch (Exception e) { e.printStackTrace(); return null; }
