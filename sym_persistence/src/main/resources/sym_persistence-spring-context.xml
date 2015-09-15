@@ -1,50 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+                            http://www.springframework.org/schema/tx  http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <!--<beans xmlns="http://www.springframework.org/schema/beans"-->
+       <!--xmlns:tx="http://www.springframework.org/schema/tx"-->
+       <!--xmlns:context="http://www.springframework.org/schema/context"-->
+       <!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+       <!--xsi:schemaLocation="http://www.springframework.org/schema/beans-->
+        <!--http://www.springframework.org/schema/beans/spring-beans.xsd-->
+        <!--http://www.springframework.org/schema/tx-->
+        <!--http://www.springframework.org/schema/tx/spring-tx.xsd-->
+        <!--http://www.springframework.org/schema/context-->
+        <!--http://www.springframework.org/schema/context/spring-context.xsd">-->
 
     <import resource="classpath*:sym_common-spring-context.xml" />
 
-    <context:annotation-config />
+    <!--<context:annotation-config />-->
     <context:component-scan base-package="net.blaklizt.symbiosis.sym_persistence" />
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:properties/database.properties"/>
     </bean>
 
+    <!--<bean id="symbiosisDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">-->
+    <!--<property name="jndiName" value="java:jboss/datasources/saHSQLDB"/>-->
+    <!--</bean>-->
     <bean id="symbiosisDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="java:jboss/datasources/saHSQLDB"/>
+        <property name="jndiName" value="java:jboss/datasources/symbiosis"/>
     </bean>
 
-    <bean id="symbiosisSessionFactory" name="" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+    <bean id="symbiosisSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+
+        <!--<property name="packagesToScan">-->
+            <!--<list>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence</value>-->
+            <!--</list>-->
+        <!--</property>-->
+
         <property name="annotatedClasses">
             <list>
-                <value>net.blaklizt.symbiosis.sym_persistence.dao.AbstractDao</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisAuthUser</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisChannel</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisCountry</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisEventLog</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisEventType</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisLanguage</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisOption</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisRole</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisSystem</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUser</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUserGroup</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUserGroupSystemRole</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUserGroupSystemRolePK</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUserOption</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUserStatus</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisAuthUserDaoImpl</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisEventLogDaoImpl</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisRoleDaoImpl</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisUserDaoImpl</value>
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.dao.AbstractDao</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.SymbiosisAuthUser</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.SymbiosisChannel</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.SymbiosisCountry</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.SymbiosisEventLog</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.SymbiosisEventType</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.SymbiosisLanguage</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.SymbiosisOption</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.SymbiosisRole</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.SymbiosisSystem</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUser</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUserGroup</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUserGroupSystemRole</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUserGroupSystemRolePK</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUserOption</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.SymbiosisUserStatus</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisAuthUserDaoImpl</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisEventLogDaoImpl</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisRoleDaoImpl</value>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisUserDaoImpl</value>-->
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisAuthUserDao</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisEventLogDao</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisOptionDao</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisRoleDao</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisUserDao</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisUserGroupSystemRoleDao</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisUserOptionDao</value>
             </list>
         </property>
 
@@ -52,7 +80,7 @@
 
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <!--<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>-->
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>
             </props>
         </property>
@@ -61,8 +89,10 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <property name="dataSource" ref="symbiosisDataSource"/>
+        <!--<property name="dataSource" ref="symbiosisDataSource"/>-->
         <property name="sessionFactory" ref="symbiosisSessionFactory"/>
     </bean>
+
+    <bean id="persistenceExceptionTranslationPostProcessor" class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
 </beans>
