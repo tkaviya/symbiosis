@@ -1,10 +1,8 @@
 package net.blaklizt.symbiosis.sym_persistence.dao.impl;
 
-import net.blaklizt.symbiosis.sym_persistence.SymbiosisUserOption;
-import net.blaklizt.symbiosis.sym_persistence.dao.AbstractDao;
+import net.blaklizt.symbiosis.sym_persistence.helper.AbstractDao;
 import net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisUserOptionDao;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.LogicalExpression;
+import net.blaklizt.symbiosis.sym_persistence.simple_type.symbiosis_user_option;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -14,18 +12,15 @@ import java.util.List;
  * Created by tkaviya on 9/13/2015.
  */
 @Repository
-public class SymbiosisUserOptionDaoImpl extends AbstractDao<SymbiosisUserOption, Long> implements SymbiosisUserOptionDao {
+public class SymbiosisUserOptionDaoImpl extends AbstractDao<symbiosis_user_option, Long> implements SymbiosisUserOptionDao {
 
-    protected SymbiosisUserOptionDaoImpl() { super(SymbiosisUserOption.class); }
+    protected SymbiosisUserOptionDaoImpl() { super(symbiosis_user_option.class); }
 
-    public SymbiosisUserOption findByUserIDAndOption(Long symbiosisUserID, Long symbiosisOptionID) {
-
-        Criterion criterion1 = Restrictions.eq("SymbiosisUserID", symbiosisUserID);
-        Criterion criterion2 = Restrictions.eq("SymbiosisOptionID", symbiosisOptionID);
-        LogicalExpression userIDExpression = Restrictions.and(criterion1, criterion2);
-
-        List result = findByCriterion(userIDExpression);
+    public symbiosis_user_option findByUserIDAndOption(Long symbiosisUserID, Long symbiosisOptionID) {
+        List result = findByCriteria(
+            Restrictions.eq("symbiosis_user_id", symbiosisUserID),
+            Restrictions.eq("symbiosis_option_id", symbiosisOptionID));
         if (result == null || result.size() != 1) return null;
-        return (SymbiosisUserOption)result.get(0);
+        return (symbiosis_user_option)result.get(0);
     }
 }

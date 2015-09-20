@@ -1,10 +1,8 @@
 package net.blaklizt.symbiosis.sym_persistence.dao.impl;
 
-import net.blaklizt.symbiosis.sym_persistence.SymbiosisEventLog;
-import net.blaklizt.symbiosis.sym_persistence.dao.AbstractDao;
+import net.blaklizt.symbiosis.sym_persistence.helper.AbstractDao;
 import net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisEventLogDao;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.LogicalExpression;
+import net.blaklizt.symbiosis.sym_persistence.simple_type.symbiosis_event_log;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -16,17 +14,20 @@ import java.util.List;
  */
 
 @Repository
-public class SymbiosisEventLogDaoImpl extends AbstractDao<SymbiosisEventLog, Long> implements SymbiosisEventLogDao
+public class SymbiosisEventLogDaoImpl extends AbstractDao<symbiosis_event_log, Long> implements SymbiosisEventLogDao
 {
-	protected SymbiosisEventLogDaoImpl() { super(SymbiosisEventLog.class); }
+	protected SymbiosisEventLogDaoImpl() { super(symbiosis_event_log.class); }
 
-	public List<SymbiosisEventLog> findByUserID(Long userId) { return findByCriterion(Restrictions.like("userID", userId)); }
+    @SuppressWarnings("unchecked")
+	public List<symbiosis_event_log> findByUserID(Long userId) {
+        return findByCriterion(Restrictions.like("symbiosis_user_id", userId));
+    }
 
-	public List<SymbiosisEventLog> findCoreAndUserID(Long userId)
-	{
-		Criterion criterion1 = Restrictions.like("userID", 0L);
-		Criterion criterion2 = Restrictions.like("userID", userId);
-		LogicalExpression userIDExpression = Restrictions.or(criterion1, criterion2);
-		return findByCriterion(userIDExpression);
-	}
+    @SuppressWarnings("unchecked")
+    public List<symbiosis_event_log> findByUserAndEventTypeID(Long userId, Long eventTypeId) {
+        return findByCriteria(
+            Restrictions.like("symbiosis_user_id", userId),
+            Restrictions.like("symbiosis_event_type_id", eventTypeId)
+        );
+    }
 }

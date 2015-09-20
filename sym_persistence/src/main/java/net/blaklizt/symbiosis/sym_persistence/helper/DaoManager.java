@@ -1,5 +1,6 @@
-package net.blaklizt.symbiosis.sym_persistence.dao;
+package net.blaklizt.symbiosis.sym_persistence.helper;
 
+import net.blaklizt.symbiosis.sym_persistence.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +15,11 @@ public class DaoManager
 {
 	@Autowired private SymbiosisAuthUserDao symbiosisAuthUserDao;
 	@Autowired private SymbiosisEventLogDao symbiosisEventLogDao;
-	@Autowired private SymbiosisOptionDao symbiosisOptionDao;
+	@Autowired private SymbiosisEnumEntityDao symbiosisEnumEntityDao;
 	@Autowired private SymbiosisRoleDao symbiosisRoleDao;
 	@Autowired private SymbiosisUserDao symbiosisUserDao;
 	@Autowired private SymbiosisUserOptionDao symbiosisUserOptionDao;
-	@Autowired private SymbiosisUserGroupSystemRoleDao symbiosisUserGroupSystemRoleDao;
+	@Autowired private SymbiosisGroupSystemRoleDao symbiosisGroupSystemRoleDao;
 
 	private static DaoManager daoManager = null;
 
@@ -32,10 +33,10 @@ public class DaoManager
 
 	public SymbiosisAuthUserDao getAuthUserDao() { return symbiosisAuthUserDao; }
 	public SymbiosisEventLogDao getEventLogDao() { return symbiosisEventLogDao; }
-	public SymbiosisOptionDao getOptionDao() { return symbiosisOptionDao; }
+	public SymbiosisEnumEntityDao getOptionDao() { return symbiosisEnumEntityDao; }
 	public SymbiosisRoleDao getRoleDao() { return symbiosisRoleDao; }
 	public SymbiosisUserDao getUserDao() { return symbiosisUserDao; }
 	public SymbiosisUserOptionDao getUserOptionDao() { return symbiosisUserOptionDao; }
-	public SymbiosisUserGroupSystemRoleDao getUserGroupSystemRoleDao() { return symbiosisUserGroupSystemRoleDao; }
+	public SymbiosisGroupSystemRoleDao getUserGroupSystemRoleDao() { return symbiosisGroupSystemRoleDao; }
 
 }

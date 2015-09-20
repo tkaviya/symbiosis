@@ -1,6 +1,6 @@
 package net.blaklizt.symbiosis.sym_persistence.dao;
 
-import net.blaklizt.symbiosis.sym_persistence.SymbiosisEventLog;
+import net.blaklizt.symbiosis.sym_persistence.simple_type.symbiosis_event_log;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -8,10 +8,9 @@ import java.util.List;
 /**
  * Created by tsungai.kaviya on 2015-08-24.
  */
-@Repository
-public interface SymbiosisEventLogDao {
+public interface SymbiosisEventLogDao extends SymbiosisDaoInterface{
 
-    List<SymbiosisEventLog> findByUserID(Long userId);
+    List<symbiosis_event_log> findByUserID(Long userId);
 
-    List<SymbiosisEventLog> findCoreAndUserID(Long userId);
+    List<symbiosis_event_log> findByUserAndEventTypeID(Long userId, Long eventTypeId);
 }

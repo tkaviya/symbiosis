@@ -1,6 +1,7 @@
 package net.blaklizt.symbiosis.sym_persistence;
 
-import net.blaklizt.symbiosis.sym_persistence.dao.DaoManager;
+import net.blaklizt.symbiosis.sym_persistence.complex_type.symbiosis_auth_user;
+import net.blaklizt.symbiosis.sym_persistence.helper.DaoManager;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -20,9 +21,9 @@ public class SymbiosisAuthUserTest {
     public void createSymbiosisAuthUserTest()
     {
         System.out.println("RUNNING TEST: CommonUtilities.isNullOrEmpty");
-        SymbiosisAuthUser symbiosisAuthUser = new SymbiosisAuthUser();
+        symbiosis_auth_user symbiosisAuthUser = new symbiosis_auth_user();
 
-        symbiosisAuthUser.setAccessSystemID(1);
+        symbiosisAuthUser.set_access_system_id(1);
     }
 
 }

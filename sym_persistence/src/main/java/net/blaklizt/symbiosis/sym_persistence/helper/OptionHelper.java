@@ -1,17 +1,22 @@
 package net.blaklizt.symbiosis.sym_persistence.helper;
 
-import net.blaklizt.symbiosis.sym_persistence.SymbiosisOption;
-import net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisOptionDaoImpl;
-import net.blaklizt.symbiosis.sym_persistence.enumeration.SymbiosisDBEnum;
+import net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisEnumEntityDao;
 
 /**
  * Created by tkaviya on 9/13/2015.
  */
 public enum OptionHelper {
 
-    SYNC_FOLDER;
+    SYNC_FOLDER { @Override public Long value() { return getOptionDBHelper().getMappedID(SYNC_FOLDER); } };
 
-    final SymbiosisDBEnum<SymbiosisOption, Long, SymbiosisOptionDaoImpl> optionDBHelper = new SymbiosisDBEnum();
+    SymbiosisDBEnum<SymbiosisEnumEntityDao> optionDBHelper;
 
-    public Long value() { return optionDBHelper.getMappedID(this); }
+    @SuppressWarnings("unchecked")
+    SymbiosisDBEnum getOptionDBHelper() {
+        if (optionDBHelper == null)
+            optionDBHelper = new SymbiosisDBEnum(DaoManager.getInstance().getOptionDao());
+        return optionDBHelper;
+    }
+
+    public abstract Long value();
 }

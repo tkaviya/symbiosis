@@ -1,29 +1,33 @@
 package net.blaklizt.symbiosis.sym_persistence.dao.impl;
 
-import net.blaklizt.symbiosis.sym_persistence.SymbiosisRole;
-import net.blaklizt.symbiosis.sym_persistence.dao.AbstractDao;
 import net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisRoleDao;
-import org.hibernate.criterion.Restrictions;
+import net.blaklizt.symbiosis.sym_persistence.enumeration.symbiosis_role;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
- * Created with IntelliJ IDEA.
- * SymbiosisUser: tkaviya
- * Date: 8/10/13
- * Time: 11:25 AM
+ * ***************************************************************************
+ * *
+ * Created:     20 / 09 / 2015                                             *
+ * Platform:    Red Hat Linux 9                                            *
+ * Author:      Tich de Blak (Tsungai Kaviya)                              *
+ * Copyright:   Blaklizt Entertainment                                     *
+ * Website:     http://www.blaklizt.net                                    *
+ * Contact:     blaklizt@gmail.com                                         *
+ * *
+ * This program is free software; you can redistribute it and/or modify    *
+ * it under the terms of the GNU General Public License as published by    *
+ * the Free Software Foundation; either version 2 of the License, or       *
+ * (at your option) any later version.                                     *
+ * *
+ * This program is distributed in the hope that it will be useful,         *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.    See the         *
+ * GNU General Public License for more details.                            *
+ * *
+ * ****************************************************************************
  */
 
 @Repository
-public class SymbiosisRoleDaoImpl extends AbstractDao<SymbiosisRole, Long> implements SymbiosisRoleDao
-{
-	protected SymbiosisRoleDaoImpl() { super(SymbiosisRole.class); }
-
-	public SymbiosisRole findEnabled()
-	{
-		List result = findByCriterion(Restrictions.eq("Enabled", 1));
-		if (result == null || result.size() != 1) return null;
-		return (SymbiosisRole)result.get(0);
-	}
+public class SymbiosisRoleDaoImpl extends SymbiosisEnumEntityDaoImpl<symbiosis_role, Long> implements SymbiosisRoleDao {
+    protected SymbiosisRoleDaoImpl() { super(symbiosis_role.class); }
 }

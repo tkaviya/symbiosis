@@ -1,6 +1,7 @@
-package net.blaklizt.symbiosis.sym_persistence.dao;
+package net.blaklizt.symbiosis.sym_persistence.helper;
 
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
+import net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisDaoInterface;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -23,7 +24,7 @@ import static java.lang.String.format;
  */
 
 @Transactional
-public abstract class AbstractDao<E, I extends Serializable> {
+public abstract class AbstractDao<E, I extends Serializable> implements SymbiosisDaoInterface {
 
 	private SessionFactory sessionFactory;
 
@@ -45,7 +46,10 @@ public abstract class AbstractDao<E, I extends Serializable> {
     }
 
 	public Session getCurrentSession() {
-		try { return sessionFactory.getCurrentSession(); } catch (Exception e) { e.printStackTrace(); return null; }
+
+		if (!sessionFactory.getCurrentSession().isOpen())
+			sessionFactory.getCurrentSession().getSessionFactory().openSession();
+		return sessionFactory.getCurrentSession();
 	}
 
 	@Transactional

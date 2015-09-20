@@ -1,9 +1,8 @@
 package net.blaklizt.symbiosis.sym_persistence.dao.impl;
 
-import net.blaklizt.symbiosis.sym_persistence.SymbiosisAuthUser;
-import net.blaklizt.symbiosis.sym_persistence.SymbiosisUser;
-import net.blaklizt.symbiosis.sym_persistence.dao.AbstractDao;
+import net.blaklizt.symbiosis.sym_persistence.helper.AbstractDao;
 import net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisAuthUserDao;
+import net.blaklizt.symbiosis.sym_persistence.complex_type.symbiosis_auth_user;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -11,20 +10,22 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * SymbiosisUser: tkaviya
+ * symbiosis_user: tkaviya
  * Date: 8/10/13
  * Time: 11:25 AM
  */
 
 @Repository
-public class SymbiosisAuthUserDaoImpl extends AbstractDao<SymbiosisAuthUser, Long> implements SymbiosisAuthUserDao
+public class SymbiosisAuthUserDaoImpl extends AbstractDao<symbiosis_auth_user, Long> implements SymbiosisAuthUserDao
 {
-	protected SymbiosisAuthUserDaoImpl() { super(SymbiosisAuthUser.class); }
+	protected SymbiosisAuthUserDaoImpl() { super(symbiosis_auth_user.class); }
 
-	public SymbiosisUser findByUserIDAndChannel(Long userID, int channelID)
+	public symbiosis_auth_user findByUserIDAndChannel(Long userID, int channelID)
 	{
-		List result = findByCriteria(Restrictions.eq("SymbiosisUserID", userID), Restrictions.eq("SymbiosisChannelID", channelID));
+		List result = findByCriteria(
+                Restrictions.eq("symbiosis_user_id", userID),
+                Restrictions.eq("symbiosis_channel_id", channelID));
 		if (result == null || result.size() != 1) return null;
-		return (SymbiosisUser)result.get(0);
+		return (symbiosis_auth_user)result.get(0);
 	}
 }

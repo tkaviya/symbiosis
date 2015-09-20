@@ -1,8 +1,8 @@
 package net.blaklizt.symbiosis.sym_persistence.dao.impl;
 
-import net.blaklizt.symbiosis.sym_persistence.SymbiosisUser;
-import net.blaklizt.symbiosis.sym_persistence.dao.AbstractDao;
+import net.blaklizt.symbiosis.sym_persistence.helper.AbstractDao;
 import net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisUserDao;
+import net.blaklizt.symbiosis.sym_persistence.complex_type.symbiosis_user;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -16,28 +16,28 @@ import java.util.List;
  */
 
 @Repository
-public class SymbiosisUserDaoImpl extends AbstractDao<SymbiosisUser, Long> implements SymbiosisUserDao
+public class SymbiosisUserDaoImpl extends AbstractDao<symbiosis_user, Long> implements SymbiosisUserDao
 {
-	protected SymbiosisUserDaoImpl() { super(SymbiosisUser.class); }
+	protected SymbiosisUserDaoImpl() { super(symbiosis_user.class); }
 
-	public SymbiosisUser findByUsername(String username)
+	public symbiosis_user findByUsername(String username)
 	{
-		List result = findByCriterion(Restrictions.eq("Username", username));
+		List result = findByCriterion(Restrictions.eq("username", username));
 		if (result == null || result.size() != 1) return null;
-		return (SymbiosisUser)result.get(0);
+		return (symbiosis_user)result.get(0);
 	}
 
-	public SymbiosisUser findByEmail(String email)
+	public symbiosis_user findByEmail(String email)
 	{
-		List result = findByCriterion(Restrictions.eq("Email", email));
+		List result = findByCriterion(Restrictions.eq("email", email));
 		if (result == null || result.size() != 1) return null;
-		return (SymbiosisUser)result.get(0);
+		return (symbiosis_user)result.get(0);
 	}
 
-	public SymbiosisUser findByMsisdn(String msisdn)
+	public symbiosis_user findByMsisdn(String msisdn)
 	{
-		List result = findByCriterion(Restrictions.eq("Msisdn", msisdn));
+		List result = findByCriterion(Restrictions.eq("msisdn", msisdn));
 		if (result == null || result.size() != 1) return null;
-		return (SymbiosisUser)result.get(0);
+		return (symbiosis_user)result.get(0);
 	}
 }
