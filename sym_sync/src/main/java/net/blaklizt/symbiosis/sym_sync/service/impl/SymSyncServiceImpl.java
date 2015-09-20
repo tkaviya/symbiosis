@@ -23,27 +23,29 @@
 
 package net.blaklizt.symbiosis.sym_sync.service.impl;
 
-import net.blaklizt.symbiosis.sym_persistence.SymbiosisUserOption;
-import net.blaklizt.symbiosis.sym_persistence.dao.DaoManager;
+import net.blaklizt.symbiosis.sym_persistence.dao.SymbiosisUserOptionDao;
+import net.blaklizt.symbiosis.sym_persistence.helper.DaoManager;
 import net.blaklizt.symbiosis.sym_persistence.helper.OptionHelper;
+import net.blaklizt.symbiosis.sym_persistence.simple_type.symbiosis_user_option;
 import net.blaklizt.symbiosis.sym_sync.SymSyncServer;
 import net.blaklizt.symbiosis.sym_sync.service.SymSyncService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SymSyncServiceImpl implements SymSyncService {
 
+    @Autowired DaoManager daoManager;
+
     @Override
     public void getFileList(Long symbiosisUserId) {
 
-        SymbiosisUserOption symbiosisUserOption = DaoManager
-                .getInstance()
-                .getUserOptionDao()
-                .findByUserIDAndOption(symbiosisUserId,
-                        OptionHelper
-                                .SYNC_FOLDER
-                                .value());
+        SymbiosisUserOptionDao symbiosisUserOptionDao = daoManager.getUserOptionDao();
 
-        SymSyncServer.getInstance().getFileHashes(symbiosisUserId, symbiosisUserOption.getOptionValue(), true);
+        Long optionId = OptionHelper.SYNC_FOLDER.value();
+
+        symbiosis_user_option symbiosisUserOption = symbiosisUserOptionDao.findByUserIDAndOption(symbiosisUserId,optionId);
+
+        SymSyncServer.getInstance().getFileHashes(symbiosisUserId, symbiosisUserOption.get_option_value(), true);
     }
 }
