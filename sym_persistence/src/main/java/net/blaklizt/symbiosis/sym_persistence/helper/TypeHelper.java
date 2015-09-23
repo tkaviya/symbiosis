@@ -1,6 +1,7 @@
 package net.blaklizt.symbiosis.sym_persistence.helper;
 
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
+import net.blaklizt.symbiosis.sym_persistence.dao.super_class.AbstractDao;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.HashMap;

@@ -36,7 +36,7 @@ public class FileParser implements Runnable {
     protected static final Logger logger = Configuration.getNewLogger(SymSyncServer.class.getSimpleName());
 
 
-    protected static final int MAX_FILES = 1000;
+    protected static final int MAX_FILES = 3;
 
     protected static MessageDigest messageDigest;
     static { try { messageDigest = MessageDigest.getInstance("SHA-512"); }

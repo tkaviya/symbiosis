@@ -1,0 +1,5 @@
+group = 'net.blaklizt.symbiosis'
+description = 'Symbiosis TTS Engine'
+dependencies {
+    compile group: 'org.springframework', name: 'spring-context', version:'4.1.5.RELEASE'
+}
