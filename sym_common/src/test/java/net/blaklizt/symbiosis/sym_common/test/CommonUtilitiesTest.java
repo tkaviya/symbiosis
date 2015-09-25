@@ -20,7 +20,7 @@ public class CommonUtilitiesTest {
     @AfterClass public void tearDown() { System.out.println("RUNNING TEST TEAR DOWN"); }
 
     @Test
-    public void isNullOrEmptyTest()
+    public void testIsNullOrEmptyTest()
     {
         System.out.println("RUNNING TEST: CommonUtilities.isNullOrEmpty");
         Assert.assertTrue(CommonUtilities.isNullOrEmpty(null));
@@ -35,7 +35,20 @@ public class CommonUtilitiesTest {
     }
 
     @Test
-    public void isValidEmailTest()
+    public void testIsNumeric()
+    {
+        System.out.println("RUNNING TEST: CommonUtilities.IsNumeric");
+        Assert.assertFalse(CommonUtilities.isNumeric(null));
+        Assert.assertFalse(CommonUtilities.isNumeric("test string"));
+        Assert.assertTrue(CommonUtilities.isNumeric("0"));
+        Assert.assertTrue(CommonUtilities.isNumeric("12.0"));
+        Assert.assertTrue(CommonUtilities.isNumeric("6663.11"));
+        Assert.assertTrue(CommonUtilities.isNumeric("-6663.11"));
+        Assert.assertTrue(CommonUtilities.isNumeric("-0"));
+    }
+
+    @Test
+    public void testIsValidEmailTest()
     {
         System.out.println("RUNNING TEST: CommonUtilities.isValidEmail");
         Assert.assertTrue(CommonUtilities.isValidEmail("t@t.te"));
@@ -56,7 +69,7 @@ public class CommonUtilitiesTest {
     }
 
     @Test
-    public void toCamelCaseTest() {
+    public void testToCamelCaseTest() {
         System.out.println("RUNNING TEST: CommonUtilities.toCamelCase");
         Assert.assertEquals(CommonUtilities.toCamelCase(null), null);
         Assert.assertEquals(CommonUtilities.toCamelCase(""), "");
@@ -70,7 +83,7 @@ public class CommonUtilitiesTest {
     }
 
     @Test
-    public void alignStringToLengthTest()
+    public void testAlignStringToLengthTest()
     {
         System.out.println("RUNNING TEST: CommonUtilities.alignStringToLength");
         Assert.assertEquals(CommonUtilities.alignStringToLength("test", 7)  , "test   ");
@@ -80,7 +93,7 @@ public class CommonUtilitiesTest {
     }
 
     @Test
-    public void formatDoubleToMoneyTest()
+    public void testFormatDoubleToMoneyTest()
     {
         System.out.println("RUNNING TEST: CommonUtilities.formatDoubleToMoney");
         Assert.assertEquals(CommonUtilities.formatDoubleToMoney(0, "R"), "R0.00");
@@ -96,7 +109,7 @@ public class CommonUtilitiesTest {
     }
 
     @Test
-    public void roundTest()
+    public void testRoundTest()
     {
         System.out.println("RUNNING TEST: CommonUtilities.round");
         Assert.assertEquals(CommonUtilities.round(0), 0);

@@ -36,7 +36,6 @@ public class Configuration
 
 	public static String getProperty(String property)
 	{
-		//return getProperty("symbiosis", property);
 		return ResourceBundle.getBundle("properties/symbiosis", Locale.ENGLISH).getString(property);
 	}
 

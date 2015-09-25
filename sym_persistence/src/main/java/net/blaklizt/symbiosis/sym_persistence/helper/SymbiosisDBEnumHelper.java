@@ -1,6 +1,9 @@
 package net.blaklizt.symbiosis.sym_persistence.helper;
 
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
+import net.blaklizt.symbiosis.sym_common.configuration.ThreadPoolManager;
+import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
+import net.blaklizt.symbiosis.sym_common.utilities.MutexLock;
 import net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisDaoInterface;
 import net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisEnumEntityDao;
 import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_enum_entity;
@@ -8,7 +11,8 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Logger;
 
 import static java.lang.String.format;
@@ -36,56 +40,101 @@ import static java.lang.String.format;
  * ****************************************************************************
  */
 
-public class SymbiosisDBEnumHelper {
+public class SymbiosisDBEnumHelper implements Observer {
+
+    private static final Logger logger = Configuration.getNewLogger(SymbiosisDBEnumHelper.class.getSimpleName());
 
     //maintain a list of all initialized DB handlers so we don't have more than 1 instance
     private static HashMap<String, SymbiosisDBEnumHelper> registeredHelpers = new HashMap<>();
+    
+    //maintain a list of class to DAO mappings for data retrieval
+    private static HashMap<String, SymbiosisEnumEntityDao> registeredDaos = new HashMap<>();
 
-    //always map 1 SymbiosisEnumEntityDao to 1 instance of this and return mapped instance always
-    public static SymbiosisDBEnumHelper getSymbiosisDBEnumHelper(SymbiosisEnumEntityDao entityDao) {
-        if (registeredHelpers.get(entityDao.getClass().getSimpleName()) == null) {
-            registeredHelpers.put(entityDao.getClass().getSimpleName(), new SymbiosisDBEnumHelper(entityDao));
-        }
-        return registeredHelpers.get(entityDao.getClass().getSimpleName());
+    //maintain reference to single instance
+    private static SymbiosisDBEnumHelper symbiosisDBEnumHelper = new SymbiosisDBEnumHelper();
+
+    //cache for all enum values
+    private static final HashMap<String, HashMap<String, Long>> valueMap = new HashMap<>();
+
+    //populate cache
+    public static SymbiosisDBEnumHelper getHelperForDao(SymbiosisEnumEntityDao entityDao) {
+        populateCache(entityDao);
+        return symbiosisDBEnumHelper;
     }
 
+    private SymbiosisDBEnumHelper() {}
 
-    //Dao used to get data
-    private static final Logger logger = Configuration.getNewLogger(SymbiosisDBEnumHelper.class.getSimpleName());
-
-    SymbiosisDaoInterface entityDao;
-
-    //Cache all enum values
-    private final Map<String, Long> valueMap = new HashMap<>();
-
-    private SymbiosisDBEnumHelper(SymbiosisEnumEntityDao entityDao) {
-
-        this.entityDao = entityDao;
+    private static void populateCache(SymbiosisEnumEntityDao entityDao) {
 
         List enumValues = entityDao.findEnabled();
 
-        logger.info(format("Found %d enum values", enumValues.size()));
+        logger.warning(format("Found %d enum values", enumValues.size()));
 
         for (Object value : enumValues) {
-            symbiosis_enum_entity symbiosis_enum_entity = (symbiosis_enum_entity)value;
-            valueMap.put(symbiosis_enum_entity.getDescription(), symbiosis_enum_entity.getId());
-            logger.info(format("Mapped %s -> %d ", symbiosis_enum_entity.getDescription(), valueMap.get(symbiosis_enum_entity.getDescription())));
+            symbiosis_enum_entity enum_entity = (symbiosis_enum_entity)value;
+            String className = enum_entity.getClass().getSimpleName();
+
+            //because the value will be cached, we must invalidate the cache when the value changes
+            enum_entity.addObserver(symbiosisDBEnumHelper);
+            //register the dao we will use to retrieve the value
+            registeredDaos.put(className, entityDao);
+
+            //cache the value
+            HashMap<String, Long> mappedValue = new HashMap<>();
+            mappedValue.put(enum_entity.getDescription(), enum_entity.getId());
+            valueMap.put(className, mappedValue);
+
+            logger.warning(format("Mapped %s -> %d for enum %s", enum_entity.getDescription(),
+                    valueMap.get(className).get(enum_entity.getDescription()), enum_entity.getClass()));
         }
+
     }
 
-    private Object mapValue(String enumValue) {
+    public <E extends AbstractEnumHelper> Long getMappedID(E symbiosisEnumType) {
 
-        if (valueMap.get(enumValue) != null) return valueMap.get(enumValue);
+        String className = symbiosisEnumType.getEnumEntityClass().getSimpleName();
+        String enumName = symbiosisEnumType.toString();
 
-        //if we have to check the database, either the value is wrong, not enabled or new (else constructor should have loaded it)
-        logger.warning(format("Performing DB lookup of enum value %s", enumValue));
+        //try to get cached value
+        if (valueMap.get(className) != null && valueMap.get(className).get(enumName) != null)
+            return valueMap.get(className).get(enumName);
 
-        List result = entityDao.findByCriterion(Restrictions.eq("description", enumValue));
+        //value is not in cache, do a db hit
+        logger.warning(format("Performing DB lookup of enum value %s on entity %s", enumName, className));
+
+        List result = registeredDaos.get(className).findByCriterion(Restrictions.eq("description", enumName));
+
         if (result == null || result.size() != 1) return null;
-        return result.get(0);
+
+        //value found, cache in memory
+        HashMap<String, Long> mappedValue = new HashMap<>();
+        mappedValue.put(enumName, ((symbiosis_enum_entity)result.get(0)).getId());
+        valueMap.put(className, mappedValue);
+        logger.warning(format("Mapped %s -> %d for enum %s", enumName, valueMap.get(className).get(enumName), className));
+
+        return valueMap.get(className).get(enumName);
     }
 
-    public Long getMappedID(Enum enumValue) {
-        return valueMap.get(enumValue.name());
+    @Override
+    public void update(Observable symbiosis_entity, Object mutexLock) {
+
+        //enum values changed, invalidate cache
+        final String className = symbiosis_entity.getClass().getSimpleName();
+        logger.warning(format("Enum value changed for entity %s, invalidating cache...", className));
+        valueMap.remove(className);
+
+        final MutexLock updateLock = (MutexLock)mutexLock;
+
+        //cache new values in background
+        ThreadPoolManager.schedule(new Runnable() {
+            @Override
+            public void run() {
+                //repopulate the cache
+                populateCache(registeredDaos.get(className));
+                //once caching is complete, release the lock
+                logger.warning(format("Cache for %s updated with new values.", className));
+                updateLock.unlock();
+            }
+        });
     }
 }

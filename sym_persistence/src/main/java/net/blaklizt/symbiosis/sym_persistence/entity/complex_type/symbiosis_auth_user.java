@@ -123,36 +123,36 @@ public class symbiosis_auth_user extends symbiosis_entity
         this.last_login_date = last_login_date;
     }
 
-    @JoinTable(name = "symbiosis_user_status")
-//    @JoinColumn(name = "id", referencedColumnName="symbiosis_user_status_id")
-    @ManyToOne(targetEntity = symbiosis_user_status.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-    public symbiosis_user_status getUser_status() {
-        return user_status;
-    }
-
-    public void setUser_status(symbiosis_user_status user_status) {
-        this.user_status = user_status;
-    }
-
-    @JoinTable(name = "symbiosis_channel")
+//    @JoinTable(name = "symbiosis_user_status")
+////    @JoinColumn(name = "id", referencedColumnName="symbiosis_user_status_id")
+//    @ManyToOne(targetEntity = symbiosis_user_status.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+//    public symbiosis_user_status getUser_status() {
+//        return user_status;
+//    }
+//
+//    public void setUser_status(symbiosis_user_status user_status) {
+//        this.user_status = user_status;
+//    }
+//
+//    @JoinTable(name = "symbiosis_channel")
 //    @JoinColumn(name ="id", referencedColumnName="symbiosis_channel_id")
-    @ManyToOne(targetEntity = symbiosis_channel.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-    public symbiosis_channel getChannel() {
-        return channel;
-    }
+//    @ManyToOne(targetEntity = symbiosis_channel.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+//    public symbiosis_channel getChannel() {
+//        return channel;
+//    }
+//
+//    public void setChannel(symbiosis_channel channel) {
+//        this.channel = channel;
+//    }
+//
+//    @JoinTable(name = "symbiosis_user")
+////    @JoinColumn(name ="id", referencedColumnName="symbiosis_user_id")
+//    @ManyToOne(targetEntity = symbiosis_user.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+//    public symbiosis_user getUser() {
+//        return user;
+//    }
 
-    public void setChannel(symbiosis_channel channel) {
-        this.channel = channel;
-    }
-
-    @JoinTable(name = "symbiosis_user")
-//    @JoinColumn(name ="id", referencedColumnName="symbiosis_user_id")
-    @ManyToOne(targetEntity = symbiosis_user.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-    public symbiosis_user getUser() {
-        return user;
-    }
-
-    public void setUser(symbiosis_user user) {
-        this.user = user;
-    }
+//    public void setUser(symbiosis_user user) {
+//        this.user = user;
+//    }
 }

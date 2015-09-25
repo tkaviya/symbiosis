@@ -19,7 +19,7 @@ public class symbiosis_user extends symbiosis_entity
 	private Long symbiosis_country_id;
 	private Long symbiosis_language_id;
 	private String auth_token;
-	private symbiosis_group user_group;
+//	private symbiosis_group user_group;
 
 	@Column(name = "first_name")
 	@Basic
@@ -131,14 +131,14 @@ public class symbiosis_user extends symbiosis_entity
 		this.auth_token = auth_token;
 	}
 
-	public void setUser_group(symbiosis_group user_group) {
-		this.user_group = user_group;
-	}
-
-    @JoinTable(name = "symbiosis_user_group")
-//	@JoinColumn(name = "symbiosis_user_group_id", referencedColumnName="id")
-    @ManyToOne(targetEntity = symbiosis_group.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-    public symbiosis_group getUser_group() {
-        return user_group;
-    }
+//	public void setUser_group(symbiosis_group user_group) {
+//		this.user_group = user_group;
+//	}
+//
+//    @JoinTable(name = "symbiosis_user_group")
+////	@JoinColumn(name = "symbiosis_user_group_id", referencedColumnName="id")
+//    @ManyToOne(targetEntity = symbiosis_group.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+//    public symbiosis_group getUser_group() {
+//        return user_group;
+//    }
 }

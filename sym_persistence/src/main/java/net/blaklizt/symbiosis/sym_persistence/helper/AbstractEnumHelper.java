@@ -1,5 +1,7 @@
 package net.blaklizt.symbiosis.sym_persistence.helper;
 
+import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_enum_entity;
+
 /**
  * ***************************************************************************
  * *
@@ -24,6 +26,9 @@ package net.blaklizt.symbiosis.sym_persistence.helper;
  */
 
 
-public interface AbstractEnumHelper {
+public interface AbstractEnumHelper<E extends symbiosis_enum_entity> {
+
     public Long value();
+
+    public Class getEnumEntityClass();
 }

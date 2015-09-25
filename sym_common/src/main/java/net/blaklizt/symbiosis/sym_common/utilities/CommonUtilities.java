@@ -1,7 +1,9 @@
 package net.blaklizt.symbiosis.sym_common.utilities;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Enumeration;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -22,6 +24,8 @@ public class CommonUtilities
 	{
 		return !isNullOrEmpty(emailAddress) && emailAddress.matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$");
 	}
+
+    public static boolean isNumeric(Object testObject) { return testObject != null && Number.class.isAssignableFrom(testObject.getClass()); }
 
 	public static void RefreshBundles()
 	{
@@ -146,5 +150,4 @@ public class CommonUtilities
 		if((dAbs - (double)i) < 0.5)	return d < 0 ? -i		: i;		//negative value
 		else							return d < 0 ? -(i+1)	: i + 1;	//positive value
 	}
-
 }

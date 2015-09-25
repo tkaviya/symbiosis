@@ -1,5 +1,7 @@
 package net.blaklizt.symbiosis.sym_persistence.helper;
 
+import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_channel;
+
 /**
  * Created by tkaviya on 9/13/2015.
  */
@@ -7,5 +9,7 @@ public enum ChannelHelper implements AbstractEnumHelper {
 
     ANDROID;
 
-    public Long value()  { return SymbiosisDBEnumHelper.getSymbiosisDBEnumHelper(DaoManager.getInstance().getChannelDao()).getMappedID(this); }
+    public Class getEnumEntityClass() { return symbiosis_channel.class; }
+
+    public Long value()  { return SymbiosisDBEnumHelper.getHelperForDao(DaoManager.getInstance().getChannelDao()).getMappedID(this); }
 }

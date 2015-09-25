@@ -1,8 +1,12 @@
 package net.blaklizt.symbiosis.sym_persistence.entity.super_class;
 
+import net.blaklizt.symbiosis.sym_common.utilities.MutexLock;
+import sun.awt.Mutex;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.Observable;
 
 /* *************************************************************************
  * Created:     18 / 09 / 2015                                             *
@@ -24,16 +28,23 @@ import java.lang.reflect.Field;
 */
 
 @MappedSuperclass
-public abstract class symbiosis_entity implements Serializable
+public abstract class symbiosis_entity extends Observable implements Serializable
 {
-    Long id;
+    protected MutexLock updateMutex = new MutexLock(-1L, 1000L);
+    protected Long id;
 
     @Id
     @Column(name = "id", insertable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() { return id; }
+    public Long getId() {
+        updateMutex.waitForLock();  //make sure cache update not in progress
+        return id; }
 
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        updateMutex.acquireLock();      //make sure no cache updates are running during update
+        this.id = id;
+        notifyObservers(updateMutex);   //once cache update is complete, observer will release the lock
+    }
 
     @Override
     public int hashCode() { return id != null ? id.hashCode() : 0; }

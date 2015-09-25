@@ -1,6 +1,6 @@
 package net.blaklizt.symbiosis.sym_persistence.dao.super_class;
 
-import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
+import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_entity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -11,9 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Logger;
-
-import static java.lang.String.format;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,69 +22,43 @@ import static java.lang.String.format;
 @Transactional
 public abstract class AbstractDao<E, I extends Serializable> implements SymbiosisDaoInterface {
 
-	private SessionFactory sessionFactory;
+    @Autowired private SessionFactory sessionFactory;
 
 	private Class<E> entityClass;
 
 	private String className;
-    
-    private Logger logger = Configuration.getNewLogger(AbstractDao.class.getSimpleName());
     
 	protected AbstractDao(Class<E> entityClass) {
 		this.entityClass = entityClass;
 		this.className = entityClass.getSimpleName();
 	}
 
-    @Autowired(required = true)
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-        logger.info(format("Initialized new DAO %s with sessionFactory %s.", className, sessionFactory));
-    }
-
-	public Session getCurrentSession() {
-
-		if (!sessionFactory.getCurrentSession().isOpen())
-			sessionFactory.getCurrentSession().getSessionFactory().openSession();
-		return sessionFactory.getCurrentSession();
-	}
+	public Session getCurrentSession() { return sessionFactory.getCurrentSession(); }
 
     public Class<E> getEntityClass() { return entityClass; }
 
-	@Transactional
-	public void refresh(E e)
-	{
-		getCurrentSession().refresh(e);
-	}
+	public void refresh(E e) { getCurrentSession().refresh(e); }
 
-	public E findById(I id)
-	{
-		try {
-			return (E) getCurrentSession().get(entityClass, id);
-		} catch (Exception ex) { ex.printStackTrace(); return null; }
-	}
+	public void saveOrUpdate(symbiosis_entity e) { getCurrentSession().saveOrUpdate(e); }
 
-	public List findAll()
-	{
-		try {
-			Query queryResult = getCurrentSession().createQuery("from " + className);
-			return queryResult.list();
-		} catch (Exception ex) { ex.printStackTrace(); return null; }
-	}
+	public void save(symbiosis_entity e) { getCurrentSession().save(e); }
 
-	@Transactional
-	public void saveOrUpdate(E e) {
-		getCurrentSession().saveOrUpdate(e);
-	}
+	public void delete(symbiosis_entity e) { getCurrentSession().delete(e); }
 
-	@Transactional
-	public void save(E e) {
-		getCurrentSession().save(e);
-	}
+    public List findByCriterion(Criterion criterion) { return findByCriteria(criterion); }
 
-	@Transactional
-	public void delete(E e) {
-		getCurrentSession().delete(e);
-	}
+    public E findById(I id) {
+        try {
+            return (E) getCurrentSession().get(entityClass, id);
+        } catch (Exception ex) { ex.printStackTrace(); return null; }
+    }
+
+    public List findAll() {
+        try {
+            Query queryResult = getCurrentSession().createQuery("from " + className);
+            return queryResult.list();
+        } catch (Exception ex) { ex.printStackTrace(); return null; }
+    }
 
 	public List findByCriteria(Criterion... criterion) {
 		try {
@@ -96,6 +67,4 @@ public abstract class AbstractDao<E, I extends Serializable> implements Symbiosi
 			return criteria.list();
 		} catch (Exception ex) { ex.printStackTrace(); return null; }
 	}
-
-	public List findByCriterion(Criterion criterion) { return findByCriteria(criterion); }
 }

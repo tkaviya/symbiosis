@@ -1,5 +1,7 @@
 package net.blaklizt.symbiosis.sym_persistence.helper;
 
+import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_option;
+
 /**
  * ***************************************************************************
  * *
@@ -26,7 +28,9 @@ package net.blaklizt.symbiosis.sym_persistence.helper;
 
 public enum OptionHelper implements AbstractEnumHelper {
 
-    SYNC_FOLDER;
+    SYNC_FOLDER, SYNC_TYPE;
 
-    public Long value()  { return SymbiosisDBEnumHelper.getSymbiosisDBEnumHelper(DaoManager.getInstance().getOptionDao()).getMappedID(this); }
+    public Class getEnumEntityClass() { return symbiosis_option.class; }
+
+    public Long value()  { return SymbiosisDBEnumHelper.getHelperForDao(DaoManager.getInstance().getOptionDao()).getMappedID(this); }
 }
