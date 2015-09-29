@@ -36,8 +36,8 @@ public class Symbiosis implements Runnable
 
 	public void run()
 	{
-		textToSpeechEngine.speak("Hello " + Configuration.getProperty("masterName")
-			 + ", my name is " + Configuration.getProperty("coreManagerName") + "...");
+		textToSpeechEngine.speak("Hello " + Configuration.getSymbiosisProperty("masterName")
+			 + ", my name is " + Configuration.getSymbiosisProperty("coreManagerName") + "...");
 		proximityScanner.start();
 	}
 

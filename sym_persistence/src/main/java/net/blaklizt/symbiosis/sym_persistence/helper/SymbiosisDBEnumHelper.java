@@ -1,18 +1,12 @@
 package net.blaklizt.symbiosis.sym_persistence.helper;
 
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
-import net.blaklizt.symbiosis.sym_common.configuration.ThreadPoolManager;
-import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
-import net.blaklizt.symbiosis.sym_common.utilities.MutexLock;
-import net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisDaoInterface;
 import net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisEnumEntityDao;
 import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_enum_entity;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Logger;
 
 import static java.lang.String.format;
@@ -40,7 +34,7 @@ import static java.lang.String.format;
  * ****************************************************************************
  */
 
-public class SymbiosisDBEnumHelper implements Observer {
+public class SymbiosisDBEnumHelper {
 
     private static final Logger logger = Configuration.getNewLogger(SymbiosisDBEnumHelper.class.getSimpleName());
 
@@ -57,7 +51,7 @@ public class SymbiosisDBEnumHelper implements Observer {
     private static final HashMap<String, HashMap<String, Long>> valueMap = new HashMap<>();
 
     //populate cache
-    public static SymbiosisDBEnumHelper getHelperForDao(SymbiosisEnumEntityDao entityDao) {
+    public static SymbiosisDBEnumHelper getDaoHelper(SymbiosisEnumEntityDao entityDao) {
         populateCache(entityDao);
         return symbiosisDBEnumHelper;
     }
@@ -74,8 +68,6 @@ public class SymbiosisDBEnumHelper implements Observer {
             symbiosis_enum_entity enum_entity = (symbiosis_enum_entity)value;
             String className = enum_entity.getClass().getSimpleName();
 
-            //because the value will be cached, we must invalidate the cache when the value changes
-            enum_entity.addObserver(symbiosisDBEnumHelper);
             //register the dao we will use to retrieve the value
             registeredDaos.put(className, entityDao);
 
@@ -113,28 +105,5 @@ public class SymbiosisDBEnumHelper implements Observer {
         logger.warning(format("Mapped %s -> %d for enum %s", enumName, valueMap.get(className).get(enumName), className));
 
         return valueMap.get(className).get(enumName);
-    }
-
-    @Override
-    public void update(Observable symbiosis_entity, Object mutexLock) {
-
-        //enum values changed, invalidate cache
-        final String className = symbiosis_entity.getClass().getSimpleName();
-        logger.warning(format("Enum value changed for entity %s, invalidating cache...", className));
-        valueMap.remove(className);
-
-        final MutexLock updateLock = (MutexLock)mutexLock;
-
-        //cache new values in background
-        ThreadPoolManager.schedule(new Runnable() {
-            @Override
-            public void run() {
-                //repopulate the cache
-                populateCache(registeredDaos.get(className));
-                //once caching is complete, release the lock
-                logger.warning(format("Cache for %s updated with new values.", className));
-                updateLock.unlock();
-            }
-        });
     }
 }

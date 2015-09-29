@@ -1,28 +1,16 @@
 package net.blaklizt.symbiosis.sym_sync;
 
 import net.blaklizt.symbiosis.sym_common.utilities.Format;
+import net.blaklizt.symbiosis.sym_sync.server.file.SymSyncFile;
+import net.blaklizt.symbiosis.sym_sync.server.queue.SymSyncFileMessageQueue;
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import javax.jms.*;
 import java.util.Enumeration;
 
-public class SymSyncServerTest extends SymSyncServer implements ExceptionListener
+public class SymSyncDataQueueTest extends SymSyncFileMessageQueue implements ExceptionListener
 {
-	@BeforeClass
-	public void setUp() throws Exception
-	{
-	}
-
-	@AfterClass
-	public void tearDown() throws Exception
-	{
-		apacheMQueSession.close();
-		apacheMQueueConnection.close();
-	}
-
 	@Test
 	public void testGetSyncList()
 	{

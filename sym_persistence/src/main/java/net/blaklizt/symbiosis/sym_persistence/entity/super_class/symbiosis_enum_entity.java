@@ -23,22 +23,18 @@ public abstract class symbiosis_enum_entity extends symbiosis_entity {
     }
 
     @Basic
-    @Column(name = "description", nullable = false)
-    public String getDescription() { updateMutex.waitForLock(); return description; }
+    @Column(name = "description", nullable = false, updatable = false)
+    public String getDescription() { return description; }
 
-    public void setDescription(String description) {
-        updateMutex.acquireLock();      //make sure no cache updates are running during update
-        this.description = description;
-        notifyObservers(updateMutex);   //once cache update is complete, observer will release the lock
-    }
+    /* this function is private because we do not want to be
+     * able to update an enum entity to set description programmatically */
+    private void setDescription(String description) { this.description = description; }
 
     @Basic
-    @Column(name = "enabled", nullable = false)
-    public Boolean isEnabled() { updateMutex.waitForLock(); return enabled; }
+    @Column(name = "enabled", nullable = false, updatable = false)
+    public Boolean isEnabled() { return enabled; }
 
-    public void setEnabled(Boolean enabled) {
-        updateMutex.acquireLock();      //make sure no cache updates are running during update
-        this.enabled = enabled;
-        notifyObservers(updateMutex);   //once cache update is complete, observer will release the lock
-    }
+    /* this function is private because we do not want to be
+     * able to update an enum entity to set enabled flag programmatically */
+    private void setEnabled(Boolean enabled) { this.enabled = enabled; }
 }

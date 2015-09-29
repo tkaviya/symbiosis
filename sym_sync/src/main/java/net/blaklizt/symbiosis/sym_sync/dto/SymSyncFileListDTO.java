@@ -1,12 +1,9 @@
-package net.blaklizt.symbiosis.sym_persistence.helper;
-
-import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_option;
+package net.blaklizt.symbiosis.sym_sync.dto;
 
 /**
  * ***************************************************************************
  * *
- * Created:     22 / 09 / 2015                                             *
- * Platform:    Red Hat Linux 9                                            *
+ * Created:     26 / 09 / 2015                                             *
  * Author:      Tich de Blak (Tsungai Kaviya)                              *
  * Copyright:   Blaklizt Entertainment                                     *
  * Website:     http://www.blaklizt.net                                    *
@@ -26,11 +23,5 @@ import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_optio
  */
 
 
-public enum OptionHelper implements AbstractEnumHelper {
-
-    SYNC_FOLDER, SYNC_TYPE;
-
-    public Class getEnumEntityClass() { return symbiosis_option.class; }
-
-    public Long value()  { return SymbiosisDBEnumHelper.getDaoHelper(DaoManager.getInstance().getOptionDao()).getMappedID(this); }
+public class SymSyncFileListDTO {
 }

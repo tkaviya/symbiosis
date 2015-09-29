@@ -65,7 +65,7 @@
         <maven.compiler.plugin.version>3.2</maven.compiler.plugin.version>
         <maven.jar.plugin.version>2.6</maven.jar.plugin.version>
         <maven.surefire.plugin.version>2.6</maven.surefire.plugin.version>
-        <android.maven.plugin.version>3.9.0-rc.2</android.maven.plugin.version>
+        <android.maven.plugin.version>4.0.0-rc.2</android.maven.plugin.version>
         <android.sdk.path>${env.ANDROID_HOME}</android.sdk.path>
         <android.sdk.platform>19</android.sdk.platform>
         <compatibility.version>18.0.0</compatibility.version>
@@ -427,6 +427,7 @@
     <modules>
         <module>sym_common</module>
         <module>sym_persistence</module>
+        <!--<module>sym_sync_mobile</module>-->
         <module>sym_sync</module>
         <!--<module>sym_authentication</module>-->
         <!--<module>sym_bounce</module>-->

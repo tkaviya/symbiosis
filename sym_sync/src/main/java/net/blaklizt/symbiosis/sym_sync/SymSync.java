@@ -1,12 +1,13 @@
-package net.blaklizt.symbiosis.sym_persistence.helper;
+package net.blaklizt.symbiosis.sym_sync;
 
-import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_option;
+import net.blaklizt.symbiosis.sym_sync.server.queue.SymSyncDataQueue;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * ***************************************************************************
  * *
- * Created:     22 / 09 / 2015                                             *
- * Platform:    Red Hat Linux 9                                            *
+ * Created:     26 / 09 / 2015                                             *
  * Author:      Tich de Blak (Tsungai Kaviya)                              *
  * Copyright:   Blaklizt Entertainment                                     *
  * Website:     http://www.blaklizt.net                                    *
@@ -25,12 +26,15 @@ import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_optio
  * ****************************************************************************
  */
 
+@Service
+public class SymSync {
 
-public enum OptionHelper implements AbstractEnumHelper {
+    @Autowired
+    SymSyncDataQueue symSyncDataQueue;
 
-    SYNC_FOLDER, SYNC_TYPE;
+//    @Autowired DataTransport dataTransport;
 
-    public Class getEnumEntityClass() { return symbiosis_option.class; }
-
-    public Long value()  { return SymbiosisDBEnumHelper.getDaoHelper(DaoManager.getInstance().getOptionDao()).getMappedID(this); }
+    SymSync() {
+        symSyncDataQueue.prepareDefaultFileQueue(true);
+    }
 }

@@ -9,5 +9,7 @@
     <import resource="classpath*:sym_persistence-spring-context.xml" />
 
     <context:annotation-config/>
-    <context:component-scan base-package="net.blaklizt.symbiosis.sym_sync" />
+    <context:component-scan base-package="net.blaklizt.symbiosis.sym_sync.server.queue" />
+    <context:component-scan base-package="net.blaklizt.symbiosis.sym_sync.transport" />
+    <context:component-scan base-package="net.blaklizt.symbiosis.sym_sync.api" />
 </beans>

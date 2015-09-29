@@ -1,21 +1,8 @@
 package net.blaklizt.symbiosis.sym_persistence.helper;
 
 import net.blaklizt.symbiosis.sym_persistence.dao.super_class.*;
-import net.blaklizt.symbiosis.sym_persistence.entity.complex_type.symbiosis_auth_user;
-import net.blaklizt.symbiosis.sym_persistence.entity.complex_type.symbiosis_user;
-import net.blaklizt.symbiosis.sym_persistence.entity.config.symbiosis_group_system_role;
-import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_channel;
-import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_group;
-import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_option;
-import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_role;
-import net.blaklizt.symbiosis.sym_persistence.entity.simple_type.symbiosis_event_log;
-import net.blaklizt.symbiosis.sym_persistence.entity.simple_type.symbiosis_user_option;
-import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.

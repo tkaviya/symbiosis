@@ -1,6 +1,6 @@
 package net.blaklizt.symbiosis.sym_persistence.helper;
 
-import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
+import net.blaklizt.symbiosis.sym_common.utilities.Validator;
 import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_channel;
 import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_option;
 import org.springframework.test.context.ContextConfiguration;
@@ -33,8 +33,8 @@ public class SymbiosisDBEnumHelperTests extends AbstractTestNGSpringContextTests
         DaoManager.getInstance().getChannelDao().save(android);
 
         //cache config options
-        symbiosisDBEnumHelper = SymbiosisDBEnumHelper.getHelperForDao(DaoManager.getInstance().getOptionDao());
-        symbiosisDBEnumHelper = SymbiosisDBEnumHelper.getHelperForDao(DaoManager.getInstance().getChannelDao());
+        symbiosisDBEnumHelper = SymbiosisDBEnumHelper.getDaoHelper(DaoManager.getInstance().getOptionDao());
+        symbiosisDBEnumHelper = SymbiosisDBEnumHelper.getDaoHelper(DaoManager.getInstance().getChannelDao());
     }
 
     @AfterMethod
@@ -58,30 +58,12 @@ public class SymbiosisDBEnumHelperTests extends AbstractTestNGSpringContextTests
         System.out.println(format("Id of Option SYNC_TYPE = %s", syncTypeOptionId));
         System.out.println(format("Id of Channel ANDROID = %s", androidChannelId));
 
-        assertTrue(CommonUtilities.isNumeric(syncFolderOptionId));
-        assertTrue(CommonUtilities.isNumeric(syncTypeOptionId));
-        assertTrue(CommonUtilities.isNumeric(androidChannelId));
+        assertTrue(Validator.isNumeric(syncFolderOptionId));
+        assertTrue(Validator.isNumeric(syncTypeOptionId));
+        assertTrue(Validator.isNumeric(androidChannelId));
 
         assertEquals(sync_folder.getId(), syncFolderOptionId);
         assertEquals(sync_type.getId(), syncTypeOptionId);
         assertEquals(android.getId(), androidChannelId);
-
-        /* test cache updating */
-
-        //test enabled
-        sync_folder.setEnabled(false);
-        DaoManager.getInstance().getOptionDao().saveOrUpdate(sync_folder);
-        syncFolderOptionId = symbiosisDBEnumHelper.getMappedID(OptionHelper.SYNC_FOLDER);
-        assertNull(syncFolderOptionId);
-        assertEquals(sync_type.getId(), syncTypeOptionId);
-        assertEquals(android.getId(), androidChannelId);
-
-        //test no value
-        android.setDescription("no_value");
-        DaoManager.getInstance().getChannelDao().saveOrUpdate(android);
-        androidChannelId = symbiosisDBEnumHelper.getMappedID(ChannelHelper.ANDROID);
-        assertNull(syncFolderOptionId);
-        assertEquals(sync_type.getId(), syncTypeOptionId);
-        assertNull(androidChannelId);
     }
 }

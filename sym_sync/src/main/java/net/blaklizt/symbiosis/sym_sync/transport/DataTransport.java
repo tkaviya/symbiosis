@@ -1,11 +1,13 @@
-package net.blaklizt.symbiosis.sym_persistence.helper;
+package net.blaklizt.symbiosis.sym_sync.transport;
 
-import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_option;
+import net.blaklizt.symbiosis.sym_sync.api.SymSyncResource;
+
+import java.util.LinkedList;
 
 /**
  * ***************************************************************************
  * *
- * Created:     22 / 09 / 2015                                             *
+ * Created:     26 / 09 / 2015                                             *
  * Platform:    Red Hat Linux 9                                            *
  * Author:      Tich de Blak (Tsungai Kaviya)                              *
  * Copyright:   Blaklizt Entertainment                                     *
@@ -26,11 +28,9 @@ import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_optio
  */
 
 
-public enum OptionHelper implements AbstractEnumHelper {
+public interface DataTransport {
 
-    SYNC_FOLDER, SYNC_TYPE;
+    boolean sendFiles(LinkedList<SymSyncResource> fileList);
 
-    public Class getEnumEntityClass() { return symbiosis_option.class; }
-
-    public Long value()  { return SymbiosisDBEnumHelper.getDaoHelper(DaoManager.getInstance().getOptionDao()).getMappedID(this); }
+    LinkedList<SymSyncResource> receiveFiles();
 }

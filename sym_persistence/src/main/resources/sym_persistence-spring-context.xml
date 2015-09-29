@@ -30,13 +30,14 @@
                 <value>net.blaklizt.symbiosis.sym_persistence.entity.complex_type</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.dao</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.dao.implementation</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.admin</value>
             </list>
         </property>
         <property name="dataSource" ref="symbiosisDataSource"/>
 
         <property name="hibernateProperties">
             <props>
-                <!--<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>-->
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
                 <prop key="hibernate.use_sql_comments">true</prop>
                 <!--<prop key="hibernate.show_sql">true</prop>-->
                 <prop key="hibernate.format_sql">true</prop>

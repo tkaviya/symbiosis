@@ -1,6 +1,9 @@
-package net.blaklizt.symbiosis.sym_sync;
+package net.blaklizt.symbiosis.sym_sync.server.file;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Base64;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +17,7 @@ public class SymSyncFile implements Serializable
 	private String fileName;
 	private String filePath;
 	private String fileChecksum;
-	private String fileData;
+	private byte[] fileData;
 	private long size;
 
 	public SymSyncFile(String fileName, String filePath, long size, String fileChecksum)
@@ -25,7 +28,7 @@ public class SymSyncFile implements Serializable
 		this.fileChecksum = fileChecksum;
 	}
 
-	public SymSyncFile(String fileName, String filePath, long size, String fileChecksum, String fileData)
+	public SymSyncFile(String fileName, String filePath, long size, String fileChecksum, byte[] fileData)
 	{
 		this(fileName, filePath, size, fileChecksum);
 		this.fileData = fileData;
@@ -61,12 +64,12 @@ public class SymSyncFile implements Serializable
 		this.fileChecksum = fileMD5Hash;
 	}
 
-	public String getFileData()
+	public byte[] getFileData()
 	{
 		return fileData;
 	}
 
-	public void setFileData(String fileData)
+	public void setFileData(byte[] fileData)
 	{
 		this.fileData = fileData;
 	}
@@ -79,5 +82,20 @@ public class SymSyncFile implements Serializable
 	public void setSize(long size)
 	{
 		this.size = size;
+	}
+
+	public String toBase64String()
+	{
+		try
+		{
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream( baos );
+			oos.writeObject(this);
+			oos.close();
+			return Base64.getEncoder().encodeToString(baos.toByteArray());
+		}
+		catch (Exception ex) {
+			return null;
+		}
 	}
 }

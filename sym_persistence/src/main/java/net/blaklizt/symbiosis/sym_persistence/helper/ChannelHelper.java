@@ -11,5 +11,5 @@ public enum ChannelHelper implements AbstractEnumHelper {
 
     public Class getEnumEntityClass() { return symbiosis_channel.class; }
 
-    public Long value()  { return SymbiosisDBEnumHelper.getHelperForDao(DaoManager.getInstance().getChannelDao()).getMappedID(this); }
+    public Long value()  { return SymbiosisDBEnumHelper.getDaoHelper(DaoManager.getInstance().getChannelDao()).getMappedID(this); }
 }

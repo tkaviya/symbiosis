@@ -1,4 +1,8 @@
-package net.blaklizt.symbiosis.sym_sync.service;
+package net.blaklizt.symbiosis.sym_sync.server;
+
+import net.blaklizt.symbiosis.sym_sync.api.SymSyncResource;
+
+import java.util.LinkedList;
 
 /******************************************************************************
  *                                                                            *
@@ -20,6 +24,9 @@ package net.blaklizt.symbiosis.sym_sync.service;
  *    GNU General Public License for more details.                            *
  *                                                                            *
  ******************************************************************************/
-public interface SymSyncService {
-    void getFileList(Long symbiosisUserId);
+public interface SymFileProcessorService {
+
+    boolean prepareFileList(Long symbiosisUserId);
+
+    boolean processAndPersist(LinkedList<SymSyncResource> fileList);
 }

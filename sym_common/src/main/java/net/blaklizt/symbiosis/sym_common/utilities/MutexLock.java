@@ -37,9 +37,9 @@ public class MutexLock {
     private static final Long DEFAULT_MUTEX_LOCK_INTERVAL = 1000L;   //10 seconds
     private boolean locked = false;
 
-    private Long waitTimeout = Long.parseLong(Configuration.getProperty("MutexLockWaitTime"));
+    private Long waitTimeout = Long.parseLong(Configuration.getSymbiosisProperty("MutexLockWaitTime"));
 
-    private Long waitInterval = Long.parseLong(Configuration.getProperty("MutexLockInterval"));
+    private Long waitInterval = Long.parseLong(Configuration.getSymbiosisProperty("MutexLockInterval"));
 
     public MutexLock() { this.waitTimeout = DEFAULT_MUTEX_LOCK_WAIT_TIME; this.waitInterval = DEFAULT_MUTEX_LOCK_INTERVAL; }
 

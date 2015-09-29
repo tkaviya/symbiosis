@@ -2,7 +2,9 @@ package net.blaklizt.symbiosis.sym_common.configuration;
 
 import org.apache.commons.lang3.SystemUtils;
 
+import java.util.Enumeration;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
@@ -16,27 +18,56 @@ import java.util.logging.Logger;
 
 public class Configuration
 {
+	private static final String DEFAULT_BUNDLE_NAME = "symbiosis";
+
     /* configuration core settings */
     protected static final Logger logger = Logger.getLogger(Configuration.class.getSimpleName());
-    protected static Configuration configuration = null;
 
-	public static Configuration getInstance()
-    {
-        if (configuration == null)
-        {
-            configuration = new Configuration();
-        }
-        return configuration;
-    }
-
+	//get logger with settings from properties file
 	public static Logger getNewLogger(String loggerName)
 	{
 		return Logger.getLogger(loggerName);
 	}
 
-	public static String getProperty(String property)
+    public static void RefreshBundles()
+    {
+        ResourceBundle.clearCache();
+    }
+
+    public static Properties resourceBundleToProperties(ResourceBundle bundle)
+    {
+        Properties props = new Properties();
+        Enumeration<String> keys = bundle.getKeys();
+        while(keys.hasMoreElements())
+        {
+            String key = keys.nextElement();
+            props.put(key, bundle.getObject(key));
+        }
+        return props;
+    }
+
+	public static String getProperty(String bundle, String property)
 	{
-		return ResourceBundle.getBundle("properties/symbiosis", Locale.ENGLISH).getString(property);
+		ResourceBundle resourceBundle = ResourceBundle.getBundle("properties/" + bundle, Locale.ENGLISH);
+		if (resourceBundle != null)
+			return resourceBundle.getString(property);
+		return null;
+	}
+
+	public static String getProperty(String bundle, String propertyKey, String defaultProperty)
+	{
+		String property = getProperty(bundle, propertyKey);
+		if (property == null)
+			return defaultProperty;
+		return property;
+	}
+
+	public static String getSymbiosisProperty(String property)
+	{
+		ResourceBundle resourceBundle = ResourceBundle.getBundle("properties/" + DEFAULT_BUNDLE_NAME, Locale.ENGLISH);
+		if (resourceBundle != null)
+			return resourceBundle.getString(property);
+		return null;
 	}
 
 	public static String getOSProperty(String bundle, String property)
@@ -47,9 +78,24 @@ public class Configuration
 
 		return ResourceBundle.getBundle("properties/" + bundle, Locale.ENGLISH).getString(property);
 	}
-
-	public static String getProperty(String bundle, String property)
+	
+	public static String getCurrencySymbol()
 	{
-		return ResourceBundle.getBundle("properties/" + bundle, Locale.ENGLISH).getString(property);
+		return getSymbiosisProperty("currencySymbol");
 	}
+
+	public static String getCountryCodePrefix()
+	{
+		return getSymbiosisProperty("countryCode");
+	}
+
+	public static String[] getProperties(String property) {
+		return getProperties(DEFAULT_BUNDLE_NAME, property);
+	}
+
+	public static String[] getProperties(String bundle, String property) {
+		String configurationData = getProperty(bundle, property);
+		return configurationData != null ? configurationData.split(",") : null;
+	}
+
 }
