@@ -55,7 +55,7 @@
     </build>
 
     <properties>
-        <java.version>1.7</java.version>
+        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.ear.plugin.version>2.10</maven.ear.plugin.version>
@@ -428,7 +428,7 @@
         <module>sym_common</module>
         <module>sym_persistence</module>
         <!--<module>sym_sync_mobile</module>-->
-        <module>sym_sync</module>
+        <!--<module>sym_sync</module>-->
         <!--<module>sym_authentication</module>-->
         <!--<module>sym_bounce</module>-->
         <!--<module>sym_tts_engine</module>-->

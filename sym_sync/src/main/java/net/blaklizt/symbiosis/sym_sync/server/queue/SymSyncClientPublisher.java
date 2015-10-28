@@ -74,7 +74,7 @@ public class SymSyncClientPublisher implements ExceptionListener {
         catch (Exception e)
         {
             e.printStackTrace();
-            logger.info("Exception occured: " + e.getMessage());
+            logger.info("Exception occurred: " + e.getMessage());
         }
     }
 
@@ -107,7 +107,7 @@ public class SymSyncClientPublisher implements ExceptionListener {
             // Wait for a message
             logger.info("Getting consumer queued messages");
 
-            Message message = consumer.receive(20000);
+            Message message = consumer.receive(5000);
 
             while (message != null)
             {

@@ -261,7 +261,7 @@ public class EMailer implements Runnable{
 	}
 	
 	
-	class PopupAuthenticator extends Authenticator
+	public class PopupAuthenticator extends Authenticator
 	{
 		String username;
 		String password;

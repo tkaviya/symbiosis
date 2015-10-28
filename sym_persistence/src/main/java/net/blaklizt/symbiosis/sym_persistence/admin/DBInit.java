@@ -4,6 +4,7 @@ import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_chann
 import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_option;
 import net.blaklizt.symbiosis.sym_persistence.entity.simple_type.symbiosis_user_option;
 import net.blaklizt.symbiosis.sym_persistence.helper.DaoManager;
+import org.apache.commons.lang3.SystemUtils;
 import org.springframework.stereotype.Service;
 
 /******************************************************************************
@@ -57,7 +58,7 @@ public class DBInit {
         symbiosis_user_option default_options = new symbiosis_user_option();
         default_options.setSymbiosis_user_id(0L);
         default_options.setSymbiosis_option_id(sync_folder.getId());
-        default_options.setOption_value("G:\\Promo");
+        default_options.setOption_value(SystemUtils.IS_OS_LINUX ? "/mnt/archive/Promo" : "G:\\Promo");
 
         DaoManager.getInstance().getUserOptionDao().save(default_options);
     }

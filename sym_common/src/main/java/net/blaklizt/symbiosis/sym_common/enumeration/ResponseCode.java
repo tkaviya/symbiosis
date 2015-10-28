@@ -1,4 +1,4 @@
-package net.blaklizt.symbiosis.sym_common.response;
+package net.blaklizt.symbiosis.sym_common.enumeration;
 
 import org.json.JSONObject;
 

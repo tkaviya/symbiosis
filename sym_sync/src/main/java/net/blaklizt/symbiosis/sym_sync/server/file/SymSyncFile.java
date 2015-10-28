@@ -1,9 +1,10 @@
 package net.blaklizt.symbiosis.sym_sync.server.file;
 
+import org.apache.commons.codec.binary.Base64;
+
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Base64;
 
 /**
  * Created with IntelliJ IDEA.
@@ -92,7 +93,7 @@ public class SymSyncFile implements Serializable
 			ObjectOutputStream oos = new ObjectOutputStream( baos );
 			oos.writeObject(this);
 			oos.close();
-			return Base64.getEncoder().encodeToString(baos.toByteArray());
+			return Base64.encodeBase64String(baos.toByteArray());
 		}
 		catch (Exception ex) {
 			return null;

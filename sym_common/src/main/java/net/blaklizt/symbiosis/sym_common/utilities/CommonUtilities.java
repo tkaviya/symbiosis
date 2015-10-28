@@ -1,6 +1,11 @@
 package net.blaklizt.symbiosis.sym_common.utilities;
 
+import java.nio.file.FileSystems;
 import java.text.DecimalFormat;
+import java.util.Arrays;
+import java.util.Objects;
+
+import static net.blaklizt.symbiosis.sym_common.utilities.Validator.isNullOrEmpty;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,33 +15,65 @@ import java.text.DecimalFormat;
  */
 public class CommonUtilities
 {
-	public static String toCamelCase(String initialString) {
+    public static String joinWithDelimiter(Object delimiter, final Object... args) {
 
-		if (initialString == null) return null;
+        if (args == null || Arrays.asList(args).stream().filter(Objects::nonNull).count() == 0) { return null; }
 
-		StringBuilder returnString = new StringBuilder(initialString.length());
+        if (delimiter == null) { delimiter = ""; }
 
-		for (String word : initialString.split(" ")) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (Object arg : args) {
+			if (arg != null) {
+                if (!arg.toString().trim().equals("")) {
+                    stringBuilder.append(arg).append(delimiter);
+                }
+            }
+		}
+        if (!delimiter.equals("") && stringBuilder.toString().endsWith(delimiter.toString())) {
+			return stringBuilder.substring(0, stringBuilder.lastIndexOf(delimiter.toString()));
+		} else {
+			return stringBuilder.toString();
+		}
+	}
+
+    public static String join(final Object... parts) { return joinWithDelimiter(null, parts); }
+
+	public static String toCamelCase(final String str) { return toCamelCase(str, " "); }
+
+	public static String toCamelCase(final String str, final String delimiter) {
+
+		if (isNullOrEmpty(str)) return str;
+
+		StringBuilder returnString = new StringBuilder(str.length());
+
+		for (final String word : str.split(delimiter)) {
 			if (!word.isEmpty()) {
 				returnString.append(word.substring(0, 1).toUpperCase());
 				returnString.append(word.substring(1).toLowerCase());
 			}
-			if (!(returnString.length() == initialString.length()))
-				returnString.append(" ");
+			if (!(returnString.length() == str.length()))
+				returnString.append(delimiter);
 		}
 
 		return returnString.toString();
 	}
 
-	public static String alignStringToLength(String text, int length)
-	{
-		if (text == null) text = "";
-
-		while (text.length() < length)
-			text += " ";
-		return text;
+    public static String deCapitalize(final String str) {
+        return isNullOrEmpty(str) ? str : join(str.substring(0, 1).toLowerCase(), str.substring(1));
+    }
+    
+    public static String capitalize(final String str) { 
+        return isNullOrEmpty(str) ? str : Character.toUpperCase(str.charAt(0)) + str.substring(1);
+    }
+    
+	public static String alignStringToLength(String str, final int length) {
+        if (isNullOrEmpty(str)) str = "";
+		while (str.length() < length) { str += " "; }
+		return str;
 	}
-	public static String formatDoubleToMoney(double value, String currencySymbol)
+
+	public static String formatDoubleToMoney(final double value, final String currencySymbol)
 	{
 		DecimalFormat df = new DecimalFormat("###,##0.00");
 
@@ -48,7 +85,13 @@ public class CommonUtilities
 			return "-" + currencySymbol + formattedString.replaceFirst("-", "");
 	}
 
-	public static int round(double d)
+    public static String tempFolderLocation() {
+        String fileSystemSeparatorChar = FileSystems.getDefault().getSeparator();
+        String tempFileDirectory = System.getProperty("java.io.tmpdir");
+        return tempFileDirectory.endsWith(fileSystemSeparatorChar) ? tempFileDirectory : tempFileDirectory + fileSystemSeparatorChar;
+    }
+
+	public static int round(final double d)
 	{
 		double dAbs = Math.abs(d);
 		int i = (int) dAbs;
