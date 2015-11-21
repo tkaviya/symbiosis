@@ -14,9 +14,16 @@
     <groupId>net.blaklizt.symbiosis</groupId>
     <artifactId>sym_bounce</artifactId>
     <version>${project.parent.version}</version>
-    <packaging>jar</packaging>
+    <packaging>apk</packaging>
     <name>Symbiosis Bounce</name>
     <description>Symbiosis Bounce</description>
+
+    <repositories>
+        <repository>
+            <id>android-support</id>
+            <url>${env.ANDROID_REPOSITORY}</url>
+        </repository>
+    </repositories>
 
     <build>
         <finalName>sym_bounce</finalName>
@@ -29,15 +36,38 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>${android.maven.plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <target>${java.version}</target>
+                    <sdk>
+                        <platform>${android.sdk.platform}</platform>
+                    </sdk>
+                    <undeployBeforeDeploy>true</undeployBeforeDeploy>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
-        <!-- Other dependencies -->
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.android.support</groupId>
+            <artifactId>appcompat-v7</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.android.support</groupId>
+            <artifactId>com.android.support</artifactId>
+        </dependency>
         <dependency>
             <groupId>net.blaklizt.symbiosis</groupId>
             <artifactId>sym_common</artifactId>
         </dependency>
-
     </dependencies>
 
 </project>

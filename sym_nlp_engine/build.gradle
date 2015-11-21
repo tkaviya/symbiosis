@@ -1,0 +1,6 @@
+group = 'net.blaklizt.symbiosis'
+description = 'Symbiosis NLP Engine'
+dependencies {
+  compile project(':sym_common')
+    compile group: 'org.apache.opennlp', name: 'opennlp-tools', version:'1.5.3'
+}

@@ -1,6 +1,7 @@
 package net.blaklizt.symbiosis.sym_sync.api;
 
-import net.blaklizt.symbiosis.sym_sync.service.SymSyncService;
+import net.blaklizt.symbiosis.sym_sync.server.file.SymSyncFile;
+import net.blaklizt.symbiosis.sym_sync.server.queue.SymSyncDataQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
+import java.util.LinkedList;
 
 /******************************************************************************
  *                                                                            *
@@ -39,20 +41,38 @@ import java.net.URI;
 @RequestMapping("/users/")
 public class SymSyncResource {
 
-    @Autowired
-    SymSyncService symSyncService;
+    @Autowired SymSyncDataQueue symSyncDataQueue;
 
     @RequestMapping(value = "/{userId}/files", method = RequestMethod.GET)
-    public ResponseEntity<Object> getBrokerURL(
+    public ResponseEntity<Object> prepareFiles(
             @PathVariable(value = "userId") Long symbiosisUserId,
             HttpServletRequest httpServletRequest) throws Exception {
 
-        symSyncService.getFileList(symbiosisUserId);
+        symSyncDataQueue.prepareFileQueue(symbiosisUserId, false);
+
         HttpHeaders httpHeaders = new HttpHeaders();
         String path = (String) httpServletRequest.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 
         httpHeaders.setLocation(new URI(path));
 
         return new ResponseEntity<>(null, httpHeaders, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{userId}/files/{fileId}", method = RequestMethod.GET)
+    public ResponseEntity<Object> getFile(
+            @PathVariable(value = "userId") Long symbiosisUserId,
+            @PathVariable(value = "fileId") Long fileId,
+            HttpServletRequest httpServletRequest) throws Exception {
+
+        LinkedList<SymSyncFile> syncFiles = symSyncDataQueue.getFiles(symbiosisUserId);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        String path = (String) httpServletRequest.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+
+        httpHeaders.setLocation(new URI(path));
+
+        Object result = syncFiles.get(0).getFileName();
+
+        return new ResponseEntity<>(result, httpHeaders, HttpStatus.OK);
     }
 }

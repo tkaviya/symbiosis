@@ -1,7 +1,7 @@
 package net.blaklizt.symbiosis.sym_common.mail;
 
+import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
 import net.blaklizt.symbiosis.sym_common.configuration.ThreadPoolManager;
-import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -104,8 +104,8 @@ public class EMailer implements Runnable{
     public EMailer(String recipients[], String subject, String message ,String contentType) 
     {
 		//get alarm email address
-		String from = CommonUtilities.getConfiguration("submitter");
-		String host = CommonUtilities.getConfiguration("mail.smtp.host");
+		String from = Configuration.getProperty("mail", "submitter");
+		String host = Configuration.getProperty("mail", "mail.smtp.host");
 		
     	this.recipients=recipients;
     	this.subject=subject;
@@ -121,7 +121,7 @@ public class EMailer implements Runnable{
 		try
 		{
 		    //Set the host smtp address
-		    Properties props = CommonUtilities.resourceBundleToProperties(ResourceBundle.getBundle("properties/mail"));
+		    Properties props = Configuration.resourceBundleToProperties(ResourceBundle.getBundle("properties/mail"));
 
 		    // create some properties and get the default Session
 		    Authenticator auth = new PopupAuthenticator(
@@ -261,7 +261,7 @@ public class EMailer implements Runnable{
 	}
 	
 	
-	class PopupAuthenticator extends Authenticator
+	public class PopupAuthenticator extends Authenticator
 	{
 		String username;
 		String password;

@@ -1,0 +1,19 @@
+group = 'net.blaklizt.symbiosis'
+apply plugin: 'war'
+
+description = 'Symbiosis WEB'
+dependencies {
+  compile project(':sym_authentication')
+  compile project(':sym_irc')
+    compile group: 'javax.servlet', name: 'servlet-api', version:'2.5'
+    compile group: 'org.json', name: 'json', version:'20080701'
+    compile group: 'org.springframework', name: 'spring-web', version:'4.1.5.RELEASE'
+    compile group: 'org.springframework', name: 'spring-webmvc', version:'4.1.5.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-core', version:'3.2.6.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-config', version:'3.2.6.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-web', version:'3.2.6.RELEASE'
+    compile(group: 'org.springframework.security', name: 'spring-security-taglibs', version:'3.2.6.RELEASE') {
+exclude(module: 'spring-web')
+    }
+    compile group: 'javax', name: 'javaee-api', version:'7.0'
+}

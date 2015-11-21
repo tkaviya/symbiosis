@@ -1,7 +1,7 @@
 package net.blaklizt.symbiosis.sym_persistence.helper;
 
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
-import net.blaklizt.symbiosis.sym_persistence.dao.AbstractDao;
+import net.blaklizt.symbiosis.sym_persistence.dao.super_class.AbstractDao;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.HashMap;
@@ -61,7 +61,7 @@ public class TypeHelper {
     }
 
     private static <E extends AbstractDao> Object getEntityByDescription(E daoClass, String description) {
-        List result = daoClass.findByCriterion(Restrictions.eq("Description", description));
+        List result = daoClass.findByCriterion(Restrictions.eq("description", description));
         if (result == null || result.size() != 1) return null;
         return result.get(0);
     }

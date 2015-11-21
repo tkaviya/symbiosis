@@ -4,7 +4,7 @@ import net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthent
 import net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisUserDetails;
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
 import net.blaklizt.symbiosis.sym_common.response.ResponseCode;
-import net.blaklizt.symbiosis.sym_persistence.dao.impl.SymbiosisUserDaoImpl;
+import net.blaklizt.symbiosis.sym_persistence.dao.implementation.SymbiosisUserDaoImpl;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

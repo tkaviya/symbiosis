@@ -2,6 +2,7 @@ package net.blaklizt.symbiosis.sym_common.configuration;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -31,5 +32,15 @@ public class ThreadPoolManager
 	public static void schedule(Runnable newTask)
 	{
 		getInstance().threadPoolExecutor.execute(newTask);
+	}
+
+	public static boolean waitForThreadCompletion(Long timeout) {
+		try {
+			getInstance().threadPoolExecutor.awaitTermination(timeout, TimeUnit.MILLISECONDS);
+			return true;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }

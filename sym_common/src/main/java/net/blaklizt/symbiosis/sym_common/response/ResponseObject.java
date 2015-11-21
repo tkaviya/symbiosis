@@ -1,5 +1,7 @@
 package net.blaklizt.symbiosis.sym_common.response;
 
+import net.blaklizt.symbiosis.sym_common.enumeration.ResponseCode;
+
 /**
  * User: tkaviya
  * Date: 3/27/2015
@@ -16,6 +18,15 @@ public class ResponseObject
 		this.responseCode = responseCode;
 		this.responseObject = responseObject;
 	}
+
+	public ResponseObject(ResponseCode responseCode)
+	{
+		this.responseCode = responseCode;
+	}
+
+    public int getCode() {  return responseCode.responseCode(); }
+
+    public String getMessage() {   return responseCode.responseMsg();  }
 
 	public ResponseCode getResponseCode()
 	{
