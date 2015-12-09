@@ -79,30 +79,30 @@ public class ValidatorTests {
     @Test
     public void testIsValidMsisdn() {
         System.out.println("RUNNING TEST: CommonUtilities.isValidMsisdn");
+
         Assert.assertTrue(Validator.isValidMsisdn("0123456789"));
         Assert.assertTrue(Validator.isValidMsisdn("27123456789", "27"));
-        Assert.assertFalse(Validator.isValidMsisdn("28123456789", "27"));
+        Assert.assertTrue(Validator.isValidMsisdn("00263123456789", "263"));
+        Assert.assertTrue(Validator.isValidMsisdn("263123456789", "263"));
+        Assert.assertTrue(Validator.isValidMsisdn("+27123456789", "27"));
+
         Assert.assertFalse(Validator.isValidMsisdn("1234567890"));
+        Assert.assertFalse(Validator.isValidMsisdn("12345"));
+        Assert.assertFalse(Validator.isValidMsisdn("abcdefg"));
+        Assert.assertFalse(Validator.isValidMsisdn("00263123456789", "27"));
+        Assert.assertFalse(Validator.isValidMsisdn("263123456789", "264"));
+        Assert.assertFalse(Validator.isValidMsisdn("+27123456789", "28"));
+        Assert.assertFalse(Validator.isValidMsisdn("28123456789", "27"));
     }
 
     @Test
-    public void testIsValidFirstName() {
+    public void testIsValidName() {
         System.out.println("RUNNING TEST: CommonUtilities.isValidFirstName");
-        Assert.assertFalse(Validator.isValidFirstName("a"));
-        Assert.assertTrue(Validator.isValidFirstName("Jason"));
-        Assert.assertFalse(Validator.isValidFirstName("Jason1"));
-        Assert.assertFalse(Validator.isValidFirstName("12345abcde12345abcde12345abcde12345abcde12345abcde1"));
-        Assert.assertFalse(Validator.isValidFirstName("1234567890"));
-    }
-
-    @Test
-    public void testIsValidLastName() {
-        System.out.println("RUNNING TEST: CommonUtilities.isValidLastName");
-        Assert.assertFalse(Validator.isValidLastName("a"));
-        Assert.assertTrue(Validator.isValidLastName("Jason"));
-        Assert.assertFalse(Validator.isValidLastName("Jason1"));
-        Assert.assertFalse(Validator.isValidLastName("12345abcde12345abcde12345abcde12345abcde12345abcde1"));
-        Assert.assertFalse(Validator.isValidLastName("1234567890"));
+        Assert.assertFalse(Validator.isValidName("a"));
+        Assert.assertTrue(Validator.isValidName("Jason"));
+        Assert.assertFalse(Validator.isValidName("Jason1"));
+        Assert.assertFalse(Validator.isValidName("12345abcde12345abcde12345abcde12345abcde12345abcde1"));
+        Assert.assertFalse(Validator.isValidName("1234567890"));
     }
 
     @Test

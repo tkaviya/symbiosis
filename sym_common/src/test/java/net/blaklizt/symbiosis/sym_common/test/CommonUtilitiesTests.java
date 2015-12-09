@@ -1,13 +1,9 @@
 package net.blaklizt.symbiosis.sym_common.test;
 
 import net.blaklizt.symbiosis.sym_common.interfaces.SymReflection;
-import net.blaklizt.symbiosis.sym_common.utilities.Reflection;
 import org.testng.annotations.Test;
 
-import java.util.Optional;
-
-import static java.lang.String.format;
-import static net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities.*;
+import static net.blaklizt.symbiosis.sym_core_lib.utilities.CommonUtilities.*;
 import static org.junit.Assert.*;
 
 /**

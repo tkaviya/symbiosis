@@ -1,8 +1,8 @@
 package net.blaklizt.symbiosis.sym_persistence.dao.implementation;
 
+import net.blaklizt.symbiosis.sym_persistence.dao.super_class.AbstractDao;
 import net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisEnumEntityDao;
 import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_option;
-import net.blaklizt.symbiosis.sym_persistence.dao.super_class.AbstractDao;
 import org.hibernate.criterion.Restrictions;
 
 import java.io.Serializable;

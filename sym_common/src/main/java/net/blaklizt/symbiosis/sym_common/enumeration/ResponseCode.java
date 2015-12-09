@@ -1,7 +1,5 @@
 package net.blaklizt.symbiosis.sym_common.enumeration;
 
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -192,19 +190,19 @@ public enum ResponseCode
 		return enumMap.get(value);
 	}
 
-	public String toJSONResponse()
-	{
-		JSONObject responseJSON = new JSONObject();
-		try
-		{
-			responseJSON.put("response_message", this.responseMsg());
-			responseJSON.put("response_code", this.responseCode());
-			return responseJSON.toString();
-		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
-			return null;
-		}
-	}
+//	public String toJSONResponse()
+//	{
+//		JSONObject responseJSON = new JSONObject();
+//		try
+//		{
+//			responseJSON.put("response_message", this.responseMsg());
+//			responseJSON.put("response_code", this.responseCode());
+//			return responseJSON.toString();
+//		}
+//		catch (Exception ex)
+//		{
+//			ex.printStackTrace();
+//			return null;
+//		}
+//	}
 }

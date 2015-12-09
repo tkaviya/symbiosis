@@ -24,14 +24,18 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>
     <dependencies>
-        <!-- Spring Framework -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
+            <groupId>net.blaklizt.symbiosis</groupId>
+            <artifactId>sym_core_lib</artifactId>
         </dependency>
 
         <!-- Google API Libraries -->

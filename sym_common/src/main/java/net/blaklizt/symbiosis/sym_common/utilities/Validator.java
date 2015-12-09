@@ -1,7 +1,5 @@
 package net.blaklizt.symbiosis.sym_common.utilities;
 
-import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
-
 /**
  * User: tkaviya
  * Date: 3/27/2015
@@ -9,9 +7,17 @@ import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
  */
 public class Validator
 {
-	private static final String MIN_PASSWORD_LENGTH = Configuration.getSymbiosisProperty("MinimumPasswordLength");
+	private static final Integer MIN_PASSWORD_LENGTH = 6;
 
-	private static final String MAX_PASSWORD_LENGTH = Configuration.getSymbiosisProperty("MaximumPasswordLength");
+	private static final Integer MAX_PASSWORD_LENGTH = 50;
+
+    private static final Integer PIN_LEN = 4;
+
+    private static final Integer MIN_NAME_LEN = 2;
+    private static final Integer MAX_NAME_LEN = 50;
+
+    private static final Integer MIN_UNAME_LEN = 2;
+    private static final Integer MAX_UNAME_LEN = 50;
 
 	public static boolean isNumeric(Object testObject) {
         if (testObject == null) return false;
@@ -30,21 +36,28 @@ public class Validator
 		return password.matches("[a-zA-Z0-9<>.!@();:#$%&*+/=?^_{|}~-]{" + MIN_PASSWORD_LENGTH + "," + MAX_PASSWORD_LENGTH +"}");
 	}
 
-	public static boolean isValidMsisdn(String msisdn, String countryCodePrefix) {
-        return isValidMsisdn(msisdn) || msisdn.matches("^(" + countryCodePrefix + ")[0-9]{9}");
+    public static boolean isValidPin(String pin)
+    {
+        return pin.matches("[0-9]{" + PIN_LEN +"}");
+    }
+
+    public static boolean isValidMsisdn(String msisdn, String countryCodePrefix) {
+        return isValidMsisdn(msisdn) || msisdn.matches("^(([0]{2})|[+])*(" + countryCodePrefix + ")[0-9]{9}");
 	}
 
 	public static boolean isNullOrEmpty(String string)
 	{
-		return string == null || string.trim().equals("");
+		return string == null || string.equals("");
 	}
 
 	public static boolean isValidMsisdn(String msisdn)          {   return msisdn.matches("^(0)[0-9]{9}");          }
 
-	public static boolean isValidFirstName(String firstName)    {   return firstName.matches("[a-zA-Z]{2,50}");     }
+    public static boolean isValidName(String name) {
+        return name.matches("[a-zA-Z]{" + MIN_NAME_LEN + "," + MAX_NAME_LEN + "}");
+    }
 
-	public static boolean isValidLastName(String lastName)      {   return isValidFirstName(lastName);              }
-
-	public static boolean isValidUsername(String name)          {   return name.matches("[a-zA-Z0-9-_.]{6,50}");    }
+    public static boolean isValidUsername(String username) {
+        return username.matches("[a-zA-Z0-9-_.]{" + MIN_UNAME_LEN + "," + MAX_UNAME_LEN + "}");
+    }
 
 }

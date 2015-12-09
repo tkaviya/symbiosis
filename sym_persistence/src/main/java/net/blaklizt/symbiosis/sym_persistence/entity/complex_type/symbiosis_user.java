@@ -1,9 +1,10 @@
 package net.blaklizt.symbiosis.sym_persistence.entity.complex_type;
 
-import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_group;
 import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_entity;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
 @Entity
 public class symbiosis_user extends symbiosis_entity

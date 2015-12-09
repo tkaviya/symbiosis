@@ -1,8 +1,8 @@
 package net.blaklizt.symbiosis.sym_persistence.dao.implementation;
 
-import net.blaklizt.symbiosis.sym_persistence.entity.complex_type.symbiosis_auth_user;
-import net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisAuthUserDao;
 import net.blaklizt.symbiosis.sym_persistence.dao.super_class.AbstractDao;
+import net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisAuthUserDao;
+import net.blaklizt.symbiosis.sym_persistence.entity.complex_type.symbiosis_auth_user;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 

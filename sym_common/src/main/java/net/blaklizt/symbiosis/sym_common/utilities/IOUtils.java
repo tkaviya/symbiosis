@@ -16,7 +16,7 @@ import static java.time.temporal.JulianFields.JULIAN_DAY;
  */
 public class IOUtils
 {
-	private static final Logger logger = Configuration.getNewLogger(Format.class.getSimpleName());
+	private static final Logger logger = Configuration.getNewLogger(IOUtils.class.getSimpleName());
 
 	private static final Long DEFAULT_MAX_BUFFER_SIZE = 1024L;
 

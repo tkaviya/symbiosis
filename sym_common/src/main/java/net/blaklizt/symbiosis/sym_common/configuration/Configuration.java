@@ -1,7 +1,5 @@
 package net.blaklizt.symbiosis.sym_common.configuration;
 
-import org.apache.commons.lang3.SystemUtils;
-
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Properties;
@@ -19,9 +17,6 @@ import java.util.logging.Logger;
 public class Configuration
 {
 	private static final String DEFAULT_BUNDLE_NAME = "symbiosis";
-
-    /* configuration core settings */
-    protected static final Logger logger = Logger.getLogger(Configuration.class.getSimpleName());
 
 	//get logger with settings from properties file
 	public static Logger getNewLogger(String loggerName)
@@ -70,15 +65,15 @@ public class Configuration
 		return null;
 	}
 
-	public static String getOSProperty(String bundle, String property)
-	{
-		if (SystemUtils.IS_OS_LINUX)	property = "linux_" + property;
-		if (SystemUtils.IS_OS_WINDOWS)	property = "windows_" + property;
-		if (SystemUtils.IS_OS_MAC)		property = "mac_" + property;
+//	public static String getOSProperty(String bundle, String property)
+//	{
+//		if (SystemUtils.IS_OS_LINUX)	property = "linux_" + property;
+//		if (SystemUtils.IS_OS_WINDOWS)	property = "windows_" + property;
+//		if (SystemUtils.IS_OS_MAC)		property = "mac_" + property;
+//
+//		return ResourceBundle.getBundle("properties/" + bundle, Locale.ENGLISH).getString(property);
+//	}
 
-		return ResourceBundle.getBundle("properties/" + bundle, Locale.ENGLISH).getString(property);
-	}
-	
 	public static String getCurrencySymbol()
 	{
 		return getSymbiosisProperty("currencySymbol");

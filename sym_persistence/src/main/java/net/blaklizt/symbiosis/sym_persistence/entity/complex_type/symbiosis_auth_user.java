@@ -4,7 +4,9 @@ import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_chann
 import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_user_status;
 import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_entity;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.util.Date;
 
 @Entity

@@ -1,7 +1,7 @@
 package net.blaklizt.symbiosis.sym_persistence.dao.implementation;
 
-import net.blaklizt.symbiosis.sym_persistence.entity.config.symbiosis_group_system_role;
 import net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisGroupSystemRoleDao;
+import net.blaklizt.symbiosis.sym_persistence.entity.config.symbiosis_group_system_role;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
