@@ -95,6 +95,11 @@
 
             <dependency>
                 <groupId>net.blaklizt.symbiosis</groupId>
+                <artifactId>sym_core_lib</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.blaklizt.symbiosis</groupId>
                 <artifactId>sym_common</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -427,6 +432,7 @@
     <modules>
         <module>sym_common</module>
         <module>sym_persistence</module>
+        <module>sym_core_lib</module>
         <!--<module>sym_sync_mobile</module>-->
         <!--<module>sym_sync</module>-->
         <!--<module>sym_authentication</module>-->

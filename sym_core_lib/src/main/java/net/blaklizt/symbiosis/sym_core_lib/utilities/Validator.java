@@ -60,4 +60,8 @@ public class Validator
         return username.matches("[a-zA-Z0-9-_.]{" + MIN_UNAME_LEN + "," + MAX_UNAME_LEN + "}");
     }
 
+    public static boolean isValidProviderServiceName(String serviceName) {
+        return serviceName.matches("[a-zA-Z0-9 -_.]{" + MIN_UNAME_LEN + "," + MAX_UNAME_LEN + "}");
+    }
+
 }

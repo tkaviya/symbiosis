@@ -30,8 +30,8 @@ public class EMailer implements Runnable{
 	String attachmentfilenames[]=null;
 	MimeMultipart multipart;
 	Logger logger = Logger.getLogger(this.getClass().getSimpleName());
-	
-    public EMailer(String recipients[], String subject, String message , String from,String host,String contentType) 
+
+    public EMailer(String recipients[], String subject, String message , String from,String host,String contentType)
     {
     	this.recipients=recipients;
     	this.subject=subject;
@@ -53,7 +53,7 @@ public class EMailer implements Runnable{
      * @param contentID
      * @param attachmentfilenames
      */
-    public EMailer(String recipients[], String subject, String message , String from,String host,String contentType, String imageLocation, String contentID,String attachmentfilenames[]) 
+    public EMailer(String recipients[], String subject, String message , String from,String host,String contentType, String imageLocation, String contentID,String attachmentfilenames[])
     {
     	this.recipients=recipients;
     	this.subject=subject;
@@ -66,7 +66,7 @@ public class EMailer implements Runnable{
     	this.attachmentfilenames=attachmentfilenames;
     	isMultipart=true;
     }
-    
+
     /**
      * Creates HTML email with logo but no attachment
      * @param recipients
@@ -78,7 +78,7 @@ public class EMailer implements Runnable{
      * @param imageLocation
      * @param contentID
      */
-    public EMailer(String recipients[], String subject, String message , String from,String host,String contentType, String imageLocation, String contentID) 
+    public EMailer(String recipients[], String subject, String message , String from,String host,String contentType, String imageLocation, String contentID)
     {
     	this.recipients=recipients;
     	this.subject=subject;
@@ -90,8 +90,8 @@ public class EMailer implements Runnable{
     	this.contentID=contentID;
     	isMultipart=true;
     }
-    
-    public EMailer(String recipients[], String subject,String from,String host,MimeMultipart multipart) 
+
+    public EMailer(String recipients[], String subject,String from,String host,MimeMultipart multipart)
     {
     	this.recipients=recipients;
     	this.subject=subject;
@@ -100,13 +100,13 @@ public class EMailer implements Runnable{
     	this.multipart=multipart;
     	isMultipart=true;
     }
-    
-    public EMailer(String recipients[], String subject, String message ,String contentType) 
+
+    public EMailer(String recipients[], String subject, String message ,String contentType)
     {
 		//get alarm email address
 		String from = Configuration.getProperty("mail", "submitter");
 		String host = Configuration.getProperty("mail", "mail.smtp.host");
-		
+
     	this.recipients=recipients;
     	this.subject=subject;
     	this.message=message;
@@ -116,7 +116,7 @@ public class EMailer implements Runnable{
     }
 
 	//Send the email
-	public void run() 
+	public void run()
 	{
 		try
 		{
@@ -129,22 +129,22 @@ public class EMailer implements Runnable{
 					props.getProperty("mail.smtp.submitter.password"));
 
 		    Session session = Session.getInstance(props,auth);
-		
+
 		    // create a message
 		    //Session session = Session.getDefaultInstance(props, null);
 		    Message msg = new MimeMessage(session);
-		
+
 		    // set the from and to address
 		    InternetAddress addressFrom = new InternetAddress(from);
 		    msg.setFrom(addressFrom);
-		
-		    InternetAddress[] addressTo = new InternetAddress[recipients.length]; 
+
+		    InternetAddress[] addressTo = new InternetAddress[recipients.length];
 		    for (int i = 0; i < recipients.length; i++)
 		    {
 		        addressTo[i] = new InternetAddress(recipients[i]);
 		        addressTo[i].validate();
 		    }
-		    
+
 		    String addresses = "{";
 		    for (int c = 0; c < addressTo.length; c++)
 		    {
@@ -153,12 +153,12 @@ public class EMailer implements Runnable{
 		    		addresses += ',';
 		    }
 		    addresses += "}";
-		    
+
 			logger.info("Sending email with subject: " + subject + " to addresses " + addresses + " using host: " + host);
 
 		    msg.setRecipients(Message.RecipientType.TO, addressTo);
 		    msg.setSubject(subject);
-		    
+
 			if(isMultipart)
 				if(multipart==null)
 					msg=setMultiPartMessage(msg);
@@ -166,7 +166,7 @@ public class EMailer implements Runnable{
 					msg.setContent(multipart);
 			else
 				msg.setContent(message, contentType);
-			
+
 		    Transport.send(msg);
 
 			String allRecipients = "";
@@ -183,8 +183,8 @@ public class EMailer implements Runnable{
 			ex.printStackTrace();
 			logger.severe("An error occurred sending mail. Message: " + ex.getMessage());
 		}
-	} 
-    
+	}
+
 	public Message setMultiPartMessage(Message msg)
 	{
 		try
@@ -196,14 +196,14 @@ public class EMailer implements Runnable{
 	        BodyPart messageBodyPart = new MimeBodyPart();
 	        messageBodyPart.setContent(message,contentType);
 	        multipart.addBodyPart(messageBodyPart);
-	        
+
 	        // Add the image part
 	        messageBodyPart = new MimeBodyPart();
 	        DataSource fds = new FileDataSource(imageLocation);
 	        messageBodyPart.setDataHandler(new DataHandler(fds));
 	        messageBodyPart.setHeader("Content-ID",contentID);
 	        multipart.addBodyPart(messageBodyPart);
-	        
+
 	        if(attachmentfilenames!=null)
 	        for(int j=0;j<attachmentfilenames.length;j++)
 	        {
@@ -214,7 +214,7 @@ public class EMailer implements Runnable{
 	        	 messageBodyPart.setFileName(filename);
 	        	 multipart.addBodyPart(messageBodyPart);
 	        }
-	        
+
 		    msg.setContent(multipart);
 		    return msg;
 		}
@@ -224,10 +224,10 @@ public class EMailer implements Runnable{
 			return msg;
 		}
 	}
-	
-	public static MimeMultipart createMultipartMessage(byte[] attachment, String message, String fileName, String attachmentFileType) 
+
+	public static MimeMultipart createMultipartMessage(byte[] attachment, String message, String fileName, String attachmentFileType)
 	{
-		try 
+		try
 		{
 			MimeMultipart multipart = new MimeMultipart("related");
 
@@ -235,32 +235,32 @@ public class EMailer implements Runnable{
 			messageBodyPart.setContent(message, "text/html");
 			multipart.addBodyPart(messageBodyPart);
 
-			
-			//Add attachment 
-			messageBodyPart = new MimeBodyPart(); 
+
+			//Add attachment
+			messageBodyPart = new MimeBodyPart();
 			DataSource att = new javax.mail.util.ByteArrayDataSource(attachment,attachmentFileType);
 			messageBodyPart.setDataHandler(new DataHandler(att));
 			messageBodyPart.setFileName(fileName);
 			multipart.addBodyPart(messageBodyPart);
-			 
-			 
-			// Add the image part 
+
+
+			// Add the image part
 			messageBodyPart = new MimeBodyPart();
 			DataSource fds = new FileDataSource("blaklizt.png");
 			messageBodyPart.setDataHandler(new DataHandler(fds));
 			messageBodyPart.setHeader("Content-ID","blakliztlogo");
 			multipart.addBodyPart(messageBodyPart);
-			
+
 			return multipart;
-		} 
-		catch (Exception ex) 
+		}
+		catch (Exception ex)
 		{
 			ex.printStackTrace();
 			return null;
 		}
 	}
-	
-	
+
+
 	public class PopupAuthenticator extends Authenticator
 	{
 		String username;
@@ -277,7 +277,7 @@ public class EMailer implements Runnable{
 			return new PasswordAuthentication(username, password);
 		}
 	}
-	
+
     //test main
     public static void main(String[] args)
     {

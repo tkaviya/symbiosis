@@ -28,7 +28,7 @@ import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_enum_
 
 public interface AbstractEnumHelper<E extends symbiosis_enum_entity> {
 
-    public Long value();
+    Long value();
 
-    public Class getEnumEntityClass();
+    Class getEnumEntityClass();
 }

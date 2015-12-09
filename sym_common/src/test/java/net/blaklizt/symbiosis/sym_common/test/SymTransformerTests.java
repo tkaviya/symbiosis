@@ -217,8 +217,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
+import static java.math.BigDecimal.ROUND_HALF_UP;
 import static org.junit.Assert.*;
-import static java.math.BigDecimal.*;
 
 public class SymTransformerTests {
 

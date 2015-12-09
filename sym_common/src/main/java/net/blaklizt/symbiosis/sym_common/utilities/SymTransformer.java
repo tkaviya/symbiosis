@@ -2,8 +2,6 @@ package net.blaklizt.symbiosis.sym_common.utilities;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -15,9 +13,10 @@ import java.util.Optional;
 public class SymTransformer {
 
     public static boolean toBoolean(String name, Optional<Object> val) {
-        return (boolean) val.map(o -> {
+        if (val.isPresent()) {
+            Object o = val.get();
             if ((o instanceof Boolean) || (o.getClass().isAssignableFrom(Boolean.TYPE))) {
-                return o;
+                return (Boolean)o;
             } else {
                 boolean isAllowedType = o instanceof Character;
                 isAllowedType |= o.getClass().isAssignableFrom(Character.TYPE);
@@ -37,7 +36,9 @@ public class SymTransformer {
                         o.toString().equalsIgnoreCase("y");
 
             }
-        }).orElse(false);
+        } else {
+            return false;
+        }
     }
 
     public static <T extends Number> T toNumber(Number number, Class<T> target) {

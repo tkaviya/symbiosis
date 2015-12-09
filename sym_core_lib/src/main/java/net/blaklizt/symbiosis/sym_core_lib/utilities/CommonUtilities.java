@@ -1,11 +1,11 @@
-package net.blaklizt.symbiosis.sym_common.utilities;
+package net.blaklizt.symbiosis.sym_core_lib.utilities;
 
-import java.nio.file.FileSystems;
+import java.io.File;
 import java.text.DecimalFormat;
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.Date;
 
-import static net.blaklizt.symbiosis.sym_common.utilities.Validator.isNullOrEmpty;
+import static java.lang.Math.abs;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,20 +17,24 @@ public class CommonUtilities
 {
     public static String joinWithDelimiter(Object delimiter, final Object... args) {
 
-        if (args == null || Arrays.asList(args).stream().filter(Objects::nonNull).count() == 0) { return null; }
+        if (args == null) { return null; }
 
         if (delimiter == null) { delimiter = ""; }
 
         StringBuilder stringBuilder = new StringBuilder();
 
+        int countPresent = 0;
         for (Object arg : args) {
 			if (arg != null) {
+                countPresent++;
                 if (!arg.toString().trim().equals("")) {
                     stringBuilder.append(arg).append(delimiter);
                 }
             }
 		}
-        if (!delimiter.equals("") && stringBuilder.toString().endsWith(delimiter.toString())) {
+        if (countPresent == 0) {
+            return null;
+        } else if (!delimiter.equals("") && stringBuilder.toString().endsWith(delimiter.toString())) {
 			return stringBuilder.substring(0, stringBuilder.lastIndexOf(delimiter.toString()));
 		} else {
 			return stringBuilder.toString();
@@ -43,7 +47,7 @@ public class CommonUtilities
 
 	public static String toCamelCase(final String str, final String delimiter) {
 
-		if (isNullOrEmpty(str)) return str;
+		if (Validator.isNullOrEmpty(str)) return str;
 
 		StringBuilder returnString = new StringBuilder(str.length());
 
@@ -60,15 +64,15 @@ public class CommonUtilities
 	}
 
     public static String deCapitalize(final String str) {
-        return isNullOrEmpty(str) ? str : join(str.substring(0, 1).toLowerCase(), str.substring(1));
+        return Validator.isNullOrEmpty(str) ? str : join(str.substring(0, 1).toLowerCase(), str.substring(1));
     }
     
     public static String capitalize(final String str) { 
-        return isNullOrEmpty(str) ? str : Character.toUpperCase(str.charAt(0)) + str.substring(1);
+        return Validator.isNullOrEmpty(str) ? str : Character.toUpperCase(str.charAt(0)) + str.substring(1);
     }
     
 	public static String alignStringToLength(String str, final int length) {
-        if (isNullOrEmpty(str)) str = "";
+        if (Validator.isNullOrEmpty(str)) str = "";
 		while (str.length() < length) { str += " "; }
 		return str;
 	}
@@ -85,15 +89,35 @@ public class CommonUtilities
 			return "-" + currencySymbol + formattedString.replaceFirst("-", "");
 	}
 
+    public static long secondsBetween(final Date firstDate, final Date secondDate) {
+        return abs((firstDate.getTime() - secondDate.getTime()) / 1000);
+    }
+
+    public static long minutesBetween(final Date firstDate, final Date secondDate) {
+        return secondsBetween(firstDate, secondDate) / 60;
+    }
+
+    public static long hoursBetween(final Date firstDate, final Date secondDate) {
+        return minutesBetween(firstDate, secondDate) / 60;
+    }
+
+    public static long daysBetween(final Date firstDate, final Date secondDate) {
+        return hoursBetween(firstDate, secondDate) / 24;
+    }
+
+    public static long weeksBetween(final Date firstDate, final Date secondDate) {
+        return daysBetween(firstDate, secondDate) / 7;
+    }
+
     public static String tempFolderLocation() {
-        String fileSystemSeparatorChar = FileSystems.getDefault().getSeparator();
+        String fileSystemSeparatorChar = File.separator;
         String tempFileDirectory = System.getProperty("java.io.tmpdir");
         return tempFileDirectory.endsWith(fileSystemSeparatorChar) ? tempFileDirectory : tempFileDirectory + fileSystemSeparatorChar;
     }
 
 	public static int round(final double d)
 	{
-		double dAbs = Math.abs(d);
+		double dAbs = abs(d);
 		int i = (int) dAbs;
 
 		if((dAbs - (double)i) < 0.5)	return d < 0 ? -i		: i;		//negative value
