@@ -24,9 +24,9 @@ public class ResponseObject
 		this.responseCode = responseCode;
 	}
 
-    public int getCode() {  return responseCode.responseCode(); }
+    public int getCode() {  return responseCode.code; }
 
-    public String getMessage() {   return responseCode.responseMsg();  }
+    public String getMessage() {   return responseCode.message;  }
 
 	public SYM_RESPONSE_CODE getResponseCode()
 	{

@@ -24,7 +24,7 @@ import java.util.Observable;
 */
 
 @MappedSuperclass
-public abstract class symbiosis_entity extends Observable implements Serializable
+public abstract class symbiosis_entity implements Serializable
 {
     protected Long id;
 

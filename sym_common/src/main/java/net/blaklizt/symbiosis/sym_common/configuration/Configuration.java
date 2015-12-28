@@ -49,6 +49,8 @@ public class Configuration
 		return null;
 	}
 
+	public static String getProperty(String property) { return getSymbiosisProperty(property); }
+
 	public static String getProperty(String bundle, String propertyKey, String defaultProperty)
 	{
 		String property = getProperty(bundle, propertyKey);

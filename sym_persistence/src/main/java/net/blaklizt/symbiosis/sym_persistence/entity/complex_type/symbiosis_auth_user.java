@@ -14,36 +14,18 @@ public class symbiosis_auth_user extends symbiosis_entity
 {
     private Long symbiosis_user_id;
     private Long symbiosis_channel_id;
+    private String password;
+    private String salt;
     private Long symbiosis_user_status_id;
     private String device_id;
     private Long access_system_id;
+    private String auth_token;
     private Date registration_date;
     private Date last_auth_date;
     private Date last_login_date;
+    private symbiosis_user user;
     private symbiosis_channel channel;
     private symbiosis_user_status user_status;
-    private symbiosis_user user;
-
-    public symbiosis_auth_user() {}
-
-    public symbiosis_auth_user(
-            Long symbiosis_user_id,
-            Long symbiosis_channel_id,
-            Long symbiosis_user_status_id,
-            String device_id,
-            Long access_system_id,
-            Date registration_date,
-            Date last_auth_date,
-            Date last_login_date) {
-        this.symbiosis_user_id = symbiosis_user_id;
-        this.symbiosis_channel_id = symbiosis_channel_id;
-        this.symbiosis_user_status_id = symbiosis_user_status_id;
-        this.device_id = device_id;
-        this.access_system_id = access_system_id;
-        this.registration_date = registration_date;
-        this.last_auth_date = last_auth_date;
-        this.last_login_date = last_login_date;
-    }
 
     @Column(name = "symbiosis_user_id")
     @Basic
@@ -63,6 +45,26 @@ public class symbiosis_auth_user extends symbiosis_entity
 
     public void setSymbiosis_channel_id(Long symbiosis_channel_id) {
         this.symbiosis_channel_id = symbiosis_channel_id;
+    }
+
+    @Column(name = "password")
+    @Basic
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Column(name = "salt")
+    @Basic
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     @Column(name = "symbiosis_user_status_id")
@@ -93,6 +95,16 @@ public class symbiosis_auth_user extends symbiosis_entity
 
     public void setAccess_system_id(Long access_system_id) {
         this.access_system_id = access_system_id;
+    }
+
+    @Column(name = "auth_token")
+    @Basic
+    public String getAuth_token() {
+        return auth_token;
+    }
+
+    public void setAuth_token(String auth_token) {
+        this.auth_token = auth_token;
     }
 
     @Column(name = "registration_date")

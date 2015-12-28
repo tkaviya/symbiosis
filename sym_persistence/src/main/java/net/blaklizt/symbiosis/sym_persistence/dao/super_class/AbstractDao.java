@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 @Transactional
-public abstract class AbstractDao<E, I extends Serializable> implements SymbiosisDaoInterface {
+public abstract class AbstractDao<E extends symbiosis_entity, I extends Serializable> implements SymbiosisDaoInterface {
 
     @Autowired private SessionFactory sessionFactory;
 

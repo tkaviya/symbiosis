@@ -3,6 +3,7 @@ package net.blaklizt.symbiosis.sym_persistence.dao.implementation;
 import net.blaklizt.symbiosis.sym_persistence.dao.super_class.AbstractDao;
 import net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisEnumEntityDao;
 import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_option;
+import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_entity;
 import org.hibernate.criterion.Restrictions;
 
 import java.io.Serializable;
@@ -32,7 +33,7 @@ import java.util.List;
  */
 
 
-public abstract class SymbiosisEnumEntityDaoImpl<E, I extends Serializable> extends AbstractDao<E, I> implements SymbiosisEnumEntityDao {
+public abstract class SymbiosisEnumEntityDaoImpl<E extends symbiosis_entity, I extends Serializable> extends AbstractDao<E, I> implements SymbiosisEnumEntityDao {
 
     protected SymbiosisEnumEntityDaoImpl(Class<E> entityClass) { super(entityClass); }
 

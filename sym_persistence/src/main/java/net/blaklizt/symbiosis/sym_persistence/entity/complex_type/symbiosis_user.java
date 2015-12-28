@@ -1,5 +1,6 @@
 package net.blaklizt.symbiosis.sym_persistence.entity.complex_type;
 
+import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_user_status;
 import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_entity;
 
 import javax.persistence.Basic;
@@ -14,13 +15,11 @@ public class symbiosis_user extends symbiosis_entity
 	private String username;
 	private String email;
 	private String msisdn;
-	private String password;
-	private String salt;
 	private Long symbiosis_user_group_id;
 	private Long symbiosis_country_id;
 	private Long symbiosis_language_id;
-	private String auth_token;
-//	private symbiosis_group user_group;
+    private Long symbiosis_user_status_id;
+    private symbiosis_user_status user_status;
 
 	@Column(name = "first_name")
 	@Basic
@@ -72,26 +71,6 @@ public class symbiosis_user extends symbiosis_entity
 		this.msisdn = msisdn;
 	}
 
-	@Column(name = "password")
-	@Basic
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	@Column(name = "salt")
-	@Basic
-	public String getSalt() {
-		return salt;
-	}
-
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
-
 	@Column(name = "symbiosis_user_group_id")
 	@Basic
 	public Long getSymbiosis_user_group_id() {
@@ -122,15 +101,15 @@ public class symbiosis_user extends symbiosis_entity
 		this.symbiosis_language_id = symbiosis_language_id;
 	}
 
-	@Column(name = "auth_token")
-	@Basic
-	public String getAuth_token() {
-		return auth_token;
-	}
+    @Column(name = "symbiosis_user_status_id")
+    @Basic
+    public Long getSymbiosis_user_status_id() {
+        return symbiosis_user_status_id;
+    }
 
-	public void setAuth_token(String auth_token) {
-		this.auth_token = auth_token;
-	}
+    public void setSymbiosis_user_status_id(Long symbiosis_user_status_id) {
+        this.symbiosis_user_status_id = symbiosis_user_status_id;
+    }
 
 //	public void setUser_group(symbiosis_group user_group) {
 //		this.user_group = user_group;
