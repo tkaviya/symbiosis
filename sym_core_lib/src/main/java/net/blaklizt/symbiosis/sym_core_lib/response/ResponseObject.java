@@ -7,13 +7,13 @@ import net.blaklizt.symbiosis.sym_core_lib.enumeration.SYM_RESPONSE_CODE;
  * Date: 3/27/2015
  * Time: 7:47 PM
  */
-public class ResponseObject
+public class ResponseObject<O>
 {
 
 	SYM_RESPONSE_CODE responseCode;
-	Object responseObject = null;
+	O responseObject = null;
 
-	public ResponseObject(SYM_RESPONSE_CODE responseCode, Object responseObject)
+	public ResponseObject(SYM_RESPONSE_CODE responseCode, O responseObject)
 	{
 		this.responseCode = responseCode;
 		this.responseObject = responseObject;
@@ -38,12 +38,12 @@ public class ResponseObject
 		this.responseCode = responseCode;
 	}
 
-	public Object getResponseObject()
+	public O getResponseObject()
 	{
 		return responseObject;
 	}
 
-	public void setResponseObject(Object responseObject)
+	public void setResponseObject(O responseObject)
 	{
 		this.responseObject = responseObject;
 	}

@@ -45,8 +45,7 @@ public class Validator
         return isValidMsisdn(msisdn) || msisdn.matches("^(([0]{2})|[+])*(" + countryCodePrefix + ")[0-9]{9}");
 	}
 
-	public static boolean isNullOrEmpty(String string)
-	{
+	public static boolean isNullOrEmpty(String string) {
 		return string == null || string.equals("");
 	}
 

@@ -1,5 +1,7 @@
 package net.blaklizt.symbiosis.sym_common.utilities;
 
+import net.blaklizt.symbiosis.sym_common.structure.Pair;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -8,7 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static net.blaklizt.symbiosis.sym_common.utilities.Pair.cons;
+import static net.blaklizt.symbiosis.sym_common.structure.Pair.p;
 import static net.blaklizt.symbiosis.sym_common.utilities.Reflection.invoke;
 import static net.blaklizt.symbiosis.sym_common.utilities.Reflection.resolveMethod;
 
@@ -74,7 +76,7 @@ public class TransformerService {
     }
 
     public static <T, K> void registerConversion(Class<T> source, Class<K> target, TypeTransformer<T, K> transformer) {
-        getConversionRegistry().put(cons((Class<?>) source, (Class<?>) target), transformer);
+        getConversionRegistry().put(p((Class<?>) source, (Class<?>) target), transformer);
     }
 
     static TypeTransformer resolveTransformer(boolean isNull, Class<?> source, Class<?> target) {
@@ -103,7 +105,7 @@ public class TransformerService {
 
     @SuppressWarnings("unchecked")
     private static TypeTransformer<?, ?> findWideningTransformer(Class<?> source, Class<?> target) {
-        TypeTransformer<?, ?> typeTransformer = getConversionRegistry().get(cons(source, target));
+        TypeTransformer<?, ?> typeTransformer = getConversionRegistry().get(p(source, target));
         if (typeTransformer != null) {
             return typeTransformer;
         }
@@ -113,8 +115,8 @@ public class TransformerService {
                 .keySet()
                 .stream()
                 .filter(key -> {
-                    boolean sourceAssignable = key.getCar().isAssignableFrom(source);
-                    boolean targetAssignable = key.getCdr().isAssignableFrom(target);
+                    boolean sourceAssignable = key.getLeft().isAssignableFrom(source);
+                    boolean targetAssignable = key.getRight().isAssignableFrom(target);
                     return sourceAssignable && targetAssignable;
                 })
                 .findFirst().orElse(null);

@@ -1,8 +1,16 @@
 package net.blaklizt.symbiosis.sym_authentication.security;
 
+import net.blaklizt.symbiosis.sym_common.utilities.Validator;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
+
+import static net.blaklizt.symbiosis.sym_authentication.security.SymbiosisSecurityEncyption.DEFAULT_ENCRYPTION_SALT;
+import static net.blaklizt.symbiosis.sym_authentication.security.SymbiosisSecurityEncyption.DEFAULT_SALT_LENGTH;
+import static net.blaklizt.symbiosis.sym_authentication.security.SymbiosisSecurityEncyption.DEFAULT_SECURITY_ENCRYPTION;
+import static net.blaklizt.symbiosis.sym_common.utilities.Validator.isNullOrEmpty;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,55 +42,49 @@ public class Security
 		return new String(iv);
 	}
 
-	public static byte[] generateSecureRandomBytes()
-	{
-		if (secureRandom == null) secureRandom = new SecureRandom();
-		byte[] randomBytes = new byte[20];
+	public static byte[] generateSecureRandomBytes() {
+
+		if (secureRandom == null) {
+			secureRandom = new SecureRandom();
+		}
+
+		byte[] randomBytes = new byte[DEFAULT_SALT_LENGTH];
+
 		secureRandom.nextBytes(randomBytes);
+
 		return randomBytes;
 	}
 
-	public static String encrypt(String input, String encryptMode)
+	public static String encryptWithSalt(final String unencryptedStr, final byte[] salt) {
+		return encryptWithSalt(unencryptedStr, DEFAULT_SECURITY_ENCRYPTION, salt);
+	}
+
+	public static String encrypt(final String input) {
+		return encryptWithSalt(input, DEFAULT_SECURITY_ENCRYPTION, DEFAULT_ENCRYPTION_SALT);
+	}
+
+	public static String encryptWithSalt(final String input, final String encryptMode, final byte[] salt)
 	{
-		try
-		{
+		try {
 			MessageDigest messageDigest = MessageDigest.getInstance(encryptMode);
 			messageDigest.reset();
 
-			byte[] digested = messageDigest.digest(input.getBytes());
-			StringBuffer sb = new StringBuffer();
+			if (!isNullOrEmpty(Arrays.toString(salt))) {
+				messageDigest.update(salt);
+			}
 
-			for (byte aDigested : digested) { sb.append(Integer.toHexString(0xff & aDigested)); }
+			byte[] digested = messageDigest.digest(input.getBytes());
+			StringBuilder sb = new StringBuilder();
+
+			for (byte aDigested : digested) {
+				sb.append(Integer.toHexString(0xff & aDigested));
+			}
 
 			return sb.toString();
 		}
-		catch (NoSuchAlgorithmException ex) { ex.printStackTrace(); }
-
-		return null;
-	}
-
-	public static String encrypt(String input)
-	{
-		return encrypt(input, "AES");
-	}
-	
-	public static String encryptWithSalt(String input, String encryptMode, byte[] salt)
-	{
-		try
-		{
-			MessageDigest messageDigest = MessageDigest.getInstance(encryptMode);
-			messageDigest.reset();
-			messageDigest.update(salt);
-
-			byte[] digested = messageDigest.digest(input.getBytes());
-			StringBuffer sb = new StringBuffer();
-
-			for (byte aDigested : digested) { sb.append(Integer.toHexString(0xff & aDigested)); }
-
-			return sb.toString();
+		catch (NoSuchAlgorithmException ex) {
+			ex.printStackTrace();
+			throw new RuntimeException(ex);
 		}
-		catch (NoSuchAlgorithmException ex) { ex.printStackTrace(); }
-
-		return null;
 	}
 }

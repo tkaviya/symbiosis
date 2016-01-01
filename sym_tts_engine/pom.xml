@@ -12,7 +12,7 @@
 
     <groupId>net.blaklizt.symbiosis</groupId>
     <artifactId>sym_tts_engine</artifactId>
-    <version>${project.parent.version}</version>
+    <version>2.0.0</version>
     <packaging>jar</packaging>
     <name>Symbiosis TTS Engine</name>
     <description>Symbiosis Text To Speech Engine</description>

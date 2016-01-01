@@ -22,8 +22,9 @@ public enum SYM_RESPONSE_CODE
 	INVALID_USERNAME			(8,		"Username provided was not valid"),
 	INVALID_PASSWORD			(9,		"Password provided was not valid"),
 	INVALID_NAME				(10,	"Name provided was not valid"),
+	DATA_NOT_FOUND				(11,	"Data does not exist"),
 
-	INSUFFICIENT_PRIVILEGES		(20,	"Insuffiecient privileges for current operation"),
+	INSUFFICIENT_PRIVILEGES		(20,	"Insufficient privileges for current operation"),
 	AUTHENTICATION_FAILED		(21,	"Authentication failed"),
 
 	//Account Status
@@ -34,7 +35,7 @@ public enum SYM_RESPONSE_CODE
 	PASSWORD_TRIES_EXCEEDED	    (34,	"Password tries exceeded"),
 	INCORRECT_PASSWORD	        (35,	"Password is incorrect"),
 	PASSWORD_EXPIRED	        (36,	"Password expired"),
-	NON_EXISTANT	            (37,	"User does not exist"),
+	NON_EXISTENT				(37,	"Account does not exist"),
 
 	//Connectivity codes
 	CONNECTION_FAILED	        (40,	"Connection failed"),

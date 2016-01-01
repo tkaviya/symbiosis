@@ -1,11 +1,6 @@
 package net.blaklizt.symbiosis.sym_authentication.test;
 
 import net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,53 +13,53 @@ public class SymbiosisAuthenticatorTest {
 
 	private SymbiosisAuthenticator symbiosisAuthenticator;
 
-	@BeforeClass(enabled = false)
-	public void setUp() throws Exception
-	{
-		try
-		{
-			ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("sym_authentication-spring-context.xml");
-			symbiosisAuthenticator = (SymbiosisAuthenticator)classPathXmlApplicationContext.getBean("symbiosisAuthenticator");
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	@AfterClass
-	public void tearDown() throws Exception {
-
-	}
-
-	@Test(enabled=false, dependsOnMethods={"testRegisterUser", "testRegisterNewUser"})
-	public void testLoadUserByUsername() throws Exception {
-		System.out.print("Doing null check on loadUserByUsername");
-		Assert.assertNotNull(symbiosisAuthenticator.loadUserByUsername(null));
-	}
-
-	@Test(enabled=false)
-	public void testEncodePassword() throws Exception {
-
-	}
-
-	@Test(enabled=true, dependsOnMethods={"testRegisterNewUser"})
-	public void testIsPasswordValid() throws Exception {
-
-	}
-
-	@Test(enabled=false)
-	public void testRegisterUser() throws Exception {
-
-	}
-
-	@Test(enabled=true)
-	public void testRegisterNewUser() throws Exception {
-
-	}
-
-	@Test(enabled=true, dependsOnMethods={"testRegisterNewUser"})
-	public void testAuthenticateUser() throws Exception {
-
-	}
+//	@BeforeClass(enabled = false)
+//	public void setUp() throws Exception
+//	{
+//		try
+//		{
+//			ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("sym_authentication-spring-context.xml");
+//			symbiosisAuthenticator = (SymbiosisAuthenticator)classPathXmlApplicationContext.getBean("symbiosisAuthenticator");
+//		}
+//		catch (Exception e)
+//		{
+//			e.printStackTrace();
+//		}
+//	}
+//
+//	@AfterClass
+//	public void tearDown() throws Exception {
+//
+//	}
+//
+//	@Test(enabled=false, dependsOnMethods={"testRegisterUser", "testRegisterNewUser"})
+//	public void testLoadUserByUsername() throws Exception {
+//		System.out.print("Doing null check on loadUserByUsername");
+//		Assert.assertNotNull(symbiosisAuthenticator.loadUserByUsername(null));
+//	}
+//
+//	@Test(enabled=false)
+//	public void testEncodePassword() throws Exception {
+//
+//	}
+//
+//	@Test(enabled=true, dependsOnMethods={"testRegisterNewUser"})
+//	public void testIsPasswordValid() throws Exception {
+//
+//	}
+//
+//	@Test(enabled=false)
+//	public void testRegisterUser() throws Exception {
+//
+//	}
+//
+//	@Test(enabled=true)
+//	public void testRegisterNewUser() throws Exception {
+//
+//	}
+//
+//	@Test(enabled=true, dependsOnMethods={"testRegisterNewUser"})
+//	public void testAuthenticateUser() throws Exception {
+//
+//	}
 }

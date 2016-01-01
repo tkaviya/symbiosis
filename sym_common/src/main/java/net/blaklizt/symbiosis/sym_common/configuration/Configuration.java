@@ -6,6 +6,9 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
+import static java.util.Locale.ENGLISH;
+import static java.util.ResourceBundle.getBundle;
+
 /**
  * Created with IntelliJ IDEA.
  * User: tkaviya
@@ -43,7 +46,7 @@ public class Configuration
 
 	public static String getProperty(String bundle, String property)
 	{
-		ResourceBundle resourceBundle = ResourceBundle.getBundle("properties/" + bundle, Locale.ENGLISH);
+		ResourceBundle resourceBundle = getBundle("properties/" + bundle, ENGLISH);
 		if (resourceBundle != null)
 			return resourceBundle.getString(property);
 		return null;
@@ -61,9 +64,10 @@ public class Configuration
 
 	public static String getSymbiosisProperty(String property)
 	{
-		ResourceBundle resourceBundle = ResourceBundle.getBundle("properties/" + DEFAULT_BUNDLE_NAME, Locale.ENGLISH);
-		if (resourceBundle != null)
+		ResourceBundle resourceBundle = getBundle("properties/" + DEFAULT_BUNDLE_NAME, ENGLISH);
+		if (resourceBundle != null) {
 			return resourceBundle.getString(property);
+		}
 		return null;
 	}
 

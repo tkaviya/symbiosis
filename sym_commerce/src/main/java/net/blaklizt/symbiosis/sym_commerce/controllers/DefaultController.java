@@ -1,7 +1,7 @@
 package net.blaklizt.symbiosis.sym_commerce.controllers;
 
 import net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator;
-import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
+import net.blaklizt.symbiosis.sym_core_lib.CommonUtilities;
 import net.blaklizt.symbiosis.sym_persistence.dao.implementation.SymbiosisUserDaoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

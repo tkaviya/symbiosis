@@ -1,8 +1,13 @@
 package net.blaklizt.symbiosis.sym_persistence.entity.super_class;
 
+import net.blaklizt.symbiosis.sym_common.utilities.SymTransformer;
+import net.blaklizt.symbiosis.sym_common.utilities.Validator;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Observable;
+import java.lang.reflect.Field;
+
+import static net.blaklizt.symbiosis.sym_common.utilities.Validator.isNumeric;
 
 /* *************************************************************************
  * Created:     18 / 09 / 2015                                             *
@@ -36,4 +41,24 @@ public abstract class symbiosis_entity implements Serializable
     /* this function is private because we do not want to be
      * able to update an entity id via the program ever */
     private void setId(Long id) { this.id = id; }
+
+	@Override
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
+		try {
+			stringBuilder.append("{ ");
+			for (Field field : this.getClass().getDeclaredFields()) {
+				Object fieldValue = field.get(field);
+				String fieldData;
+				if (fieldValue == null)					{ fieldData = "[" + field.getName() + ":null]"; }
+				else if (fieldValue instanceof String)	{ fieldData = String.valueOf(fieldValue); }
+				else if (isNumeric(fieldValue))			{ fieldData = "" + fieldValue; }
+				else									{ fieldData = "[" + field.getName() + ":not null]"; }
+				stringBuilder.append(field.getName()).append("=\"").append(fieldData).append("\"\t");
+			}
+			stringBuilder.append("}");
+		}
+		catch (IllegalAccessException e) { e.printStackTrace(); }
+		return stringBuilder.toString();
+	}
 }

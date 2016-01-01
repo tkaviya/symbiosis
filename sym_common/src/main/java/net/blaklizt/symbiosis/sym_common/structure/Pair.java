@@ -1,34 +1,25 @@
-package net.blaklizt.symbiosis.sym_common.utilities;
+package net.blaklizt.symbiosis.sym_common.structure;
 
 import java.io.Serializable;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
-
 public class Pair<T, K> implements Serializable {
 
-    private T car;
-    private K cdr;
+    private T left;
+    private K right;
 
-    public Pair() {
+	public Pair() {}
+
+    public Pair(T left, K right) {
+        this.left = left;
+        this.right = right;
     }
 
-    public Pair(T car, K cdr) {
-        this.car = car;
-        this.cdr = cdr;
+    public static <T, K> Pair<T, K> p(T left, K right) {
+        return new Pair<>(left, right);
     }
-
-    @SuppressWarnings({"unchecked"})
-    public static <T, K> Pair<T, K> cons(T car, K cdr) {
-        return new Pair(car, cdr);
-    }
-
-    public static <T, K> Pair<T, K> p(T car, K cdr) {
-        return cons(car, cdr);
-    }
-
-
 
     @SuppressWarnings({"unchecked"})
     public static <T> Pair<T, ?>[] filter(Pair<T, ?>... pairs) {
@@ -43,25 +34,17 @@ public class Pair<T, K> implements Serializable {
                 .collect(toList());
     }
 
-    public T getCar() {
-        return car;
-    }
-
-    public K getCdr() {
-        return cdr;
-    }
-
     public T getLeft() {
-        return getCar();
+        return left;
     }
 
     public K getRight() {
-        return getCdr();
+        return right;
     }
 
     @Override
     public String toString() {
-        return "(" + car + '=' + cdr + ')';
+        return "(" + left + '=' + right + ')';
     }
 
     @Override
@@ -75,14 +58,14 @@ public class Pair<T, K> implements Serializable {
 
         Pair pair = (Pair) o;
 
-        return !(car != null ? !car.equals(pair.car) : pair.car != null) && !(cdr != null ? !cdr.equals(pair.cdr) : pair.cdr != null);
+        return !(left != null ? !left.equals(pair.left) : pair.left != null) && !(right != null ? !right.equals(pair.right) : pair.right != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = car != null ? car.hashCode() : 0;
-        result = 31 * result + (cdr != null ? cdr.hashCode() : 0);
+        int result = left != null ? left.hashCode() : 0;
+        result = 31 * result + (right != null ? right.hashCode() : 0);
         return result;
     }
 
@@ -90,7 +73,7 @@ public class Pair<T, K> implements Serializable {
     public static <T, K> Map<T, K> map(Pair<T, K>... pairs) {
         LinkedHashMap<T, K> map = new LinkedHashMap<>();
         for (Pair<T, K> pair : pairs) {
-            map.put(pair.car, pair.cdr);
+            map.put(pair.left, pair.right);
         }
         return map;
     }
@@ -104,18 +87,4 @@ public class Pair<T, K> implements Serializable {
         }
         return pairs;
     }
-
-    public String join(String delimiter) {
-        return safeToString(car) + delimiter + safeToString(cdr);
-    }
-
-    public String join() {
-        return join(" ");
-    }
-
-    private String safeToString(Object value) {
-        return (value != null) ? value.toString() : "empty";
-    }
-
-
 }

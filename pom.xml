@@ -12,6 +12,25 @@
     <version>2.0.0</version>
     <url>http://www.blaklizt.net</url>
 
+    <modules>
+        <module>sym_core_lib</module>
+        <module>sym_common</module>
+        <module>sym_persistence</module>
+        <module>sym_authentication</module>
+        <!--<module>sym_sync_mobile</module>-->
+        <!--<module>sym_sync</module>-->
+        <!--<module>sym_bounce</module>-->
+        <!--<module>sym_tts_engine</module>-->
+        <!--<module>sym_translator</module>-->
+        <!--<module>sym_bluetooth</module>-->
+        <!--<module>sym_nlp_engine</module>-->
+        <!--<module>sym_proximity</module>-->
+        <!--<module>sym_core</module>-->
+        <!--<module>sym_irc</module>-->
+        <!--<module>sym_web</module>-->
+        <!--<module>sym_commerce</module>-->
+    </modules>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -56,6 +75,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <symbiosis.version>2.0.0</symbiosis.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.ear.plugin.version>2.10</maven.ear.plugin.version>
@@ -65,11 +85,12 @@
         <maven.compiler.plugin.version>3.2</maven.compiler.plugin.version>
         <maven.jar.plugin.version>2.6</maven.jar.plugin.version>
         <maven.surefire.plugin.version>2.6</maven.surefire.plugin.version>
+        <cargo-maven2-plugin.version>1.4.8</cargo-maven2-plugin.version>
         <android.maven.plugin.version>4.0.0-rc.2</android.maven.plugin.version>
         <android.sdk.path>${env.ANDROID_HOME}</android.sdk.path>
         <android.sdk.platform>19</android.sdk.platform>
         <compatibility.version>18.0.0</compatibility.version>
-        <spring.version>4.1.5.RELEASE</spring.version>
+        <spring.version>4.2.4.RELEASE</spring.version>
         <spring.security.version>3.2.6.RELEASE</spring.security.version>
         <hibernate.core.version>4.2.4.Final</hibernate.core.version>
         <hibernate.commons.annotations.version>4.0.4.Final</hibernate.commons.annotations.version>
@@ -90,63 +111,89 @@
         </developer>
     </developers>
 
+    <repositories>
+        <repository>
+            <id>pyx4me-web-snapshot</id>
+            <url>http://www.pyx4me.com/maven2-snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>pyx4me-web-snapshot</id>
+            <url>http://www.pyx4me.com/maven2-snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+
     <dependencyManagement>
         <dependencies>
 
             <dependency>
                 <groupId>net.blaklizt.symbiosis</groupId>
                 <artifactId>sym_core_lib</artifactId>
-                <version>${project.version}</version>
+                <version>${symbiosis.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.blaklizt.symbiosis</groupId>
                 <artifactId>sym_common</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.blaklizt.symbiosis</groupId>
-                <artifactId>sym_authentication</artifactId>
-                <version>${project.version}</version>
+                <version>${symbiosis.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.blaklizt.symbiosis</groupId>
                 <artifactId>sym_persistence</artifactId>
-                <version>${project.version}</version>
+                <version>${symbiosis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.blaklizt.symbiosis</groupId>
+                <artifactId>sym_authentication</artifactId>
+                <version>${symbiosis.version}</version>
             </dependency>
             <!--<dependency>-->
                 <!--<groupId>net.blaklizt.symbiosis</groupId>-->
                 <!--<artifactId>sym_bluetooth</artifactId>-->
-                <!--<version>${project.version}</version>-->
+                <!--<version>${symbiosis.version}</version>-->
             <!--</dependency>-->
             <!--<dependency>-->
                 <!--<groupId>net.blaklizt.symbiosis</groupId>-->
                 <!--<artifactId>sym_tts_engine</artifactId>-->
-                <!--<version>${project.version}</version>-->
+                <!--<version>${symbiosis.version}</version>-->
             <!--</dependency>-->
             <!--<dependency>-->
                 <!--<groupId>net.blaklizt.symbiosis</groupId>-->
                 <!--<artifactId>sym_nlp_engine</artifactId>-->
-                <!--<version>${project.version}</version>-->
+                <!--<version>${symbiosis.version}</version>-->
             <!--</dependency>-->
             <!--<dependency>-->
                 <!--<groupId>net.blaklizt.symbiosis</groupId>-->
                 <!--<artifactId>sym_translator</artifactId>-->
-                <!--<version>${project.version}</version>-->
+                <!--<version>${symbiosis.version}</version>-->
             <!--</dependency>-->
             <!--<dependency>-->
                 <!--<groupId>net.blaklizt.symbiosis</groupId>-->
                 <!--<artifactId>sym_web</artifactId>-->
-                <!--<version>${project.version}</version>-->
+                <!--<version>${symbiosis.version}</version>-->
             <!--</dependency>-->
             <!--<dependency>-->
                 <!--<groupId>net.blaklizt.symbiosis</groupId>-->
                 <!--<artifactId>sym_irc</artifactId>-->
-                <!--<version>${project.version}</version>-->
+                <!--<version>${symbiosis.version}</version>-->
             <!--</dependency>-->
             <!--<dependency>-->
                 <!--<groupId>net.blaklizt.symbiosis</groupId>-->
                 <!--<artifactId>sym_proximity</artifactId>-->
-                <!--<version>${project.version}</version>-->
+                <!--<version>${symbiosis.version}</version>-->
             <!--</dependency>-->
 
             <!-- Android dependancies -->
@@ -300,6 +347,12 @@
                 <version>1.1</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>transaction.annootation</artifactId>
+                <version>1.1</version>
+            </dependency>
+
             <!-- Google API libraries -->
             <dependency>
                 <groupId>com.google.api-client</groupId>
@@ -402,49 +455,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <repositories>
-        <repository>
-            <id>pyx4me-web-snapshot</id>
-            <url>http://www.pyx4me.com/maven2-snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>pyx4me-web-snapshot</id>
-            <url>http://www.pyx4me.com/maven2-snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </pluginRepository>
-    </pluginRepositories>
-
-    <modules>
-        <module>sym_common</module>
-        <module>sym_persistence</module>
-        <module>sym_core_lib</module>
-        <!--<module>sym_sync_mobile</module>-->
-        <!--<module>sym_sync</module>-->
-        <!--<module>sym_authentication</module>-->
-        <!--<module>sym_bounce</module>-->
-        <!--<module>sym_tts_engine</module>-->
-        <!--<module>sym_translator</module>-->
-        <!--<module>sym_bluetooth</module>-->
-        <!--<module>sym_nlp_engine</module>-->
-        <!--<module>sym_proximity</module>-->
-        <!--<module>sym_core</module>-->
-        <!--<module>sym_irc</module>-->
-        <!--<module>sym_web</module>-->
-        <!--<module>sym_commerce</module>-->
-    </modules>
 </project>

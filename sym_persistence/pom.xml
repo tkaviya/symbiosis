@@ -11,7 +11,7 @@
 
     <groupId>net.blaklizt.symbiosis</groupId>
     <artifactId>sym_persistence</artifactId>
-    <version>${project.parent.version}</version>
+    <version>2.0.0</version>
     <packaging>jar</packaging>
     <name>Symbiosis Persistence</name>
     <description>Symbiosis Persistence</description>
@@ -88,6 +88,12 @@
             <groupId>org.hibernate.common</groupId>
             <artifactId>hibernate-commons-annotations</artifactId>
         </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>org.springframework</groupId>-->
+            <!--<artifactId>annotation.ta</artifactId>-->
+            <!--<version></version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>

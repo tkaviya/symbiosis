@@ -12,7 +12,7 @@
 
     <groupId>net.blaklizt.symbiosis</groupId>
     <artifactId>sym_web</artifactId>
-    <version>${project.parent.version}</version>
+    <version>2.0.0</version>
     <packaging>war</packaging>
     <name>Symbiosis WEB</name>
     <description>Symbiosis WEB</description>
@@ -46,15 +46,15 @@
             <artifactId>sym_authentication</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>net.blaklizt.symbiosis</groupId>
-            <artifactId>sym_irc</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>net.blaklizt.symbiosis</groupId>-->
+            <!--<artifactId>sym_irc</artifactId>-->
+        <!--</dependency>-->
 
-        <dependency>
-            <groupId>net.blaklizt.symbiosis</groupId>
-            <artifactId>sym_core</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>net.blaklizt.symbiosis</groupId>-->
+            <!--<artifactId>sym_core</artifactId>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>javax.servlet</groupId>

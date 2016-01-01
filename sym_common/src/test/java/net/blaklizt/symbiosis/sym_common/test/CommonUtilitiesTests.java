@@ -4,7 +4,8 @@ import net.blaklizt.symbiosis.sym_common.interfaces.SymReflection;
 import org.testng.annotations.Test;
 
 import static net.blaklizt.symbiosis.sym_core_lib.utilities.CommonUtilities.*;
-import static org.junit.Assert.*;
+import static org.testng.Assert.*;
+import static org.testng.AssertJUnit.assertNotNull;
 
 /**
  * Created with IntelliJ IDEA.

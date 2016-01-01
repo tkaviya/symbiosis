@@ -16,18 +16,21 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
-public class EMailer implements Runnable{
+import static net.blaklizt.symbiosis.sym_common.configuration.Configuration.getProperty;
 
+public class EMailer implements Runnable {
+
+	public static final String DEFAULT_CONTENT_TYPE = "text/plain";
 	String host="null";
 	String recipients[];
 	String subject;
 	String message;
 	String from;
-	String contentType="text/plain";
+	String contentType;
 	String imageLocation;
 	String contentID;
-	boolean isMultipart=false;
-	String attachmentfilenames[]=null;
+	boolean isMultipart = false;
+	String attachmentFilenames[] = null;
 	MimeMultipart multipart;
 	Logger logger = Logger.getLogger(this.getClass().getSimpleName());
 
@@ -51,9 +54,9 @@ public class EMailer implements Runnable{
      * @param contentType
      * @param imageLocation
      * @param contentID
-     * @param attachmentfilenames
+     * @param attachmentFilenames
      */
-    public EMailer(String recipients[], String subject, String message , String from,String host,String contentType, String imageLocation, String contentID,String attachmentfilenames[])
+    public EMailer(String recipients[], String subject, String message , String from,String host,String contentType, String imageLocation, String contentID,String attachmentFilenames[])
     {
     	this.recipients=recipients;
     	this.subject=subject;
@@ -63,7 +66,7 @@ public class EMailer implements Runnable{
     	this.contentType=contentType;
     	this.imageLocation=imageLocation;
     	this.contentID=contentID;
-    	this.attachmentfilenames=attachmentfilenames;
+    	this.attachmentFilenames = attachmentFilenames;
     	isMultipart=true;
     }
 
@@ -101,11 +104,15 @@ public class EMailer implements Runnable{
     	isMultipart=true;
     }
 
+	public EMailer(String recipients[], String subject, String message) {
+		this(recipients, subject, message, DEFAULT_CONTENT_TYPE);
+	}
+
     public EMailer(String recipients[], String subject, String message ,String contentType)
     {
 		//get alarm email address
-		String from = Configuration.getProperty("mail", "submitter");
-		String host = Configuration.getProperty("mail", "mail.smtp.host");
+		String from = getProperty("mail", "submitter");
+		String host = getProperty("mail", "mail.smtp.host");
 
     	this.recipients=recipients;
     	this.subject=subject;
@@ -131,7 +138,6 @@ public class EMailer implements Runnable{
 		    Session session = Session.getInstance(props,auth);
 
 		    // create a message
-		    //Session session = Session.getDefaultInstance(props, null);
 		    Message msg = new MimeMessage(session);
 
 		    // set the from and to address
@@ -204,13 +210,13 @@ public class EMailer implements Runnable{
 	        messageBodyPart.setHeader("Content-ID",contentID);
 	        multipart.addBodyPart(messageBodyPart);
 
-	        if(attachmentfilenames!=null)
-	        for(int j=0;j<attachmentfilenames.length;j++)
+	        if(attachmentFilenames !=null)
+	        for(int j=0;j< attachmentFilenames.length;j++)
 	        {
 	        	 messageBodyPart = new MimeBodyPart();
-	        	 DataSource source =  new FileDataSource(attachmentfilenames[j]);
+	        	 DataSource source =  new FileDataSource(attachmentFilenames[j]);
 	        	 messageBodyPart.setDataHandler(new DataHandler(source));
-	        	 String filename=attachmentfilenames[j].substring(attachmentfilenames[j].lastIndexOf(File.separatorChar)+1);
+	        	 String filename= attachmentFilenames[j].substring(attachmentFilenames[j].lastIndexOf(File.separatorChar)+1);
 	        	 messageBodyPart.setFileName(filename);
 	        	 multipart.addBodyPart(messageBodyPart);
 	        }

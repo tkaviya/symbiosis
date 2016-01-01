@@ -1,8 +1,9 @@
 group = 'net.blaklizt.symbiosis'
+
 description = 'Symbiosis Authentication'
+
 dependencies {
-  compile project(':sym_common')
-  compile project(':sym_persistence')
-    compile group: 'org.springframework', name: 'spring-context', version:'4.1.5.RELEASE'
-    compile group: 'org.springframework.security', name: 'spring-security-core', version:'3.2.6.RELEASE'
+	compile project(':sym_persistence')
+	compile libraries.spring_context
+	compile libraries.spring_security_core
 }

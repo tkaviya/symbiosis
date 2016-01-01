@@ -7,9 +7,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -19,21 +19,29 @@ import java.util.List;
  * Time: 8:30 PM
  */
 
-@Transactional
-public abstract class AbstractDao<E extends symbiosis_entity, I extends Serializable> implements SymbiosisDaoInterface {
+public class AbstractDao<E extends symbiosis_entity, I extends Serializable> implements SymbiosisDaoInterface {
 
     @Autowired private SessionFactory sessionFactory;
 
 	private Class<E> entityClass;
 
 	private String className;
-    
+
+    private static final HashMap<Class<? extends symbiosis_entity>, AbstractDao> daoManagerMap = new HashMap<>();
+
 	protected AbstractDao(Class<E> entityClass) {
 		this.entityClass = entityClass;
 		this.className = entityClass.getSimpleName();
 	}
 
-	public Session getCurrentSession() { return sessionFactory.getCurrentSession(); }
+    public static <E extends symbiosis_entity, I extends Serializable> AbstractDao<E, I> using(Class<E> type) {
+        if (!daoManagerMap.containsKey(type)) {
+            daoManagerMap.put(type, new AbstractDao<E, I>(type));
+        }
+        return daoManagerMap.get(type);
+    }
+
+    public Session getCurrentSession() { return sessionFactory.getCurrentSession(); }
 
     public Class<E> getEntityClass() { return entityClass; }
 
