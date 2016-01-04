@@ -1,4 +1,6 @@
-package net.blaklizt.symbiosis.sym_persistence.entity.super_class;/* *************************************************************************
+package net.blaklizt.symbiosis.sym_persistence.entity.super_class;
+
+/* *************************************************************************
  * Created:     2016/01/01                                                 *
  * Author:      Tich de Blak (Tsungai Kaviya)                              *
  * Copyright:   Blaklizt Entertainment                                     *
@@ -17,5 +19,42 @@ package net.blaklizt.symbiosis.sym_persistence.entity.super_class;/* ***********
  * *************************************************************************
 */
 
-public class symbiosis_complex_enum {
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
+public abstract class symbiosis_complex_enum<G extends symbiosis_complex_enum> extends
+	symbiosis_enum_entity<G> {
+
+//	protected ArrayList<G> groupItems;
+//	protected G group;
+
+	public symbiosis_complex_enum(String description, Boolean enabled) {
+		super(description, enabled);
+	}
+
+//	public symbiosis_complex_enum(String description, Boolean enabled,
+//								  ArrayList<G> groupItems, G group) {
+//		super(description, enabled);
+//		this.groupItems = groupItems;
+//		this.group = group;
+//	}
+
+//	@Basic(fetch = FetchType.LAZY, optional = false)
+//	public G getGroup() {
+//		return group;
+//	}
+//
+//	protected void setGroup(G group) {
+//		this.group = group;
+//	}
+//
+//	@OneToMany(fetch = FetchType.LAZY)
+//	public ArrayList<G> getGroupItems() {
+//		return groupItems;
+//	}
+//
+//	public void setGroupItems(ArrayList<G> groupItems) {
+//		this.groupItems = groupItems;
+//	}
+
 }

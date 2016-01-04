@@ -19,8 +19,8 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 	public static Object lock = new Object();
 
 	protected static BluetoothManager bluetoothManager;
-	protected static LinkedList<BluetoothDevice> remoteDevices = new LinkedList();
-	protected static LinkedList<ServiceRecord> remoteServices = new LinkedList();
+	protected static LinkedList<BluetoothDevice> remoteDevices = new LinkedList<>();
+	protected static LinkedList<ServiceRecord> remoteServices = new LinkedList<>();
 	protected static String localBluetoothName = null;
 	protected static String localBluetoothAddress = null;
 	protected static boolean serviceRunning = false;
@@ -219,7 +219,6 @@ public class BluetoothManager extends Observable implements DiscoveryListener
 
 					synchronized (lock) { lock.wait(); }
 				}
-				catch (InterruptedException e) { e.printStackTrace(); }
 				catch (Exception e) { e.printStackTrace(); }
 			}
 			else

@@ -52,7 +52,7 @@ public class Authenticator2 implements UserDetailsService, PasswordEncoder {
 
 		boolean active;
 
-		if (dbUser.getStatus() == User.UserStatus.ACTIVE.getValue()) active = true;
+		if (dbUser.getStatus() == User.UserStatus.ACC_ACTIVE.getValue()) active = true;
 		else
 		{
 			active = false;

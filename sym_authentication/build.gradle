@@ -1,6 +1,6 @@
-group = 'net.blaklizt.symbiosis'
-
 description = 'Symbiosis Authentication'
+
+jar { baseName = 'sym_authentication' }
 
 dependencies {
 	compile project(':sym_persistence')

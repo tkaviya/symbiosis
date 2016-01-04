@@ -1,6 +1,5 @@
 package net.blaklizt.symbiosis.sym_irc.dcc;
 
-import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
 import net.blaklizt.symbiosis.sym_irc.IRCClient;
 import net.blaklizt.symbiosis.sym_irc.ResponseMessage;
 
@@ -13,6 +12,8 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Logger;
 
+import static net.blaklizt.symbiosis.sym_common.configuration.Configuration.getProperty;
+
 /**
  * Created with IntelliJ IDEA.
  * User: tkaviya
@@ -22,8 +23,8 @@ import java.util.logging.Logger;
 public class DCCServerManager extends Observable implements Runnable
 {
 	protected static final Logger logger = Logger.getLogger(DCCServerManager.class.getSimpleName());
-	public static final String LOCALHOST = CommonUtilities.getConfiguration("irc", "dccBindAddress");
-	public static final String LOCALPORT = CommonUtilities.getConfiguration("irc", "dccLocalPort");
+	public static final String LOCALHOST = getProperty("irc", "dccBindAddress");
+	public static final String LOCALPORT = getProperty("irc", "dccLocalPort");
 	private static DCCServerManager dccServerManager;
 	ServerSocketChannel acceptSocket;
 	LinkedList<SocketChannel> dccSockets;

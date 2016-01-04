@@ -2,26 +2,28 @@ package net.blaklizt.symbiosis.sym_persistence.entity.complex_type;
 
 import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
+
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
-public class symbiosis_user_details extends symbiosis_entity
+public class symbiosis_user_details extends symbiosis_entity<symbiosis_user_details>
 {
-    private Long symbiosis_user_id;
+    private symbiosis_user user;
     private Double latitude;
     private Double longitude;
 
     @Basic
-    @Column(name = "symbiosis_user_id", nullable = false)
-    public Long getSymbiosis_user_id() {
-        return symbiosis_user_id;
-    }
+	@OneToOne(optional = false, cascade = ALL, fetch = LAZY)
+	@JoinColumn(name = "symbiosis_user_id", referencedColumnName = "symbiosis_user_id")
+	public symbiosis_user getUser() {
+		return user;
+	}
 
-    public void setSymbiosis_user_id(Long symbiosis_user_id) {
-        this.symbiosis_user_id = symbiosis_user_id;
-    }
+	public void setUser(symbiosis_user user) {
+		this.user = user;
+	}
 
     @Basic
     @Column(nullable = true)

@@ -7,14 +7,12 @@ import net.blaklizt.symbiosis.sym_core_lib.enumeration.SYM_RESPONSE_CODE;
  * Date: 3/27/2015
  * Time: 7:47 PM
  */
-public class ResponseObject<O>
+public class ResponseObject<T>
 {
-
 	SYM_RESPONSE_CODE responseCode;
-	O responseObject = null;
+	T responseObject = null;
 
-	public ResponseObject(SYM_RESPONSE_CODE responseCode, O responseObject)
-	{
+	public ResponseObject(SYM_RESPONSE_CODE responseCode, T responseObject) {
 		this.responseCode = responseCode;
 		this.responseObject = responseObject;
 	}
@@ -26,25 +24,21 @@ public class ResponseObject<O>
 
     public int getCode() {  return responseCode.code; }
 
-    public String getMessage() {   return responseCode.message;  }
+	//Override default message with custom message. Return this to allow method chaining
+    public ResponseObject<T> setMessage(String responseMessage) { responseCode.message = responseMessage; return this; }
 
-	public SYM_RESPONSE_CODE getResponseCode()
-	{
-		return responseCode;
-	}
+	public String getMessage() {   return responseCode.message;  }
 
-	public void setResponseCode(SYM_RESPONSE_CODE responseCode)
-	{
-		this.responseCode = responseCode;
-	}
+	public SYM_RESPONSE_CODE getResponseCode() { return responseCode; }
 
-	public O getResponseObject()
+	//Change response code for this ResponseObject. Return this to allow method chaining
+	public ResponseObject<T> setResponseCode(SYM_RESPONSE_CODE responseCode) { this.responseCode = responseCode; return this; }
+
+	public T getResponseObject()
 	{
 		return responseObject;
 	}
 
-	public void setResponseObject(O responseObject)
-	{
-		this.responseObject = responseObject;
-	}
+	//Change object for this ResponseObject. Return this to allow method chaining
+	public ResponseObject<T> setResponseObject(T responseObject) { this.responseObject = responseObject; return this; }
 }

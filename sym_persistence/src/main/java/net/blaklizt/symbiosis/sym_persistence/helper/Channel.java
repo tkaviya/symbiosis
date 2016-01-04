@@ -6,11 +6,10 @@ import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_enum_
 /**
  * Created by tkaviya on 9/13/2015.
  */
-public enum Channel implements AbstractEnumHelper<symbiosis_channel> {
+public enum Channel implements SymbiosisEnumType<symbiosis_channel> {
 
-    ANDROID;
+    WEB, ANDROID;
 
+	@Override
     public Class<? extends symbiosis_enum_entity> getEnumEntityClass() { return symbiosis_channel.class; }
-
-    public Long value()  { return SymbiosisEnumHelper.getEnumHelper(getEnumEntityClass()).getID(this); }
 }

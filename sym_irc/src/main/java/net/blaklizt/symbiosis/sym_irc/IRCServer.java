@@ -1,6 +1,5 @@
 package net.blaklizt.symbiosis.sym_irc;
 
-import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
 import net.blaklizt.symbiosis.sym_irc.dcc.DCCClientManager;
 
 import java.io.IOException;
@@ -12,6 +11,8 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.logging.Logger;
+
+import static net.blaklizt.symbiosis.sym_common.configuration.Configuration.getProperty;
 
 /**
  * Created with IntelliJ IDEA.
@@ -164,8 +165,8 @@ public class IRCServer extends Observable implements Runnable
 
 
 	protected static final Logger logger = Logger.getLogger(IRCServer.class.getSimpleName());
-	protected static final String VERSION_RESPONSE = CommonUtilities.getConfiguration("irc", "VERSION_RESPONSE");
-	protected static final String PING_RESPONSE = CommonUtilities.getConfiguration("irc", "PONG_RESPONSE");
+	protected static final String VERSION_RESPONSE = getProperty("irc", "VERSION_RESPONSE");
+	protected static final String PING_RESPONSE = getProperty("irc", "PONG_RESPONSE");
 	protected IRCClient ircClient;
 	protected SocketChannel socketChannel;
 	protected String localHostAddress;
@@ -358,7 +359,7 @@ public class IRCServer extends Observable implements Runnable
 	boolean ircDCCChat(String nick)
 	{
 		return ircSendRaw("PRIVMSG " + nick +" DCC Chat chat " + localHostAddress + " " +
-			CommonUtilities.getConfiguration("irc", "dccLocalPort") + "\r\n");
+			getProperty("irc", "dccLocalPort") + "\r\n");
 	}
 
 	void ircPong()									{ ircSendRaw("PONG " + ircServerAddress + "\r\n"); }

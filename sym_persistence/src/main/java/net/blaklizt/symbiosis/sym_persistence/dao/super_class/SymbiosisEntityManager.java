@@ -1,8 +1,8 @@
 package net.blaklizt.symbiosis.sym_persistence.dao.super_class;
 
 import net.blaklizt.symbiosis.sym_common.structure.Pair;
-import net.blaklizt.symbiosis.sym_core_lib.response.ResponseObject;
 import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_entity;
+import net.blaklizt.symbiosis.sym_persistence.structure.ResponseObject;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -13,13 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static net.blaklizt.symbiosis.sym_common.configuration.SymbiosisUtilities.sendEmailAlert;
-import static net.blaklizt.symbiosis.sym_core_lib.enumeration.SYM_RESPONSE_CODE.*;
-import static net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisEntityManager.DaoDataManager.sessionFactory;
+import static net.blaklizt.symbiosis.sym_persistence.admin.SymbiosisConfig.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,13 +29,14 @@ import static net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisEn
 
 public interface SymbiosisEntityManager<E extends symbiosis_entity, I extends Serializable> {
 
+	Logger LOGGER = Logger.getLogger(SymbiosisEntityManager.class.getSimpleName());
+
 	@Service
 	class DaoDataManager {
 
 		@Autowired public static SessionFactory sessionFactory;
 
-		public static final HashMap<Class<? extends symbiosis_entity>, SymbiosisEntityManager>
-			daoManagerMap = new HashMap<>();
+		public static final HashMap<Class<? extends symbiosis_entity>, SymbiosisEntityManager> daoManagerMap = new HashMap<>();
 
 		@SuppressWarnings("unchecked")
 		public static <E extends symbiosis_entity, I extends Serializable> SymbiosisEntityManager<E, I> using(Class<E> entityType) {
@@ -47,31 +47,36 @@ public interface SymbiosisEntityManager<E extends symbiosis_entity, I extends Se
 		}
 	}
 
-    default Session getCurrentSession() { return sessionFactory.getCurrentSession(); }
+    default Session getCurrentSession() { return DaoDataManager.sessionFactory.getCurrentSession(); }
 
     Class<E> getEntityClass();
 
 	default void refresh(E e) { getCurrentSession().refresh(e); }
 
-	default void saveOrUpdate(symbiosis_entity e) { getCurrentSession().saveOrUpdate(e); }
+	default void saveOrUpdate(symbiosis_entity<E> e) {
+		getCurrentSession().saveOrUpdate(e);
+		LOGGER.info("Updated entity " + e.toString());
+	}
 
-	default void save(symbiosis_entity e) { getCurrentSession().save(e); }
+	default I save(symbiosis_entity<E> e) {
+		I id = (I)getCurrentSession().save(e);
+		LOGGER.info("Persisted entity " + e.toString());
+		return id;
+	}
 
-	default void delete(symbiosis_entity e) { getCurrentSession().delete(e); }
+	default void delete(symbiosis_entity e) {
+		LOGGER.info("Deleting entity " + e.toString());
+		getCurrentSession().delete(e);
+	}
 
 	default List findByCriterion(Criterion criterion) { return findByCriteria(criterion); }
 
 	default E findById(I id) {
-        try {
-            return (E) getCurrentSession().get(getEntityClass(), id);
-        } catch (Exception ex) { ex.printStackTrace(); return null; }
+		return (E) getCurrentSession().get(getEntityClass(), id);
     }
 
 	default List<E> findAll() {
-        try {
-            Query queryResult = getCurrentSession().createQuery("from " + getEntityClass().getSimpleName());
-            return queryResult.list();
-        } catch (Exception ex) { ex.printStackTrace(); return null; }
+		return getCurrentSession().createQuery("from " + getEntityClass().getSimpleName()).list();
     }
 
 	default List<E> findByCriteria(Criterion... criterion) {
@@ -80,23 +85,20 @@ public interface SymbiosisEntityManager<E extends symbiosis_entity, I extends Se
 		return criteria.list();
 	}
 
-	@SuppressWarnings("unchecked")
-	default List<E> findWhere(boolean unique, int maxResults, Pair<String, ?>... criterion) {
+	default List<E> findWhere(List<Pair<String, ?>> criterion, int maxResults) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		for (Pair<String, ?> p : criterion) { criteria.add(Restrictions.eq(p.getLeft(), p.getRight())); }
-		if (unique) {
-			return Collections.singletonList((E)criteria.uniqueResult());
-		} else if (maxResults != 0) {
+		if (maxResults != 0) {
 			criteria.setMaxResults(maxResults);
 		}
 		return criteria.list();
 	}
 
-	default List<E> findWhere(Pair<String, ?>... criterion) {
-		return findWhere(false, 0, criterion);
+	default ResponseObject<E> findUniqueWhere(List<Pair<String, ?>> criterion) {
+		return enforceUnique(findWhere(criterion, 0));
 	}
 
-	default ResponseObject<E> enforceUnique(List<E> list) {
+	default <E> ResponseObject<E> enforceUnique(List<E> list) {
 		if (list == null) {
 			return new ResponseObject<>(DATA_NOT_FOUND);
 		} else if (list.size() != 1) {

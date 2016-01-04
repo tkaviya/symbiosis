@@ -1,6 +1,6 @@
 package net.blaklizt.symbiosis.sym_persistence.dao.super_class;
 
-import net.blaklizt.symbiosis.sym_persistence.entity.simple_type.symbiosis_event_log;
+import net.blaklizt.symbiosis.sym_persistence.entity.complex_type.symbiosis_event_log;
 
 import java.util.List;
 

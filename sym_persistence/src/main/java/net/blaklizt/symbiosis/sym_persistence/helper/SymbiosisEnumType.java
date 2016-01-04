@@ -2,6 +2,8 @@ package net.blaklizt.symbiosis.sym_persistence.helper;
 
 import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_enum_entity;
 
+import static net.blaklizt.symbiosis.sym_persistence.helper.SymbiosisEnumHelper.getID;
+
 /**
  * ***************************************************************************
  * *
@@ -28,7 +30,7 @@ import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_enum_
 
 public interface SymbiosisEnumType<E extends symbiosis_enum_entity> {
 
-    Long value();
+	default Long value()  { return getID(getEnumEntityClass(), this.toString()); }
 
     Class<? extends symbiosis_enum_entity> getEnumEntityClass();
 }

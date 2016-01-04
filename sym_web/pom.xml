@@ -46,10 +46,10 @@
             <artifactId>sym_authentication</artifactId>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>net.blaklizt.symbiosis</groupId>-->
-            <!--<artifactId>sym_irc</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>net.blaklizt.symbiosis</groupId>
+            <artifactId>sym_irc</artifactId>
+        </dependency>
 
         <!--<dependency>-->
             <!--<groupId>net.blaklizt.symbiosis</groupId>-->
@@ -100,12 +100,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-web</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- Other dependencies -->

@@ -1,9 +1,5 @@
 package net.blaklizt.symbiosis.sym_persistence.admin;
 
-import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_channel;
-import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_option;
-import net.blaklizt.symbiosis.sym_persistence.entity.simple_type.symbiosis_user_option;
-import net.blaklizt.symbiosis.sym_persistence.helper.DaoManager;
 import org.springframework.stereotype.Service;
 
 /******************************************************************************
@@ -30,45 +26,45 @@ import org.springframework.stereotype.Service;
 @Service
 public class DBInit {
 
-    static DBInit dbInit = null;
-
-    public static DBInit getInstance() {
-        if (dbInit == null) dbInit = new DBInit();
-        return dbInit;
-    }
-
-    private DBInit()
-    {
-
-        //setup options
-        symbiosis_option sync_folder = (symbiosis_option)new symbiosis_option().setValues("SYNC_FOLDER", true);
-        symbiosis_option sync_type = (symbiosis_option)new symbiosis_option().setValues("SYNC_TYPE", true);
-
-        //setup channel
-        symbiosis_channel android = (symbiosis_channel)new symbiosis_channel().setValues("ANDROID", true);
-
-
-        /* insert symbiosis configuration data into database */
-        DaoManager.getInstance().getOptionDao().save(sync_folder);
-        DaoManager.getInstance().getOptionDao().save(sync_type);
-        DaoManager.getInstance().getChannelDao().save(android);
-
-
-        symbiosis_user_option default_options = new symbiosis_user_option();
-        default_options.setSymbiosis_user_id(0L);
-        default_options.setSymbiosis_option_id(sync_folder.getId());
-        default_options.setOption_value(!System.getProperty("os.name").equalsIgnoreCase("win") ? "/mnt/archive/Promo" : "G:\\Promo");
-
-        DaoManager.getInstance().getUserOptionDao().save(default_options);
-    }
+//    static DBInit dbInit = null;
+//
+//    public static DBInit getInstance() {
+//        if (dbInit == null) dbInit = new DBInit();
+//        return dbInit;
+//    }
+//
+//    private DBInit()
+//    {
+//
+//        //setup options
+//        symbiosis_option sync_folder = (symbiosis_option)new symbiosis_option().setValues("SYNC_FOLDER", true);
+//        symbiosis_option sync_type = (symbiosis_option)new symbiosis_option().setValues("SYNC_TYPE", true);
+//
+//        //setup channel
+//        symbiosis_channel android = (symbiosis_channel)new symbiosis_channel().setValues("ANDROID", true);
+//
+//
+//        /* insert symbiosis configuration data into database */
+//        DaoManager.getInstance().getOptionDao().save(sync_folder);
+//        DaoManager.getInstance().getOptionDao().save(sync_type);
+//        DaoManager.getInstance().getChannelDao().save(android);
+//
+//
+//        symbiosis_user_option default_options = new symbiosis_user_option();
+//        default_options.setSymbiosis_user_id(0L);
+//        default_options.setSymbiosis_option_id(sync_folder.getId());
+//        default_options.setOption_value(!System.getProperty("os.name").equalsIgnoreCase("win") ? "/mnt/archive/Promo" : "G:\\Promo");
+//
+//        DaoManager.getInstance().getUserOptionDao().save(default_options);
+//    }
 
 	/**
 	 insert into symbiosis_channel (description, enabled) values ('ANDROID',1);
 
-	 insert into symbiosis_user_status (description, enabled) values ('INACTIVE',1);
-	 insert into symbiosis_user_status (description, enabled) values ('ACTIVE',1);
+	 insert into symbiosis_user_status (description, enabled) values ('ACC_INACTIVE',1);
+	 insert into symbiosis_user_status (description, enabled) values ('ACC_ACTIVE',1);
 	 insert into symbiosis_user_status (description, enabled) values ('PENDING',1);
-	 insert into symbiosis_user_status (description, enabled) values ('SUSPENDED',1);
+	 insert into symbiosis_user_status (description, enabled) values ('ACC_SUSPENDED',1);
 	 insert into symbiosis_user_status (description, enabled) values ('BLOCKED',1);
 	 insert into symbiosis_user_status (description, enabled) values ('UNKNOWN',1);
 

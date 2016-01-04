@@ -1,23 +1,20 @@
 package net.blaklizt.symbiosis.sym_authentication.authentication;
 
 import net.blaklizt.symbiosis.sym_authentication.security.Security;
-import net.blaklizt.symbiosis.sym_common.utilities.Validator;
-import net.blaklizt.symbiosis.sym_core_lib.response.ResponseObject;
-import net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisEntityManager;
-import net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisUserHelper;
 import net.blaklizt.symbiosis.sym_persistence.entity.complex_type.symbiosis_auth_user;
 import net.blaklizt.symbiosis.sym_persistence.entity.complex_type.symbiosis_user;
-import org.json.JSONObject;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_channel;
+import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_system;
+import net.blaklizt.symbiosis.sym_persistence.structure.ResponseObject;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
 import java.util.logging.Logger;
 
-import static net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisUserHelper.findByUsername;
+import static net.blaklizt.symbiosis.sym_common.utilities.Validator.isValidPassword;
+import static net.blaklizt.symbiosis.sym_persistence.admin.SymbiosisConfig.*;
+import static net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisUserHelper.findByActiveUsername;
+import static net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisUserHelper.findByUserId;
 
 /**
 * Created with IntelliJ IDEA.
@@ -26,12 +23,149 @@ import static net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisUs
 * Time: 7:06 PM
 */
 @Service
-public class SymbiosisAuthenticator
-{
-	protected HashMap<String, List<SimpleGrantedAuthority>> grantedAuthoritiesCache = new HashMap<>();
+public class SymbiosisAuthenticator {
 
-	private static final Logger logger = Logger.getLogger(SymbiosisAuthenticator.class.getSimpleName());
+	protected static final Integer MAX_PASSWORD_TRIES = 5;
 
+	static Logger logger = Logger.getLogger(SpringAuthenticationProvider.class.getSimpleName());
+
+	public static ResponseObject<symbiosis_user> getUserByUsername(
+		String username, symbiosis_system symbiosisSystem, symbiosis_channel symbiosisChannel) {
+		logger.info("Searching for user by name " + username);
+		return findByActiveUsername(username, symbiosisSystem, symbiosisChannel);
+	}
+
+	public static ResponseObject<symbiosis_auth_user> getAuthUserByUserIdSystemAndChannel(
+		Long userId, symbiosis_system symbiosisSystem, symbiosis_channel symbiosisChannel) {
+		logger.info("Searching for auth user by user Id " + userId
+			+ ", system " + symbiosisSystem.getDescription()
+			+ ", channel " + symbiosisChannel.getDescription());
+		return findByUserId(userId, symbiosisSystem, symbiosisChannel, ACC_ACTIVE);
+	}
+
+	public static String encyptPassword(String rawPassword, String salt) {
+		logger.info("Encrypting [ " + rawPassword + " with salt " + salt + " ]");
+		String encryptedPassword = Security.encryptWithSalt(rawPassword, "SHA512", salt.getBytes());
+		logger.info("Encrypted password: " + encryptedPassword);
+		return encryptedPassword;
+	}
+
+	public static ResponseObject<symbiosis_auth_user> validatePassword(symbiosis_auth_user symbiosisAuthUser, String password) {
+
+		ResponseObject<symbiosis_auth_user> response = new ResponseObject<>(GENERAL_ERROR, symbiosisAuthUser);
+
+		if (symbiosisAuthUser == null) {
+			return response.setResponseCode(INPUT_INVALID_REQUEST).setMessage("User was null");
+		}
+
+		symbiosis_user symbiosisUser = symbiosisAuthUser.getUser();
+
+		symbiosisAuthUser.setLast_auth_date(new Date());
+
+		if (symbiosisUser.getUser_status() != ACC_ACTIVE) {
+			response.setResponseCode(symbiosisUser.getUser_status());
+		}
+		else {
+			int passwordTries = symbiosisUser.getPassword_tries();
+
+			if (passwordTries >= MAX_PASSWORD_TRIES) {
+				response.setResponseCode(ACC_PASSWORD_TRIES_EXCEEDED);
+			}
+			else if (!isValidPassword(password)) {
+				response.setResponseCode(INPUT_INVALID_REQUEST).setMessage("Password format was invalid");
+				symbiosisUser.setPassword_tries(++passwordTries);
+				if (symbiosisUser.getPassword_tries() >= MAX_PASSWORD_TRIES) {
+					symbiosisUser.setUser_status(ACC_PASSWORD_TRIES_EXCEEDED);
+				}
+			}
+			else if (symbiosisUser.getPassword().equals(encyptPassword(password, symbiosisUser.getSalt()))) {
+				response.setResponseCode(SUCCESS);
+				symbiosisUser.setPassword_tries(0);
+			}
+			else {
+				response.setResponseCode(AUTH_INCORRECT_PASSWORD);
+				symbiosisUser.setPassword_tries(++passwordTries);
+				symbiosisAuthUser.setLast_login_date(symbiosisAuthUser.getLast_auth_date());
+			}
+		}
+		symbiosisAuthUser.saveOrUpdate();
+		symbiosisUser.saveOrUpdate();
+		return response;
+	}
+
+
+//	protected static final HashMap<SYM_RESPONSE_CODE, Object> mappedResponseCode = new HashMap<>();
+//
+//	protected static final Logger logger = Logger.getLogger(SymbiosisAuthenticator.class.getSimpleName());
+//
+//	protected static final Integer MAX_PASSWORD_TRIES = 5;
+//
+//	static {
+//		// We will mask any response code < 0 because it is a general system error that a user should not see
+//		for (SYM_RESPONSE_CODE symResponseCode : values()) {
+//			if (symResponseCode.code < 0) { mappedResponseCode.put(symResponseCode, GENERAL_ERROR); }
+//		}
+//
+//		// We will mask certain authentication response codes to avoid username/password guessing
+//		mappedResponseCode.put(DATA_NOT_FOUND,			AUTH_AUTHENTICATION_FAILED);
+//		mappedResponseCode.put(INPUT_INVALID_REQUEST,	AUTH_AUTHENTICATION_FAILED);
+//		mappedResponseCode.put(AUTH_INCORRECT_PASSWORD, AUTH_AUTHENTICATION_FAILED);
+//		mappedResponseCode.put(AUTH_NON_EXISTENT,		AUTH_AUTHENTICATION_FAILED);
+//	}
+//
+//	public static ResponseObject<symbiosis_user> validatePassword(symbiosis_user user, String rawPassword) {
+//
+//		ResponseObject<symbiosis_user> response = new ResponseObject<>(GENERAL_ERROR, user);
+//
+//		if (user == null) {
+//			response.setResponseCode(INPUT_INVALID_REQUEST).setMessage("User was null");
+//		}
+//		else if (user.getUser_status().getId() != ACC_ACTIVE.code) {
+//			response.setResponseCode(SYM_RESPONSE_CODE.valueOf(user.getUser_status().getId().intValue()));
+//		}
+//		else {
+//			int passwordTries = user.getPassword_tries();
+//
+//			if (passwordTries >= MAX_PASSWORD_TRIES) {
+//				response.setResponseCode(ACC_PASSWORD_TRIES_EXCEEDED);
+//			}
+//			else if (!isValidPassword(rawPassword)) {
+//				response.setResponseCode(INPUT_INVALID_REQUEST).setMessage("Password format was invalid");
+//				user.setPassword_tries(++passwordTries);
+//			}
+//			else if (user.getPassword().equals(encyptPassword(rawPassword, user.getSalt()))) {
+//				response.setResponseCode(SUCCESS);
+//				user.setPassword_tries(0);
+//			}
+//			else {
+//				response.setResponseCode(AUTH_INCORRECT_PASSWORD);
+//				user.setPassword_tries(++passwordTries);
+//			}
+//		}
+//		return logAndReturn(response);
+//	}
+//
+//	protected static <E>ResponseObject<E> logAndReturn(symbiosis_user user, ResponseObject<E> responseObject) {
+//
+//		SymbiosisLogHelper.logSystemEvent(new symbiosis_event_log(user.getId()));
+//
+//		if (responseObject.getResponseCode() != SUCCESS) {
+//			Object mappedResponse = mappedResponseCode.get(responseObject.getResponseCode());
+//			if (mappedResponse != null && mappedResponse instanceof SYM_RESPONSE_CODE) {
+//				logger.info("Returning response " + mappedResponse + " for response code " + responseObject.getResponseCode());
+//				responseObject.setResponseCode((SYM_RESPONSE_CODE) mappedResponse);
+//			}
+//		}
+//		return responseObject;
+//	}
+//
+//	public static String encyptPassword(String rawPassword, String salt) {
+//		logger.info("Encrypting [ " + rawPassword + " with salt " + salt + " ]");
+//		String encryptedPassword = Security.encryptWithSalt(rawPassword, "SHA512", salt.getBytes());
+//		logger.info("Encrypted password: " + encryptedPassword);
+//		return encryptedPassword;
+//	}
+//
 //	@Override
 //	public SymbiosisUserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 //	{
@@ -43,7 +177,7 @@ public class SymbiosisAuthenticator
 //
 //		boolean active = true;
 //
-////		if (dbSymbiosisUser.getSymbiosisUserStatusID() == ResponseCode.ACTIVE.responseCode()) active = true;
+////		if (dbSymbiosisUser.getSymbiosisUserStatusID() == ResponseCode.ACC_ACTIVE.responseCode()) active = true;
 ////		else
 ////		{
 ////			active = false;
@@ -51,21 +185,6 @@ public class SymbiosisAuthenticator
 ////		}
 //
 //		return new SymbiosisUserDetails(dbSymbiosisUser, active, getAuthorities(dbSymbiosisUser.getSymbiosisUserGroup().getDescription()));
-//	}
-//
-//	public String encodePassword(String rawPass, String salt) {
-//		//implement hectic encryption here
-//		logger.info("Encrypting [ " + rawPass + " with salt " + salt + " ]");
-//		String encryptedPassword = Security.encryptWithSalt(rawPass, "SHA512", salt.getBytes());
-//		logger.info("Encrypted password: " + encryptedPassword);
-//		return encryptedPassword;
-//	}
-//
-//	public boolean isPasswordValid(String encPass, String rawPass, String salt) {
-//		//implement hectic encryption here
-//		String
-//		logger.info("Comparing [ " + Security.encrypt(rawPass) + " | " + rawPass + " ]");
-//		return encPass.matches(Security.encrypt(rawPass));
 //	}
 //
 //	public ResponseCode registerUser(User symbiosisUser)
@@ -88,7 +207,7 @@ public class SymbiosisAuthenticator
 //		newSymbiosisAuthUser.setSymbiosisUserID(newSymbiosisUser.getSymbiosisUserID());
 //		newSymbiosisAuthUser.setLastLoginDate(new Date());
 //		newSymbiosisAuthUser.setLastAuthDate(new Date());
-//		newSymbiosisAuthUser.setSymbiosisUserStatusID(ResponseCode.ACTIVE.responseCode());
+//		newSymbiosisAuthUser.setSymbiosisUserStatusID(ResponseCode.ACC_ACTIVE.responseCode());
 //
 //		authUserDao.saveOrUpdate(newSymbiosisAuthUser);
 //
@@ -97,44 +216,6 @@ public class SymbiosisAuthenticator
 //		return ResponseCode.SUCCESS;
 //	}
 //
-//	public ResponseCode authenticateUser(User authUser, String password)
-//	{
-//			SymbiosisUserDetails symAuthUser;
-//			if (!(authUser instanceof SymbiosisUserDetails))
-//				symAuthUser = (SymbiosisUserDetails)authUser;
-//			else
-//				symAuthUser = loadUserByUsername(authUser.getUsername());
-//
-//			if (symAuthUser == null) return ResponseCode.INVALID_USERNAME;
-//
-////			if (symAuthUser.getSymbiosisUser().getUserStatusID() != ResponseCode.ACTIVE.responseCode())
-////			{
-////				//write event log
-////				return ResponseCode.valueOf(symAuthUser.getSymbiosisUser().getUserStatusID());
-////			}
-//			if (isPasswordValid(authUser.getPassword(),
-//			                    encodePassword(password, authUser.getPassword()),
-//			                    symAuthUser.getSymbiosisUser().getSalt()))
-//			{
-//				//update auth_token
-//				//update last login
-//				//write event log
-//				return ResponseCode.SUCCESS;
-//			}
-//			else
-//			{
-//				//update password tries
-//				//write event log
-//				return ResponseCode.AUTHENTICATION_FAILED;
-//			}
-//		}
-//		catch (Exception ex)
-//		{
-//			//write event log
-//			//send email
-//			return ResponseCode.GENERAL_ERROR;
-//		}
-//	}
 //
 //	public ResponseObject registerNewUser(SymbiosisUser registerUser)
 //	{
@@ -144,12 +225,12 @@ public class SymbiosisAuthenticator
 //		else if (CommonUtilities.isNullOrEmpty(registerUser.getEmail())
 //	         || !Validator.isValidEmailAddress(registerUser.getEmail()))
 //		{
-//			registrationResponse = ResponseCode.INVALID_EMAIL;
+//			registrationResponse = ResponseCode.INPUT_INVALID_EMAIL;
 //		}
 //		else if (CommonUtilities.isNullOrEmpty(registerUser.getMsisdn())
 //	         ||       !Validator.isValidMsisdn(registerUser.getMsisdn()))
 //		{
-//			registrationResponse = ResponseCode.INVALID_MSISDN;
+//			registrationResponse = ResponseCode.INPUT_INVALID_MSISDN;
 //		}
 //		else if (CommonUtilities.isNullOrEmpty(registerUser.getFirstName())
 //	         ||    !Validator.isValidFirstName(registerUser.getFirstName()))

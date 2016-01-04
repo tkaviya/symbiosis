@@ -1,11 +1,7 @@
 package net.blaklizt.symbiosis.sym_web.controllers;
 
 import net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator;
-import net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisUserDetails;
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
-import net.blaklizt.symbiosis.sym_common.response.ResponseCode;
-import net.blaklizt.symbiosis.sym_persistence.dao.implementation.SymbiosisUserDaoImpl;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,8 +19,8 @@ public class DefaultController
 {
 	@Autowired SymbiosisAuthenticator symbiosisAuthenticator;
 
-	@Autowired
-	SymbiosisUserDaoImpl userDao;
+//	@Autowired
+//	SymbiosisUserDaoImpl userDao;
 
 	private Logger logger = Configuration.getNewLogger(DefaultController.class.getSimpleName());
 	
@@ -40,35 +36,35 @@ public class DefaultController
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public String authenticate(HttpServletRequest request, HttpServletResponse response)
 	{
-		String jsonResponse;
-		try
-		{
-			SymbiosisUserDetails userDetails = symbiosisAuthenticator.loadUserByUsername(request.getParameter("username"));
-			
-//			Date lastAccessDate = userDetails.getSymbiosisUser().getLastLoginDate();
-			
-			ResponseCode authResponse = symbiosisAuthenticator.authenticateUser(userDetails);
-			
-			
-			if (authResponse == ResponseCode.SUCCESS)
-			{
-				logger.info("Authentication successful.");
-				JSONObject responseJSON = new JSONObject(ResponseCode.SUCCESS.toJSONResponse());
-				responseJSON.put("auth_token", userDetails.getSymbiosisUser().getAuthToken());
-//				responseJSON.put("last_access_date", sdf.format(lastAccessDate));
-				jsonResponse = responseJSON.toString();
-				
-			}
-			else
-			{
-				jsonResponse = ResponseCode.AUTHENTICATION_FAILED.toJSONResponse();
-			}
-		}
-		catch (Exception ex)
-		{
-			logger.severe("Failed to authenticate:\n" + ex.getMessage());
-			jsonResponse = ResponseCode.GENERAL_ERROR.toJSONResponse();
-		}
+		String jsonResponse = null;
+//		try
+//		{
+//			SymbiosisUserDetails userDetails = symbiosisAuthenticator.getUserByUsername(request.getParameter("username"));
+//
+////			Date lastAccessDate = userDetails.getSymbiosisUser().getLastLoginDate();
+//
+//			SYM_RESPONSE_CODE authResponse = symbiosisAuthenticator.authenticateUser(userDetails);
+//
+//
+//			if (authResponse == SUCCESS)
+//			{
+//				logger.info("Authentication successful.");
+//				JSONObject responseJSON = new JSONObject(SUCCESS.toJSONResponse());
+//				responseJSON.put("auth_token", userDetails.getSymbiosisUser().getAuthToken());
+////				responseJSON.put("last_access_date", sdf.format(lastAccessDate));
+//				jsonResponse = responseJSON.toString();
+//
+//			}
+//			else
+//			{
+//				jsonResponse = AUTH_AUTHENTICATION_FAILED.toJSONResponse();
+//			}
+//		}
+//		catch (Exception ex)
+//		{
+//			logger.severe("Failed to authenticate:\n" + ex.getMessage());
+//			jsonResponse = GENERAL_ERROR.toJSONResponse();
+//		}
 		return jsonResponse;
 	}
 
@@ -76,32 +72,32 @@ public class DefaultController
 	public String register(HttpServletRequest request)
 	{
 		logger.info("Got registration request.");
-
-		SymbiosisUserDetails userDetails = symbiosisAuthenticator.loadUserByUsername(request.getParameter("username"));
-
-		ResponseCode responseCode;
-		String jsonResponse;
-
-		if (userDetails != null) jsonResponse = ResponseCode.PREVIOUS_REGISTRATION_FOUND.toString();
-		else
-		{
-			try
-			{
-				logger.info("Got registration request.");
-				jsonResponse = ResponseCode.SUCCESS.toJSONResponse();
-				//response.setStatus(HttpStatus.OK.value());
-			}
-			catch (Exception ex)
-			{
-				logger.severe("Failed to authenticate: " + ex.getMessage());
-				jsonResponse = ResponseCode.GENERAL_ERROR.toJSONResponse();
-			}
-			return jsonResponse;
-
-
-		}
-
-		logger.info("Returning response:\n" + jsonResponse);
+//
+//		SymbiosisUserDetails userDetails = symbiosisAuthenticator.getUserByUsername(request.getParameter("username"));
+//
+//		ResponseCode responseCode;
+		String jsonResponse = null;
+//
+//		if (userDetails != null) jsonResponse = PREVIOUS_REGISTRATION_FOUND.toString();
+//		else
+//		{
+//			try
+//			{
+//				logger.info("Got registration request.");
+//				jsonResponse = SUCCESS.toJSONResponse();
+//				//response.setStatus(HttpStatus.OK.value());
+//			}
+//			catch (Exception ex)
+//			{
+//				logger.severe("Failed to authenticate: " + ex.getMessage());
+//				jsonResponse = GENERAL_ERROR.toJSONResponse();
+//			}
+//			return jsonResponse;
+//
+//
+//		}
+//
+//		logger.info("Returning response:\n" + jsonResponse);
 		return jsonResponse;
 	}
 }

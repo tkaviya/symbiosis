@@ -25,7 +25,7 @@
 //
 //import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
 //import net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisUserOptionDao;
-//import net.blaklizt.symbiosis.sym_persistence.entity.simple_type.symbiosis_user_option;
+//import net.blaklizt.symbiosis.sym_persistence.entity.complex_type.symbiosis_user_option;
 //import net.blaklizt.symbiosis.sym_persistence.helper.OptionHelper;
 //import net.blaklizt.symbiosis.sym_sync.server.SymFileProcessorService;
 //import net.blaklizt.symbiosis.sym_sync.server.queue.SymSyncDataQueue;

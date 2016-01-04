@@ -30,8 +30,8 @@
             </plugin>
         </plugins>
     </build>
-    <dependencies>
 
+    <dependencies>
         <!-- Symbiosis Modules -->
         <dependency>
             <groupId>net.blaklizt.symbiosis</groupId>

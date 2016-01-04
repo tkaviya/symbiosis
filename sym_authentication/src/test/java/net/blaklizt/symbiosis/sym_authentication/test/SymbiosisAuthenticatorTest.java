@@ -1,7 +1,5 @@
 package net.blaklizt.symbiosis.sym_authentication.test;
 
-import net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator;
-
 /**
  * Created with IntelliJ IDEA.
  * User: tkaviya
@@ -11,7 +9,7 @@ import net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthent
  */
 public class SymbiosisAuthenticatorTest {
 
-	private SymbiosisAuthenticator symbiosisAuthenticator;
+//	private SymbiosisAuthenticator symbiosisAuthenticator;
 
 //	@BeforeClass(enabled = false)
 //	public void setUp() throws Exception

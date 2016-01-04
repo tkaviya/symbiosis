@@ -1,13 +1,13 @@
 package net.blaklizt.symbiosis.sym_persistence.entity.super_class;
 
-import net.blaklizt.symbiosis.sym_common.utilities.SymTransformer;
-import net.blaklizt.symbiosis.sym_common.utilities.Validator;
+import net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisEntityManager;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
 import static net.blaklizt.symbiosis.sym_common.utilities.Validator.isNumeric;
+import static net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisEntityManager.DaoDataManager.using;
 
 /* *************************************************************************
  * Created:     18 / 09 / 2015                                             *
@@ -29,7 +29,7 @@ import static net.blaklizt.symbiosis.sym_common.utilities.Validator.isNumeric;
 */
 
 @MappedSuperclass
-public abstract class symbiosis_entity implements Serializable
+public abstract class symbiosis_entity<E extends symbiosis_entity> implements Serializable
 {
     protected Long id;
 
@@ -40,7 +40,7 @@ public abstract class symbiosis_entity implements Serializable
 
     /* this function is private because we do not want to be
      * able to update an entity id via the program ever */
-    private void setId(Long id) { this.id = id; }
+    public void setId(Long id) { this.id = id; }
 
 	@Override
 	public String toString() {
@@ -60,5 +60,14 @@ public abstract class symbiosis_entity implements Serializable
 		}
 		catch (IllegalAccessException e) { e.printStackTrace(); }
 		return stringBuilder.toString();
+	}
+
+	public Long save() {
+		return (Long)using(this.getClass()).save((E)this);
+	}
+
+	public E saveOrUpdate() {
+		using(this.getClass()).saveOrUpdate((E)this);
+		return (E)this;
 	}
 }

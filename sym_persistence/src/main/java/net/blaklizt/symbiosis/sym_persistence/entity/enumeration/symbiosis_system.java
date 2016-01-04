@@ -11,4 +11,8 @@ import javax.persistence.Entity;
  * Time: 3:56 PM
  */
 @Entity
-public class symbiosis_system extends symbiosis_enum_entity {}
+public class symbiosis_system extends symbiosis_enum_entity<symbiosis_system> {
+	public symbiosis_system(String description, Boolean enabled) {
+		super(description, enabled);
+	}
+}

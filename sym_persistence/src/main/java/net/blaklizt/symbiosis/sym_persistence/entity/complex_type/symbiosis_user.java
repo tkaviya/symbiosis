@@ -1,6 +1,7 @@
 package net.blaklizt.symbiosis.sym_persistence.entity.complex_type;
 
 import net.blaklizt.symbiosis.sym_persistence.entity.config.symbiosis_country;
+import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_channel;
 import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_group;
 import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_language;
 import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_user_status;
@@ -8,26 +9,34 @@ import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_entit
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-public class symbiosis_user extends symbiosis_entity
+@AttributeOverride(name = "id", column = @Column(name = "symbiosis_user_id"))
+public class symbiosis_user extends symbiosis_entity<symbiosis_user>
 {
-	@Basic(fetch = LAZY, optional = true)		private String first_name;
-	@Basic(fetch = LAZY, optional = true)		private String last_name;
-	@Basic(fetch = LAZY, optional = true)		private String username;
-	@Basic(fetch = LAZY, optional = true)		private String email;
-	@Basic(fetch = LAZY, optional = true)		private String msisdn;
-	@ManyToOne(fetch = LAZY, optional = false)	private symbiosis_user_status user_status;
-	@ManyToOne(fetch = LAZY, optional = false)	private symbiosis_country country;
-	@ManyToOne(fetch = LAZY, optional = false)	private symbiosis_language language;
-	@ManyToOne(fetch = LAZY, optional = false)	private symbiosis_group user_group;
-//	private Long sym_user_group_id;
-//	private Long sym_country_id;
-//	private Long sym_language_id;
-//    private Long sym_user_status_id;
+	private String first_name;
+	private String last_name;
+	private Date date_of_birth;
+	private String username;
+	private String password;
+	private Integer password_tries;
+	private String salt;
+	private String email;
+	private String msisdn;
+	private symbiosis_user_status user_status;
+	private symbiosis_country country;
+	private symbiosis_language language;
+//	private ArrayList<symbiosis_auth_user> user_channels;
+	private symbiosis_user_details user_details;
 
-	@Column(name = "first_name")
+	@Basic(fetch = LAZY, optional = true)
 	public String getFirst_name() {
 		return first_name;
 	}
@@ -36,7 +45,7 @@ public class symbiosis_user extends symbiosis_entity
 		this.first_name = first_name;
 	}
 
-	@Column(name = "last_name")
+	@Basic(fetch = LAZY, optional = true)
 	public String getLast_name() {
 		return last_name;
 	}
@@ -45,7 +54,16 @@ public class symbiosis_user extends symbiosis_entity
 		this.last_name = last_name;
 	}
 
-	@Column(name = "username")
+	@Basic(fetch = LAZY, optional = true)
+	public Date getDate_of_birth() {
+		return date_of_birth;
+	}
+
+	public void setDate_of_birth(Date date_of_birth) {
+		this.date_of_birth = date_of_birth;
+	}
+
+	@Basic(fetch = LAZY, optional = true)
 	public String getUsername() {
 		return username;
 	}
@@ -54,7 +72,7 @@ public class symbiosis_user extends symbiosis_entity
 		this.username = username;
 	}
 
-	@Column(name = "email")
+	@Basic(fetch = LAZY, optional = true)
 	public String getEmail() {
 		return email;
 	}
@@ -63,7 +81,7 @@ public class symbiosis_user extends symbiosis_entity
 		this.email = email;
 	}
 
-	@Column(name = "msisdn")
+	@Basic(fetch = LAZY, optional = true)
 	public String getMsisdn() {
 		return msisdn;
 	}
@@ -72,53 +90,80 @@ public class symbiosis_user extends symbiosis_entity
 		this.msisdn = msisdn;
 	}
 
-//	@Column(name = "sym_user_group_id")
-//
-//	public Long getSym_user_group_id() {
-//		return sym_user_group_id;
-//	}
-//
-//	public void setSym_user_group_id(Long sym_user_group_id) {
-//		this.sym_user_group_id = sym_user_group_id;
-//	}
-//
-//	@Column(name = "sym_country_id")
-//
-//	public Long getSym_country_id() {
-//		return sym_country_id;
-//	}
-//
-//	public void setSym_country_id(Long sym_country_id) {
-//		this.sym_country_id = sym_country_id;
-//	}
-//
-//	@Column(name = "sym_language_id")
-//
-//	public Long getSym_language_id() {
-//		return sym_language_id;
-//	}
-//
-//	public void setSym_language_id(Long sym_language_id) {
-//		this.sym_language_id = sym_language_id;
-//	}
-//
-//    @Column(name = "sym_user_status_id")
-//    @Basic
-//    public Long getSym_user_status_id() {
-//        return sym_user_status_id;
-//    }
-//
-//    public void setSym_user_status_id(Long sym_user_status_id) {
-//        this.sym_user_status_id = sym_user_status_id;
-//    }
-
-	public void setUser_group(symbiosis_group user_group) {
-		this.user_group = user_group;
+	@Basic(optional = false)
+	public String getPassword() {
+		return password;
 	}
 
-//    @JoinTable(name = "symbiosis_user_group", )
-//	@JoinColumn(name = "sym_user_group_id", referencedColumnName="id")
-    public symbiosis_group getUser_group() {
-        return user_group;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@Basic(optional = false)
+	public Integer getPassword_tries() {
+		return password_tries;
+	}
+
+	public void setPassword_tries(Integer password_tries) {
+		this.password_tries = password_tries;
+	}
+
+	@Basic(optional = false)
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
+	@ManyToOne(optional = false)
+	public symbiosis_user_status getUser_status() {
+		return user_status;
+	}
+
+	public void setUser_status(symbiosis_user_status user_status) {
+		this.user_status = user_status;
+	}
+
+	@ManyToOne(optional = false, fetch = LAZY)
+	public symbiosis_country getCountry() {
+		return country;
+	}
+
+	public void setCountry(symbiosis_country country) {
+		this.country = country;
+	}
+
+	@ManyToOne(optional = false, fetch = LAZY)
+	public symbiosis_language getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(symbiosis_language language) {
+		this.language = language;
+	}
+
+//	@JoinColumn(name = "symbiosis_user_id", referencedColumnName = "symbiosis_user_id")
+//	@OneToMany(mappedBy = "symbiosis_user_id", targetEntity = symbiosis_auth_user.class, fetch = LAZY, cascade = ALL)
+//	public ArrayList<symbiosis_auth_user> getUser_channels() {
+//		if (user_channels == null) {
+//			user_channels = new ArrayList<>();
+//		}
+//		return user_channels;
+//	}
+//
+//	public void setUser_channels(ArrayList<symbiosis_auth_user> user_channels) {
+//		this.user_channels = user_channels;
+//	}
+
+	@OneToOne(optional = false, cascade = ALL, fetch = LAZY)
+	@JoinColumn(name = "symbiosis_user_id", referencedColumnName = "symbiosis_user_id")
+	public symbiosis_user_details getUser_details() {
+		return user_details;
+	}
+
+	public void setUser_details(symbiosis_user_details user_details) {
+		this.user_details = user_details;
+	}
 }

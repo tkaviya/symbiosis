@@ -1,8 +1,8 @@
 group = 'net.blaklizt.symbiosis'
 description = 'Symbiosis Bluetooth'
 dependencies {
-  compile project(':sym_common')
-    compile group: 'org.springframework', name: 'spring-context', version:'4.1.5.RELEASE'
+	compile project(':sym_common')
+	compile libraries.spring_context
     compile group: 'net.sf.bluecove', name: 'bluecove', version:'2.1.0'
     compile group: 'net.sf.bluecove', name: 'bluecove-gpl', version:'2.1.0'
 }

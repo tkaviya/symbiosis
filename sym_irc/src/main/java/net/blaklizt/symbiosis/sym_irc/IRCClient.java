@@ -1,6 +1,5 @@
 package net.blaklizt.symbiosis.sym_irc;
 
-import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
 import net.blaklizt.symbiosis.sym_irc.dcc.DCCServerManager;
 import net.blaklizt.symbiosis.sym_irc.session.UserSession;
 
@@ -11,6 +10,8 @@ import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Logger;
+
+import static net.blaklizt.symbiosis.sym_common.configuration.Configuration.getProperty;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,7 +32,7 @@ public class IRCClient implements Observer
 
 	public IRCClient()
 	{
-		String[] servers = CommonUtilities.getConfiguration("irc", "SERVERS").split(",");
+		String[] servers = getProperty("irc", "SERVERS").split(",");
 
 		try
 		{
@@ -56,7 +57,7 @@ public class IRCClient implements Observer
 							 DCCServerManager.LOCALHOST + ":" +
 							 DCCServerManager.LOCALPORT;
 			serverResponses.get(CLIENT).get(CLIENT).add(message);
-			logger.error(message);
+			logger.severe(message);
 		}
 
 		for (String server : servers)
@@ -64,7 +65,7 @@ public class IRCClient implements Observer
 			logger.info("Found configuration for server " + server);
 			try
 			{
-				String[] serverOpts = CommonUtilities.getConfiguration("irc", server).split(",");
+				String[] serverOpts = getProperty("irc", server).split(",");
 				IRCServer ircServer = new IRCServer(this, server,Short.parseShort(serverOpts[0]),serverOpts[1],serverOpts[2]);
 				ircServer.addObserver(this); //listen in for irc events
 				new Thread(ircServer).start();
@@ -79,7 +80,7 @@ public class IRCClient implements Observer
 
 	public IRCClient(UserSession userSession)
 	{
-		String[] servers = CommonUtilities.getConfiguration("irc", "SERVERS").split(",");
+		String[] servers = getProperty("irc", "SERVERS").split(",");
 
 		try
 		{
@@ -104,7 +105,7 @@ public class IRCClient implements Observer
 							 DCCServerManager.LOCALHOST + ":" +
 							 DCCServerManager.LOCALPORT;
 			serverResponses.get(CLIENT).get(CLIENT).add(message);
-			logger.error(message);
+			logger.severe(message);
 		}
 
 		for (String server : servers)
@@ -112,7 +113,7 @@ public class IRCClient implements Observer
 			logger.info("Found configuration for server " + server);
 			try
 			{
-				String[] serverOpts = CommonUtilities.getConfiguration("irc", server).split(",");
+				String[] serverOpts = getProperty("irc", server).split(",");
 				IRCServer ircServer = new IRCServer(this, server, Short.parseShort(serverOpts[0]),
 													userSession.getIrcName(), userSession.getIrcNick());
 				ircServer.addObserver(this); //listen in for irc events
@@ -141,7 +142,7 @@ public class IRCClient implements Observer
 		{
 			String response = "!!! Failed to join " + channel + " on server " + currentServer.getIrcServerAddress();
 			serverResponses.get(currentServer.getIrcServerAddress()).get(currentServer.getIrcServerAddress()).addLast(response);
-			logger.error(response);
+			logger.severe(response);
 			return false;
 		}
 	}
@@ -157,7 +158,7 @@ public class IRCClient implements Observer
 		{
 			String response = "!!! Failed to leave " + channel + " on server " + currentServer.getIrcServerAddress();
 			serverResponses.get(currentServer.getIrcServerAddress()).get(currentServer.getIrcServerAddress()).addLast(response);
-			logger.error(response);
+			logger.severe(response);
 			return false;
 		}
 	}
@@ -186,12 +187,12 @@ public class IRCClient implements Observer
 
 	public void identify(String password)
 	{
-		if (password == null) password = CommonUtilities.getConfiguration("irc", currentServer.getIrcServerAddress()).split(",")[3];
+		if (password == null) password = getProperty("irc", currentServer.getIrcServerAddress()).split(",")[3];
 		if (!(currentServer.isConnected() && currentServer.ircIdentifyNick(password)))
 		{
 			String response = "!!! Failed to identify nick " + currentServer.getIrcCurrentNick() + " on server " + currentServer.getIrcServerAddress();
 			serverResponses.get(currentServer.getIrcServerAddress()).get(currentServer.getIrcServerAddress()).addLast(response);
-			logger.error(response);
+			logger.severe(response);
 		}
 	}
 
@@ -201,7 +202,7 @@ public class IRCClient implements Observer
 
 	public void identifyChannel(String channel, String password)
 	{
-		if (password == null) password = CommonUtilities.getConfiguration("irc", currentServer.getIrcServerAddress()).split(",")[3];
+		if (password == null) password = getProperty("irc", currentServer.getIrcServerAddress()).split(",")[3];
 		if (channel == null) channel = currentChannel;
 		if (!(currentServer.isConnected() && currentServer.ircIdentifyChannel(channel, password)))
 		{
@@ -209,7 +210,7 @@ public class IRCClient implements Observer
 							  currentServer.getIrcCurrentNick() + " on channel " + channel +
 							  currentServer.getIrcCurrentNick() + " on server " + currentServer.getIrcServerAddress();
 			serverResponses.get(currentServer.getIrcServerAddress()).get(channel).addLast(response);
-			logger.error(response);
+			logger.severe(response);
 		}
 	}
 

@@ -1,6 +1,6 @@
 package net.blaklizt.symbiosis.sym_persistence.dao.super_class;
 
-import net.blaklizt.symbiosis.sym_persistence.entity.simple_type.symbiosis_user_option;
+import net.blaklizt.symbiosis.sym_persistence.entity.complex_type.symbiosis_user_option;
 
 /**
  * Created by tsungai.kaviya on 2015-08-24.

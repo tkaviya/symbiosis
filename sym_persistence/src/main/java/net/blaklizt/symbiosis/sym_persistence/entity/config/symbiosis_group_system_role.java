@@ -1,10 +1,14 @@
 package net.blaklizt.symbiosis.sym_persistence.entity.config;
 
+import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_group;
 import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_enum_entity;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+
+import static javax.persistence.FetchType.LAZY;
 
 /**
  * Created with Intelli_j IDEA.
@@ -13,37 +17,30 @@ import javax.persistence.Entity;
  * Time: 3:56 PM
  */
 @Entity
-public class symbiosis_group_system_role extends symbiosis_enum_entity {
+public class symbiosis_group_system_role extends symbiosis_enum_entity<symbiosis_group_system_role> {
 
-    private Long symbiosis_group_id;
-    private Long symbiosis_system_id;
-	private Long symbiosis_role_id;
+	private symbiosis_group group;
+	private symbiosis_system_role system_role;
 
-    @Basic
-    @Column(name = "symbiosis_group_id", nullable = false)
-    public Long get_symbiosis_group_id() {
-        return symbiosis_group_id;
-    }
-
-    public void set_symbiosis_group_id(Long symbiosis_group_id) { this.symbiosis_group_id = symbiosis_group_id; }
-
-    @Basic
-    @Column(name = "symbiosis_system_id", nullable = false)
-    public Long get_symbiosis_system_id() {
-        return symbiosis_system_id;
-    }
-
-    public void set_symbiosis_system_id(Long symbiosis_system_id) {
-        this.symbiosis_system_id = symbiosis_system_id;
-    }
-
-	@Basic
-	@Column(name = "symbiosis_role_id", nullable = false)
-	public Long get_symbiosis_role_id() {
-		return symbiosis_role_id;
+	public symbiosis_group_system_role(String description, Boolean enabled, symbiosis_group group,
+									   symbiosis_system_role system_role) {
+		super(description, enabled);
+		this.group = group;
+		this.system_role = system_role;
 	}
 
-	public void set_symbiosis_role_id(Long symbiosis_role_id) {
-		this.symbiosis_role_id = symbiosis_role_id;
+	@ManyToOne(optional = false)
+    public symbiosis_group getGroup() {
+        return group;
+    }
+    public void setGroup(symbiosis_group group) { this.group = group; }
+
+
+	@ManyToOne(optional = false)
+	public symbiosis_system_role getSystem_role() {
+		return system_role;
+	}
+	public void setSystem_role(symbiosis_system_role system_role) {
+		this.system_role = system_role;
 	}
 }

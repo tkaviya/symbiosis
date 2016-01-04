@@ -13,15 +13,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class DaoManager
 {
-	@Autowired private SymbiosisAuthUserDao symbiosisAuthUserDao;
-    @Autowired private SymbiosisChannelDao symbiosisChannelDao;
-	@Autowired private SymbiosisEventLogDao symbiosisEventLogDao;
-    @Autowired private SymbiosisGroupDao symbiosisGroupDao;
-    @Autowired private SymbiosisGroupSystemRoleDao symbiosisGroupSystemRoleDao;
-    @Autowired private SymbiosisOptionDao symbiosisOptionDao;
-    @Autowired private SymbiosisRoleDao symbiosisRoleDao;
-    @Autowired private SymbiosisUserDao symbiosisUserDao;
-    @Autowired private SymbiosisUserOptionDao symbiosisUserOptionDao;
+	private SymbiosisAuthUserDao symbiosisAuthUserDao;
+    private SymbiosisChannelDao symbiosisChannelDao;
+	private SymbiosisEventLogDao symbiosisEventLogDao;
+    private SymbiosisGroupDao symbiosisGroupDao;
+    private SymbiosisGroupSystemRoleDao symbiosisGroupSystemRoleDao;
+    private SymbiosisOptionDao symbiosisOptionDao;
+    private SymbiosisRoleDao symbiosisRoleDao;
+    private SymbiosisUserDao symbiosisUserDao;
+    private SymbiosisUserOptionDao symbiosisUserOptionDao;
 
 	private static DaoManager daoManager = null;
 

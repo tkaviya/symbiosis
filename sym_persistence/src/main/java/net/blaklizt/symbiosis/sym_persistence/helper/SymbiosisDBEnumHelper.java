@@ -82,7 +82,7 @@ public class SymbiosisDBEnumHelper {
 
     }
 
-    public <E extends AbstractEnumHelper> Long getMappedID(E symbiosisEnumType) {
+    public <E extends SymbiosisEnumType> Long getMappedID(E symbiosisEnumType) {
 
         String className = symbiosisEnumType.getEnumEntityClass().getSimpleName();
         String enumName = symbiosisEnumType.toString();

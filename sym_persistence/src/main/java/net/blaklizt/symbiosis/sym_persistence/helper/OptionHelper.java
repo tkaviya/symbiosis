@@ -26,7 +26,7 @@ import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_optio
  */
 
 
-public enum OptionHelper implements AbstractEnumHelper {
+public enum OptionHelper implements SymbiosisEnumType<symbiosis_option> {
 
     SYNC_FOLDER, SYNC_TYPE;
 

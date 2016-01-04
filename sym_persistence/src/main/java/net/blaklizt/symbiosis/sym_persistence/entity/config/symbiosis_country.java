@@ -1,6 +1,6 @@
 package net.blaklizt.symbiosis.sym_persistence.entity.config;
 
-import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_entity;
+import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_enum_entity;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -13,9 +13,16 @@ import javax.persistence.Entity;
  * Time: 3:56 PM
  */
 @Entity
-public class symbiosis_country extends symbiosis_entity {
+public class symbiosis_country extends symbiosis_enum_entity<symbiosis_country> {
+
 	private String country_name;
 	private String country_code_prefix;
+
+	public symbiosis_country(String description, Boolean enabled, String country_name, String country_code_prefix) {
+		super(description, enabled);
+		this.country_name = country_name;
+		this.country_code_prefix = country_code_prefix;
+	}
 
 	@Basic
 	@Column(name = "country_name", nullable = false, length = 50)

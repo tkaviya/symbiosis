@@ -17,7 +17,7 @@
 //			  isActive, authorities);
 //		symbiosisUser = user;
 //		symbiosisUser.setUsername(user.getUsername());
-////		symbiosisUser.setSymbiosisUserStatusID(isActive ? ResponseCode.ACTIVE.responseCode() : ResponseCode.INACTIVE.responseCode());
+////		symbiosisUser.setSymbiosisUserStatusID(isActive ? ResponseCode.ACC_ACTIVE.responseCode() : ResponseCode.ACC_INACTIVE.responseCode());
 //		symbiosisUser.setPassword(user.getPassword());
 //	}
 //

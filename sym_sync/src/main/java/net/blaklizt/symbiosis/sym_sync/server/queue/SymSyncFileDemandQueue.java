@@ -5,7 +5,7 @@ import net.blaklizt.symbiosis.sym_common.configuration.ThreadPoolManager;
 import net.blaklizt.symbiosis.sym_common.utilities.CommonUtilities;
 import net.blaklizt.symbiosis.sym_common.utilities.Format;
 import net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisUserOptionDao;
-import net.blaklizt.symbiosis.sym_persistence.entity.simple_type.symbiosis_user_option;
+import net.blaklizt.symbiosis.sym_persistence.entity.complex_type.symbiosis_user_option;
 import net.blaklizt.symbiosis.sym_persistence.helper.OptionHelper;
 import net.blaklizt.symbiosis.sym_sync.server.file.SymSyncFile;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package net.blaklizt.symbiosis.sym_persistence.structure;
 
-import net.blaklizt.symbiosis.sym_core_lib.enumeration.SYM_RESPONSE_CODE;
+import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_response_code;
 
 /**
  * User: tkaviya
@@ -9,33 +9,40 @@ import net.blaklizt.symbiosis.sym_core_lib.enumeration.SYM_RESPONSE_CODE;
  */
 public class ResponseObject<T>
 {
-	SYM_RESPONSE_CODE responseCode;
+	symbiosis_response_code responseCode;
+
+	String responseMessage;
+
 	T responseObject = null;
 
-	public ResponseObject(SYM_RESPONSE_CODE responseCode, T responseObject) {
+	public ResponseObject(symbiosis_response_code responseCode, T responseObject) {
 		this.responseCode = responseCode;
+		this.responseMessage = responseCode.getResponse_message();
 		this.responseObject = responseObject;
 	}
 
-	public ResponseObject(SYM_RESPONSE_CODE responseCode)
-	{
+	public ResponseObject(symbiosis_response_code responseCode) {
 		this.responseCode = responseCode;
+		this.responseMessage = responseCode.getResponse_message();
 	}
 
-    public int getCode() {  return responseCode.code; }
+    public Long getCode() {  return responseCode.getId(); }
 
 	//Override default message with custom message. Return this to allow method chaining
-    public ResponseObject<T> setMessage(String responseMessage) { responseCode.message = responseMessage; return this; }
+    public ResponseObject<T> setMessage(String responseMessage) { this.responseMessage = responseMessage; return this; }
 
-	public String getMessage() {   return responseCode.message;  }
+	public String getMessage() {   return responseMessage;  }
 
-	public SYM_RESPONSE_CODE getResponseCode() { return responseCode; }
+	public symbiosis_response_code getResponseCode() { return responseCode; }
 
 	//Change response code for this ResponseObject. Return this to allow method chaining
-	public ResponseObject<T> setResponseCode(SYM_RESPONSE_CODE responseCode) { this.responseCode = responseCode; return this; }
+	public ResponseObject<T> setResponseCode(symbiosis_response_code responseCode) {
+		this.responseCode = responseCode;
+		this.responseMessage = responseCode.getResponse_message();
+		return this;
+	}
 
-	public T getResponseObject()
-	{
+	public T getResponseObject() {
 		return responseObject;
 	}
 

@@ -19,54 +19,45 @@ package net.blaklizt.symbiosis.sym_authentication.authentication;
  * *************************************************************************
 */
 
-import net.blaklizt.symbiosis.sym_authentication.security.Security;
-import net.blaklizt.symbiosis.sym_core_lib.enumeration.SYM_RESPONSE_CODE;
-import net.blaklizt.symbiosis.sym_core_lib.response.ResponseObject;
+import net.blaklizt.symbiosis.sym_persistence.admin.SymbiosisConfig;
+import net.blaklizt.symbiosis.sym_persistence.entity.complex_type.symbiosis_auth_user;
 import net.blaklizt.symbiosis.sym_persistence.entity.complex_type.symbiosis_user;
 import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_channel;
 import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_event_type;
 import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_response_code;
 import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_system;
-import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_event_log;
-import net.blaklizt.symbiosis.sym_persistence.helper.Channel;
+import net.blaklizt.symbiosis.sym_persistence.entity.complex_type.symbiosis_event_log;
 import net.blaklizt.symbiosis.sym_persistence.helper.SymbiosisLogHelper;
+import net.blaklizt.symbiosis.sym_persistence.structure.ResponseObject;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import static java.util.Arrays.asList;
-import static net.blaklizt.symbiosis.sym_common.utilities.Validator.isValidPassword;
-import static net.blaklizt.symbiosis.sym_core_lib.enumeration.SYM_RESPONSE_CODE.*;
-import static net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisUserHelper.findByActiveUsername;
-import static net.blaklizt.symbiosis.sym_persistence.helper.Channel.WEB;
-import static net.blaklizt.symbiosis.sym_persistence.helper.Channel.ANDROID;
-import static net.blaklizt.symbiosis.sym_persistence.helper.SymbiosisEnumHelper.getEnumEntity;
+import static net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator.getAuthUserByUserIdSystemAndChannel;
+import static net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator.getUserByUsername;
+import static net.blaklizt.symbiosis.sym_persistence.admin.SymbiosisConfig.*;
 
-public class SymbiosisChainAuthenticationProvider {
+public abstract class SymbiosisChainAuthenticationProvider {
 
-	private static final Logger logger = Logger.getLogger(SymbiosisChainAuthenticationProvider.class.getSimpleName());
-
-	private static final Integer MAX_PASSWORD_TRIES = 5;
-	private Channel authenticationChannel;
-	private final symbiosis_channel symbiosisChannel;
-	private final symbiosis_system symbiosisSystem;
-	private String username, email, msisdn, password;
+	protected static final Logger logger = Logger.getLogger(SymbiosisChainAuthenticationProvider.class.getSimpleName());
+	protected symbiosis_event_type symbiosisEventType;
+	protected final symbiosis_channel symbiosisChannel;
+	protected final symbiosis_system symbiosisSystem;
 	private symbiosis_user symbiosisUser;
+	private symbiosis_auth_user symbiosisAuthUser;
 	private ResponseObject<symbiosis_user> responseObject;
+	private String username, email, msisdn, password;
 
-	private static final HashMap<SYM_RESPONSE_CODE, Object> mappedResponseCode = new HashMap<>();
+	protected static final HashMap<symbiosis_channel, ArrayList<AuthenticationStep>> authenticationChain = new HashMap<>();
 
-	private static final HashMap<Channel, ArrayList<AuthenticationStep>> authenticationChain = new HashMap<>();
-
-	private static final HashMap<Channel, Class<? extends SymbiosisChainedAuthentication>> authenticationProviders = new HashMap<>();
+	private static final HashMap<symbiosis_response_code, Object> mappedResponseCode = new HashMap<>();
 
 	static {
-
 		// We will mask any response code < 0 because it is a general system error that a user should not see
-		for (SYM_RESPONSE_CODE symResponseCode : values()) {
-			if (symResponseCode.code < 0) { mappedResponseCode.put(symResponseCode, GENERAL_ERROR); }
+		for (symbiosis_response_code symResponseCode : SymbiosisConfig.getAllResponseCodes()) {
+			if (symResponseCode.getId() < 0) { mappedResponseCode.put(symResponseCode, GENERAL_ERROR); }
 		}
 
 		// We will mask certain authentication response codes to avoid username/password guessing
@@ -74,108 +65,50 @@ public class SymbiosisChainAuthenticationProvider {
 		mappedResponseCode.put(INPUT_INVALID_REQUEST,	AUTH_AUTHENTICATION_FAILED);
 		mappedResponseCode.put(AUTH_INCORRECT_PASSWORD, AUTH_AUTHENTICATION_FAILED);
 		mappedResponseCode.put(AUTH_NON_EXISTENT,		AUTH_AUTHENTICATION_FAILED);
-
-		authenticationProviders.put(WEB, SymbiosisWebAuthentication.class);
-		authenticationProviders.put(ANDROID, SymbiosisAndroidAuthentication.class);
 	}
 
-	protected interface SymbiosisChainedAuthentication {
-
-		default void addMappedResponseCode(SYM_RESPONSE_CODE symResponseCode, Object returnResponse) {
-			mappedResponseCode.put(symResponseCode, returnResponse);
-		}
-
-		default Object getMappedResponseCode(SYM_RESPONSE_CODE symResponseCode) {
-			return mappedResponseCode.get(symResponseCode);
-		}
-
-		SymbiosisChainedAuthentication getInstance(symbiosis_system system, symbiosis_channel channel);
+	protected interface AuthenticationStep {
+		ResponseObject<symbiosis_user> executeAuthenticationStep();
 	}
 
-	public static class SymbiosisWebAuthentication implements SymbiosisChainedAuthentication {
+	//each auth provider must determine its own chain of authentication
+	protected abstract void initializeAuthenticationChain();
 
-		private SymbiosisChainAuthenticationProvider symbiosisChainAuthenticationProvider;
-
-		private SymbiosisWebAuthentication() {}
-
-		public ResponseObject<symbiosis_user> authenticate(String username, String password) {
-			return symbiosisChainAuthenticationProvider.authenticateWeb(username, password);
-		}
-
-		@Override
-		public SymbiosisChainedAuthentication getInstance(symbiosis_system system, symbiosis_channel channel) {
-			symbiosisChainAuthenticationProvider = new SymbiosisChainAuthenticationProvider(system, channel);
-			return new SymbiosisWebAuthentication();
-		}
-	}
-
-	public static class SymbiosisAndroidAuthentication implements SymbiosisChainedAuthentication {
-
-		private SymbiosisChainAuthenticationProvider symbiosisChainAuthenticationProvider;
-
-		private SymbiosisAndroidAuthentication() {}
-
-		public ResponseObject<symbiosis_user> authenticate(String username, String password) {
-			return symbiosisChainAuthenticationProvider.authenticateAndroid(username, password);
-		}
-
-		@Override
-		public SymbiosisChainedAuthentication getInstance(symbiosis_system system, symbiosis_channel channel) {
-			symbiosisChainAuthenticationProvider = new SymbiosisChainAuthenticationProvider(system, channel);
-			return new SymbiosisAndroidAuthentication();
-		}
-	}
-
-	protected ResponseObject<symbiosis_user> authenticateWeb(String username, String password) {
-		this.username = username;
-		this.password = password;
-		return authenticate();
-	}
-
-	protected ResponseObject<symbiosis_user> authenticateAndroid(String msisdn, String password) {
-		this.msisdn = msisdn;
-		this.password = password;
-		return authenticate();
-	}
-
-	private SymbiosisChainAuthenticationProvider(symbiosis_system system, symbiosis_channel channel) {
+	public SymbiosisChainAuthenticationProvider(symbiosis_system system, symbiosis_channel channel) {
 		this.symbiosisChannel = channel;
 		this.symbiosisSystem = system;
 		initializeAuthenticationChain();
 	}
 
-	public static SymbiosisChainedAuthentication getAuthenticationProvider(Channel authenticationChannel) {
-		switch (authenticationChannel) {
-			case WEB: return new SymbiosisWebAuthentication();
-			case ANDROID: return new SymbiosisAndroidAuthentication();
-		}
-		return null;
+	// Functions to set auth data. They return SymbiosisChainAuthenticationProvider simply to allow method chaining
+	protected SymbiosisChainAuthenticationProvider setAuthUsername(String username) { this.username = username; return this; }
+
+	protected SymbiosisChainAuthenticationProvider setAuthEmail(String email) { this.email = email; return this; }
+
+	protected SymbiosisChainAuthenticationProvider setAuthMsisdn(String msisdn) { this.msisdn = msisdn; return this; }
+
+	protected SymbiosisChainAuthenticationProvider setAuthPassword(String password) { this.password = password; return this; }
+
+	public static void addMappedResponseCode(symbiosis_response_code symResponseCode, Object returnResponse) {
+		mappedResponseCode.put(symResponseCode, returnResponse);
 	}
 
-	public void addMappedResponseCode(SYM_RESPONSE_CODE symResponseCode, Object returnResponse) {
-
+	public static Object getMappedResponseCode(symbiosis_response_code symResponseCode) {
+		return mappedResponseCode.get(symResponseCode);
 	}
 
-	private interface AuthenticationStep {
-		ResponseObject<symbiosis_user> executeAuthenticationStep();
-	}
+	public final ResponseObject<symbiosis_user> authenticateUser() {
 
-	private void initializeAuthenticationChain() {
-		authenticationChain.put(WEB, new ArrayList<>(asList((AuthenticationStep)
-			this::getUserByUsernameAndChannel,
-			this::validatePassword)));
-	}
+		symbiosisEventType = LOGIN;
 
-	public ResponseObject<symbiosis_user> authenticate() {
 		ArrayList<AuthenticationStep> chain = authenticationChain.get(symbiosisChannel);
 
 		for (AuthenticationStep authenticationStep : chain) {
 			responseObject = authenticationStep.executeAuthenticationStep();
-			symbiosisUser = responseObject.getResponseObject();
 			if (responseObject.getResponseCode() != SUCCESS) {
 				logger.info("Authentication failed with response: " +
-					responseObject.getResponseCode().name() + " -> " +
-					responseObject.getResponseCode().message);
+					responseObject.getResponseCode().getDescription() + " -> " +
+					responseObject.getResponseCode().getResponse_message());
 				break;
 			}
 		}
@@ -183,73 +116,44 @@ public class SymbiosisChainAuthenticationProvider {
 
 	}
 
-	public ResponseObject<symbiosis_user> authenticate(String msisdn, String password) {
-		this.msisdn = msisdn;
-		this.password = password;
-		return authenticate();
+	protected ResponseObject<symbiosis_user> getUserByUsernameAndChannel() {
+		ResponseObject<symbiosis_user> userResponse = getUserByUsername(username, symbiosisSystem, symbiosisChannel);
+
+		if (userResponse.getResponseCode() == SUCCESS) {
+			symbiosisUser = responseObject.getResponseObject();
+
+			ResponseObject<symbiosis_auth_user> authUserResponse =
+				getAuthUserByUserIdSystemAndChannel(symbiosisUser.getId(), symbiosisSystem, symbiosisChannel);
+
+			symbiosisAuthUser = authUserResponse.getResponseObject();
+
+			userResponse.setResponseCode(authUserResponse.getResponseCode());
+
+		} else { return userResponse; }
+
+		return userResponse;
 	}
 
-
-
-	private ResponseObject<symbiosis_user> getUserByUsernameAndChannel() {
-		return findByActiveUsername(username, symbiosisSystem, symbiosisChannel);
+	protected ResponseObject<symbiosis_user> validatePassword() {
+		ResponseObject<symbiosis_auth_user> authUserResponse = SymbiosisAuthenticator.validatePassword(symbiosisAuthUser, password);
+		return new ResponseObject<>(authUserResponse.getResponseCode(), authUserResponse.getResponseObject().getUser());
 	}
 
-	private ResponseObject<symbiosis_user> validatePassword() {
+	protected ResponseObject<symbiosis_user> logAndReturn() {
 
-		ResponseObject<symbiosis_user> response = new ResponseObject<>(GENERAL_ERROR, symbiosisUser);
-
-		if (symbiosisUser == null) {
-			response.setResponseCode(INPUT_INVALID_REQUEST).setMessage("User was null");
-		}
-		else if (symbiosisUser.getUser_status().getId() != ACC_ACTIVE.code) {
-			response.setResponseCode(SYM_RESPONSE_CODE.valueOf(symbiosisUser.getUser_status().getId().intValue()));
-		}
-		else {
-			int passwordTries = symbiosisUser.getPassword_tries();
-
-			if (passwordTries >= MAX_PASSWORD_TRIES) {
-				response.setResponseCode(ACC_PASSWORD_TRIES_EXCEEDED);
-			}
-			else if (!isValidPassword(password)) {
-				response.setResponseCode(INPUT_INVALID_REQUEST).setMessage("Password format was invalid");
-				symbiosisUser.setPassword_tries(++passwordTries);
-			}
-			else if (symbiosisUser.getPassword().equals(encyptPassword(password, symbiosisUser.getSalt()))) {
-				response.setResponseCode(SUCCESS);
-				symbiosisUser.setPassword_tries(0);
-			}
-			else {
-				response.setResponseCode(AUTH_INCORRECT_PASSWORD);
-				symbiosisUser.setPassword_tries(++passwordTries);
-			}
-		}
-		return response;
-	}
-
-	private ResponseObject<symbiosis_user> logAndReturn() {
-
-		symbiosis_event_log log = new symbiosis_event_log(symbiosisUser.getId(), symbiosisChannel, new symbiosis_event_type(),
-			(symbiosis_response_code) getEnumEntity(symbiosis_response_code.class, (long) responseObject.getResponseCode().code),
-			new Date(), responseObject.getMessage());
+		symbiosis_event_log log = new symbiosis_event_log(symbiosisUser.getId(), symbiosisChannel, symbiosisEventType,
+			responseObject.getResponseCode(), new Date(), responseObject.getMessage());
 
 		SymbiosisLogHelper.logSystemEvent(log);
 
 		if (responseObject.getResponseCode() != SUCCESS) {
 			Object mappedResponse = mappedResponseCode.get(responseObject.getResponseCode());
-			if (mappedResponse != null && mappedResponse instanceof SYM_RESPONSE_CODE) {
+			if (mappedResponse != null && mappedResponse instanceof symbiosis_response_code) {
 				logger.info("Returning response " + mappedResponse + " for response code " + responseObject.getResponseCode());
-				responseObject.setResponseCode((SYM_RESPONSE_CODE) mappedResponse);
+				responseObject.setResponseCode((symbiosis_response_code) mappedResponse);
 			}
 		}
 		return responseObject;
-	}
-
-	public static String encyptPassword(String rawPassword, String salt) {
-		logger.info("Encrypting [ " + rawPassword + " with salt " + salt + " ]");
-		String encryptedPassword = Security.encryptWithSalt(rawPassword, "SHA512", salt.getBytes());
-		logger.info("Encrypted password: " + encryptedPassword);
-		return encryptedPassword;
 	}
 }
 

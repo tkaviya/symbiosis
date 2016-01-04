@@ -12,30 +12,32 @@ public enum SYM_RESPONSE_CODE
 	GENERAL_ERROR				(1,	    "A general error occurred"),
 	CONFIGURATION_INVALID		(-1,	"Specified configuration is not valid"),
 
-	//input errors
-	INCOMPLETE_REQUEST			(2,		"Incomplete request specified"),
-	INVALID_REQUEST				(3,		"Invalid request specified"),
-	INVALID_EMAIL				(4,	    "Email provided was not valid"),
-	INVALID_MSISDN				(5,		"Phone number provided was not valid"),
-	INVALID_FIRST_NAME			(6,		"First name provided was not valid"),
-	INVALID_LAST_NAME			(7,		"Last name provided was not valid"),
-	INVALID_USERNAME			(8,		"Username provided was not valid"),
-	INVALID_PASSWORD			(9,		"Password provided was not valid"),
-	INVALID_NAME				(10,	"Name provided was not valid"),
-	DATA_NOT_FOUND				(11,	"Data does not exist"),
+	//input validation errors
+	INPUT_INCOMPLETE_REQUEST	(2,		"Incomplete request specified"),
+	INPUT_INVALID_REQUEST		(3,		"Invalid request specified"),
+	INPUT_INVALID_EMAIL			(4,	    "Email provided was not valid"),
+	INPUT_INVALID_MSISDN		(5,		"Phone number provided was not valid"),
+	INPUT_INVALID_FIRST_NAME	(6,		"First name provided was not valid"),
+	INPUT_INVALID_LAST_NAME		(7,		"Last name provided was not valid"),
+	INPUT_INVALID_USERNAME		(8,		"Username provided was not valid"),
+	INPUT_INVALID_PASSWORD		(9,		"Password provided was not valid"),
+	INPUT_INVALID_NAME			(10,	"Name provided was not valid"),
 
-	INSUFFICIENT_PRIVILEGES		(20,	"Insufficient privileges for current operation"),
-	AUTHENTICATION_FAILED		(21,	"Authentication failed"),
+	DATA_NOT_FOUND				(15,	"Data does not exist"),
+
+	//incorrect input errors
+	AUTH_INSUFFICIENT_PRIVILEGES	(20,	"Insufficient privileges for current operation"),
+	AUTH_AUTHENTICATION_FAILED		(21,	"Authentication failed"),
+	AUTH_INCORRECT_PASSWORD			(22,	"Password is incorrect"),
+	AUTH_NON_EXISTENT				(23,	"Account does not exist"),
 
 	//Account Status
-	ACTIVE						(30,	"Account is active"),
-	INACTIVE	                (31,	"Account is inactive"),
-	SUSPENDED	                (32,	"Account has been suspended"),
-	CLOSED	                    (33,	"Account has been closed"),
-	PASSWORD_TRIES_EXCEEDED	    (34,	"Password tries exceeded"),
-	INCORRECT_PASSWORD	        (35,	"Password is incorrect"),
-	PASSWORD_EXPIRED	        (36,	"Password expired"),
-	NON_EXISTENT				(37,	"Account does not exist"),
+	ACC_ACTIVE					(30,	"Account is active"),			//fully active account
+	ACC_INACTIVE				(31,	"Account is inactive"),			//pending verification
+	ACC_SUSPENDED				(32,	"Account has been suspended"),	//temporarily blocked (due to illegal activity)
+	ACC_CLOSED					(33,	"Account has been closed"),		//deleted
+	ACC_PASSWORD_TRIES_EXCEEDED	(34,	"Password tries exceeded"),		//temporarily blocked, must reset password
+	ACC_PASSWORD_EXPIRED		(35,	"Password expired"),			//temporarily blocked, must reset password
 
 	//Connectivity codes
 	CONNECTION_FAILED	        (40,	"Connection failed"),
@@ -51,7 +53,7 @@ public enum SYM_RESPONSE_CODE
 	;
 
 	public final int code;
-	public final String message;
+	public String message;
 
 	SYM_RESPONSE_CODE(int code, String message) { this.code = code; this.message = message; }
 	
