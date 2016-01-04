@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <groupId>net.blaklizt</groupId>
+        <artifactId>symbiosis</artifactId>
+        <version>2.0.0</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.blaklizt.symbiosis</groupId>
+    <artifactId>sym_bounce</artifactId>
+    <version>2.0.0</version>
+    <packaging>apk</packaging>
+    <name>Symbiosis Bounce</name>
+    <description>Symbiosis Bounce</description>
+
+    <build>
+        <finalName>sym_bounce</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <configuration>
+                    <undeployBeforeDeploy>true</undeployBeforeDeploy>
+                    <!-- tell build process to use filtered manifest -->
+                    <androidManifestFile>${project.basedir}/app/src/main/AndroidManifest.xml</androidManifestFile>
+                </configuration>
+            </plugin>
+        </plugins>
+        <!--<resources>-->
+            <!--&lt;!&ndash; filter manifest and put filtered file in target/filtered-manifest/ &ndash;&gt;-->
+            <!--<resource>-->
+                <!--<directory>${project.basedir}</directory>-->
+                <!--<filtering>true</filtering>-->
+                <!--<targetPath>${project.build.directory}/filtered-manifest</targetPath>-->
+                <!--<includes>-->
+                    <!--<include>AndroidManifest.xml</include>-->
+                <!--</includes>-->
+            <!--</resource>-->
+        <!--</resources>-->
+    </build>
+    <dependencies>
+        <!-- Other dependencies -->
+        <dependency>
+            <groupId>net.blaklizt.symbiosis</groupId>
+            <artifactId>sym_common</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>
