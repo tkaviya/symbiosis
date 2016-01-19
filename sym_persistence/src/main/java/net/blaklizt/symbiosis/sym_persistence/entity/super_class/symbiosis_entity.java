@@ -1,13 +1,17 @@
 package net.blaklizt.symbiosis.sym_persistence.entity.super_class;
 
-import net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisEntityManager;
+import net.blaklizt.symbiosis.sym_persistence.dao.super_class.GenericDao;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
 import static net.blaklizt.symbiosis.sym_common.utilities.Validator.isNumeric;
-import static net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisEntityManager.DaoDataManager.using;
 
 /* *************************************************************************
  * Created:     18 / 09 / 2015                                             *
@@ -48,6 +52,10 @@ public abstract class symbiosis_entity<E extends symbiosis_entity> implements Se
 		try {
 			stringBuilder.append("{ ");
 			for (Field field : this.getClass().getDeclaredFields()) {
+				//field.setAccessible(true);
+				if (!field.isAccessible()) {
+					continue;
+				}
 				Object fieldValue = field.get(field);
 				String fieldData;
 				if (fieldValue == null)					{ fieldData = "[" + field.getName() + ":null]"; }
@@ -63,11 +71,10 @@ public abstract class symbiosis_entity<E extends symbiosis_entity> implements Se
 	}
 
 	public Long save() {
-		return (Long)using(this.getClass()).save((E)this);
+		return GenericDao.save(this);
 	}
 
 	public E saveOrUpdate() {
-		using(this.getClass()).saveOrUpdate((E)this);
-		return (E)this;
+		return (E)GenericDao.saveOrUpdate(this);
 	}
 }

@@ -1,5 +1,23 @@
 package net.blaklizt.symbiosis.sym_authentication.test;
 
+import net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator;
+import net.blaklizt.symbiosis.sym_persistence.entity.complex_type.symbiosis_auth_user;
+import net.blaklizt.symbiosis.sym_persistence.entity.complex_type.symbiosis_user;
+import net.blaklizt.symbiosis.sym_persistence.structure.ResponseObject;
+
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import static net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator.getAuthUserByUserId;
+import static net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator.getUserByUsername;
+import static net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator.hashPassword;
+import static net.blaklizt.symbiosis.sym_persistence.admin.SymbiosisConfig.SYMBIOSIS;
+import static net.blaklizt.symbiosis.sym_persistence.admin.SymbiosisConfig.WEB;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
+
 /**
  * Created with IntelliJ IDEA.
  * User: tkaviya
@@ -9,33 +27,53 @@ package net.blaklizt.symbiosis.sym_authentication.test;
  */
 public class SymbiosisAuthenticatorTest {
 
-//	private SymbiosisAuthenticator symbiosisAuthenticator;
+	private SymbiosisAuthenticator symbiosisAuthenticator;
 
-//	@BeforeClass(enabled = false)
-//	public void setUp() throws Exception
-//	{
-//		try
-//		{
-//			ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("sym_authentication-spring-context.xml");
-//			symbiosisAuthenticator = (SymbiosisAuthenticator)classPathXmlApplicationContext.getBean("symbiosisAuthenticator");
-//		}
-//		catch (Exception e)
-//		{
-//			e.printStackTrace();
-//		}
-//	}
+	@BeforeClass
+	public void setUp() throws Exception
+	{
+		try
+		{
+			ClassPathXmlApplicationContext classPathXmlApplicationContext =
+				new ClassPathXmlApplicationContext("test-sym_authentication-spring-context.xml");
+			symbiosisAuthenticator = (SymbiosisAuthenticator)classPathXmlApplicationContext
+				.getBean("symbiosisAuthenticator");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 //
 //	@AfterClass
 //	public void tearDown() throws Exception {
 //
 //	}
-//
-//	@Test(enabled=false, dependsOnMethods={"testRegisterUser", "testRegisterNewUser"})
-//	public void testLoadUserByUsername() throws Exception {
-//		System.out.print("Doing null check on loadUserByUsername");
-//		Assert.assertNotNull(symbiosisAuthenticator.loadUserByUsername(null));
-//	}
-//
+
+	@Test
+	public void testHashPassword() throws Exception {
+		System.out.println("Testing salted hashing");
+		String hashedPassword = hashPassword("test", "test");
+		System.out.println("Salted hashed password = " + hashedPassword);
+		assertNotNull(hashedPassword);
+	}
+
+	@Test
+	public void testGetUserByUsername() throws Exception {
+		System.out.println("Testing getUserByUsername");
+		ResponseObject<symbiosis_user> userResponse = getUserByUsername("tkaviya", SYMBIOSIS, WEB);
+		System.out.println("getUserByUsername response = " + userResponse.getResponseCode());
+		assertNull(userResponse);
+	}
+
+	@Test
+	public void testGetAuthUserByUserId() throws Exception {
+		System.out.println("Testing getUserByUsername");
+		ResponseObject<symbiosis_auth_user> userResponse = getAuthUserByUserId(1L, SYMBIOSIS, WEB);
+		System.out.println("getUserByUsername response = " + userResponse.getResponseCode());
+		assertNull(userResponse);
+	}
+
 //	@Test(enabled=false)
 //	public void testEncodePassword() throws Exception {
 //

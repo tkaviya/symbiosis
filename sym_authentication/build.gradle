@@ -4,6 +4,7 @@ jar { baseName = 'sym_authentication' }
 
 dependencies {
 	compile project(':sym_persistence')
+	testCompile libraries.testng
 	compile libraries.spring_context
 	compile libraries.spring_security_core
 }

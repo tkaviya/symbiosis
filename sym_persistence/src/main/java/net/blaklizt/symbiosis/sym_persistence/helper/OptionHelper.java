@@ -31,6 +31,4 @@ public enum OptionHelper implements SymbiosisEnumType<symbiosis_option> {
     SYNC_FOLDER, SYNC_TYPE;
 
     public Class getEnumEntityClass() { return symbiosis_option.class; }
-
-    public Long value()  { return SymbiosisDBEnumHelper.getDaoHelper(DaoManager.getInstance().getOptionDao()).getMappedID(this); }
 }

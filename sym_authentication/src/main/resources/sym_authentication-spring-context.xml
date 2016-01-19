@@ -8,9 +8,8 @@
 
     <import resource="classpath*:sym_persistence-spring-context.xml" />
 
-    <!--<context:annotation-config />-->
     <context:component-scan base-package="net.blaklizt.symbiosis.sym_authentication" />
 
-    <!--<bean class="net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator" id="symbiosisAuthenticator" name="symbiosisAuthenticator" />-->
+    <context:annotation-config />
 
 </beans>

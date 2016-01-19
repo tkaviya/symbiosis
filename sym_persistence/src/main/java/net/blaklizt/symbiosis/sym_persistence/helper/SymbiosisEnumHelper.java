@@ -1,7 +1,6 @@
 package net.blaklizt.symbiosis.sym_persistence.helper;
 
 import net.blaklizt.symbiosis.sym_common.configuration.Configuration;
-import net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisEntityManager;
 import net.blaklizt.symbiosis.sym_persistence.entity.super_class.symbiosis_enum_entity;
 
 import java.util.HashMap;
@@ -9,6 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import static java.lang.String.format;
+import static net.blaklizt.symbiosis.sym_persistence.dao.super_class.GenericDao.findAll;
 
 /**
  * ***************************************************************************
@@ -44,7 +44,7 @@ public class SymbiosisEnumHelper {
 
     private static void populateCache(final Class<? extends symbiosis_enum_entity> enumEntityClass) {
 
-        List enumValues = SymbiosisEntityManager.DaoDataManager.using(enumEntityClass).findAll();
+        List enumValues = findAll(enumEntityClass);
 
         logger.info(format("Found %d values for enumerated type %s", enumValues.size(), enumEntityClass.getSimpleName()));
 

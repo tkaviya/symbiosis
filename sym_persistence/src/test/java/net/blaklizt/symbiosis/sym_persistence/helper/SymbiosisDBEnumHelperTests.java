@@ -1,8 +1,6 @@
 package net.blaklizt.symbiosis.sym_persistence.helper;
 
 import net.blaklizt.symbiosis.sym_common.utilities.Validator;
-import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_channel;
-import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_option;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.AfterMethod;
@@ -12,7 +10,7 @@ import org.testng.annotations.Test;
 import static java.lang.String.format;
 import static org.testng.Assert.*;
 
-@ContextConfiguration(locations = { "classpath:test-spring-config.xml" })
+@ContextConfiguration(locations = {"classpath:test-sym_persistence-spring-context.xml"})
 public class SymbiosisDBEnumHelperTests extends AbstractTestNGSpringContextTests {
 
     SymbiosisDBEnumHelper symbiosisDBEnumHelper;
@@ -33,8 +31,8 @@ public class SymbiosisDBEnumHelperTests extends AbstractTestNGSpringContextTests
 //        DaoManager.getInstance().getChannelDao().save(android);
 
         //cache config options
-        symbiosisDBEnumHelper = SymbiosisDBEnumHelper.getDaoHelper(DaoManager.getInstance().getOptionDao());
-        symbiosisDBEnumHelper = SymbiosisDBEnumHelper.getDaoHelper(DaoManager.getInstance().getChannelDao());
+//        symbiosisDBEnumHelper = SymbiosisDBEnumHelper.getDaoHelper(DaoManager.getInstance().getOptionDao());
+//        symbiosisDBEnumHelper = SymbiosisDBEnumHelper.getDaoHelper(DaoManager.getInstance().getChannelDao());
     }
 
     @AfterMethod

@@ -48,4 +48,9 @@ public class ResponseObject<T>
 
 	//Change object for this ResponseObject. Return this to allow method chaining
 	public ResponseObject<T> setResponseObject(T responseObject) { this.responseObject = responseObject; return this; }
+
+	@Override
+	public String toString() {
+		return responseMessage;
+	}
 }

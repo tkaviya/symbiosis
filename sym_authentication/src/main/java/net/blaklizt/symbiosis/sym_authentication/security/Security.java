@@ -1,15 +1,11 @@
 package net.blaklizt.symbiosis.sym_authentication.security;
 
-import net.blaklizt.symbiosis.sym_common.utilities.Validator;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
-import static net.blaklizt.symbiosis.sym_authentication.security.SymbiosisSecurityEncyption.DEFAULT_ENCRYPTION_SALT;
-import static net.blaklizt.symbiosis.sym_authentication.security.SymbiosisSecurityEncyption.DEFAULT_SALT_LENGTH;
-import static net.blaklizt.symbiosis.sym_authentication.security.SymbiosisSecurityEncyption.DEFAULT_SECURITY_ENCRYPTION;
+import static net.blaklizt.symbiosis.sym_authentication.security.SymbiosisSecurityEncyption.*;
 import static net.blaklizt.symbiosis.sym_common.utilities.Validator.isNullOrEmpty;
 
 /**
@@ -55,15 +51,15 @@ public class Security
 		return randomBytes;
 	}
 
-	public static String encryptWithSalt(final String unencryptedStr, final byte[] salt) {
-		return encryptWithSalt(unencryptedStr, DEFAULT_SECURITY_ENCRYPTION, salt);
+	public static String hashWithSalt(final String unencryptedStr, final byte[] salt) {
+		return hashWithSalt(unencryptedStr, DEFAULT_SECURITY_HASH, salt);
 	}
 
 	public static String encrypt(final String input) {
-		return encryptWithSalt(input, DEFAULT_SECURITY_ENCRYPTION, DEFAULT_ENCRYPTION_SALT);
+		return hashWithSalt(input, DEFAULT_SECURITY_HASH, DEFAULT_ENCRYPTION_SALT);
 	}
 
-	public static String encryptWithSalt(final String input, final String encryptMode, final byte[] salt)
+	public static String hashWithSalt(final String input, final String encryptMode, final byte[] salt)
 	{
 		try {
 			MessageDigest messageDigest = MessageDigest.getInstance(encryptMode);

@@ -1,6 +1,5 @@
 package net.blaklizt.symbiosis.sym_authentication.authentication;
 
-import net.blaklizt.symbiosis.sym_authentication.security.Security;
 import net.blaklizt.symbiosis.sym_persistence.entity.complex_type.symbiosis_auth_user;
 import net.blaklizt.symbiosis.sym_persistence.entity.complex_type.symbiosis_user;
 import net.blaklizt.symbiosis.sym_persistence.entity.enumeration.symbiosis_channel;
@@ -11,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.logging.Logger;
 
+import static net.blaklizt.symbiosis.sym_authentication.security.Security.hashWithSalt;
+import static net.blaklizt.symbiosis.sym_authentication.security.SymbiosisSecurityEncyption.DEFAULT_SECURITY_HASH;
 import static net.blaklizt.symbiosis.sym_common.utilities.Validator.isValidPassword;
 import static net.blaklizt.symbiosis.sym_persistence.admin.SymbiosisConfig.*;
 import static net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisUserHelper.findByActiveUsername;
@@ -27,7 +28,7 @@ public class SymbiosisAuthenticator {
 
 	protected static final Integer MAX_PASSWORD_TRIES = 5;
 
-	static Logger logger = Logger.getLogger(SpringAuthenticationProvider.class.getSimpleName());
+	static Logger logger = Logger.getLogger(SymbiosisAuthenticator.class.getSimpleName());
 
 	public static ResponseObject<symbiosis_user> getUserByUsername(
 		String username, symbiosis_system symbiosisSystem, symbiosis_channel symbiosisChannel) {
@@ -35,7 +36,7 @@ public class SymbiosisAuthenticator {
 		return findByActiveUsername(username, symbiosisSystem, symbiosisChannel);
 	}
 
-	public static ResponseObject<symbiosis_auth_user> getAuthUserByUserIdSystemAndChannel(
+	public static ResponseObject<symbiosis_auth_user> getAuthUserByUserId(
 		Long userId, symbiosis_system symbiosisSystem, symbiosis_channel symbiosisChannel) {
 		logger.info("Searching for auth user by user Id " + userId
 			+ ", system " + symbiosisSystem.getDescription()
@@ -43,9 +44,9 @@ public class SymbiosisAuthenticator {
 		return findByUserId(userId, symbiosisSystem, symbiosisChannel, ACC_ACTIVE);
 	}
 
-	public static String encyptPassword(String rawPassword, String salt) {
+	public static String hashPassword(String rawPassword, String salt) {
 		logger.info("Encrypting [ " + rawPassword + " with salt " + salt + " ]");
-		String encryptedPassword = Security.encryptWithSalt(rawPassword, "SHA512", salt.getBytes());
+		String encryptedPassword = hashWithSalt(rawPassword, DEFAULT_SECURITY_HASH, salt.getBytes());
 		logger.info("Encrypted password: " + encryptedPassword);
 		return encryptedPassword;
 	}
@@ -54,10 +55,6 @@ public class SymbiosisAuthenticator {
 
 		ResponseObject<symbiosis_auth_user> response = new ResponseObject<>(GENERAL_ERROR, symbiosisAuthUser);
 
-		if (symbiosisAuthUser == null) {
-			return response.setResponseCode(INPUT_INVALID_REQUEST).setMessage("User was null");
-		}
-
 		symbiosis_user symbiosisUser = symbiosisAuthUser.getUser();
 
 		symbiosisAuthUser.setLast_auth_date(new Date());
@@ -65,20 +62,20 @@ public class SymbiosisAuthenticator {
 		if (symbiosisUser.getUser_status() != ACC_ACTIVE) {
 			response.setResponseCode(symbiosisUser.getUser_status());
 		}
-		else {
+		else
+		{
 			int passwordTries = symbiosisUser.getPassword_tries();
 
-			if (passwordTries >= MAX_PASSWORD_TRIES) {
-				response.setResponseCode(ACC_PASSWORD_TRIES_EXCEEDED);
-			}
-			else if (!isValidPassword(password)) {
+			if (passwordTries >= MAX_PASSWORD_TRIES) { response.setResponseCode(ACC_PASSWORD_TRIES_EXCEEDED); }
+			else if (!isValidPassword(password))
+			{
 				response.setResponseCode(INPUT_INVALID_REQUEST).setMessage("Password format was invalid");
 				symbiosisUser.setPassword_tries(++passwordTries);
 				if (symbiosisUser.getPassword_tries() >= MAX_PASSWORD_TRIES) {
 					symbiosisUser.setUser_status(ACC_PASSWORD_TRIES_EXCEEDED);
 				}
 			}
-			else if (symbiosisUser.getPassword().equals(encyptPassword(password, symbiosisUser.getSalt()))) {
+			else if (symbiosisUser.getPassword().equals(hashPassword(password, symbiosisUser.getSalt()))) {
 				response.setResponseCode(SUCCESS);
 				symbiosisUser.setPassword_tries(0);
 			}
@@ -86,6 +83,9 @@ public class SymbiosisAuthenticator {
 				response.setResponseCode(AUTH_INCORRECT_PASSWORD);
 				symbiosisUser.setPassword_tries(++passwordTries);
 				symbiosisAuthUser.setLast_login_date(symbiosisAuthUser.getLast_auth_date());
+				if (symbiosisUser.getPassword_tries() >= MAX_PASSWORD_TRIES) {
+					symbiosisUser.setUser_status(ACC_PASSWORD_TRIES_EXCEEDED);
+				}
 			}
 		}
 		symbiosisAuthUser.saveOrUpdate();
@@ -95,11 +95,7 @@ public class SymbiosisAuthenticator {
 
 
 //	protected static final HashMap<SYM_RESPONSE_CODE, Object> mappedResponseCode = new HashMap<>();
-//
-//	protected static final Logger logger = Logger.getLogger(SymbiosisAuthenticator.class.getSimpleName());
-//
-//	protected static final Integer MAX_PASSWORD_TRIES = 5;
-//
+//////
 //	static {
 //		// We will mask any response code < 0 because it is a general system error that a user should not see
 //		for (SYM_RESPONSE_CODE symResponseCode : values()) {
@@ -111,38 +107,6 @@ public class SymbiosisAuthenticator {
 //		mappedResponseCode.put(INPUT_INVALID_REQUEST,	AUTH_AUTHENTICATION_FAILED);
 //		mappedResponseCode.put(AUTH_INCORRECT_PASSWORD, AUTH_AUTHENTICATION_FAILED);
 //		mappedResponseCode.put(AUTH_NON_EXISTENT,		AUTH_AUTHENTICATION_FAILED);
-//	}
-//
-//	public static ResponseObject<symbiosis_user> validatePassword(symbiosis_user user, String rawPassword) {
-//
-//		ResponseObject<symbiosis_user> response = new ResponseObject<>(GENERAL_ERROR, user);
-//
-//		if (user == null) {
-//			response.setResponseCode(INPUT_INVALID_REQUEST).setMessage("User was null");
-//		}
-//		else if (user.getUser_status().getId() != ACC_ACTIVE.code) {
-//			response.setResponseCode(SYM_RESPONSE_CODE.valueOf(user.getUser_status().getId().intValue()));
-//		}
-//		else {
-//			int passwordTries = user.getPassword_tries();
-//
-//			if (passwordTries >= MAX_PASSWORD_TRIES) {
-//				response.setResponseCode(ACC_PASSWORD_TRIES_EXCEEDED);
-//			}
-//			else if (!isValidPassword(rawPassword)) {
-//				response.setResponseCode(INPUT_INVALID_REQUEST).setMessage("Password format was invalid");
-//				user.setPassword_tries(++passwordTries);
-//			}
-//			else if (user.getPassword().equals(encyptPassword(rawPassword, user.getSalt()))) {
-//				response.setResponseCode(SUCCESS);
-//				user.setPassword_tries(0);
-//			}
-//			else {
-//				response.setResponseCode(AUTH_INCORRECT_PASSWORD);
-//				user.setPassword_tries(++passwordTries);
-//			}
-//		}
-//		return logAndReturn(response);
 //	}
 //
 //	protected static <E>ResponseObject<E> logAndReturn(symbiosis_user user, ResponseObject<E> responseObject) {
@@ -159,9 +123,9 @@ public class SymbiosisAuthenticator {
 //		return responseObject;
 //	}
 //
-//	public static String encyptPassword(String rawPassword, String salt) {
+//	public static String hashPassword(String rawPassword, String salt) {
 //		logger.info("Encrypting [ " + rawPassword + " with salt " + salt + " ]");
-//		String encryptedPassword = Security.encryptWithSalt(rawPassword, "SHA512", salt.getBytes());
+//		String encryptedPassword = Security.hashWithSalt(rawPassword, "SHA512", salt.getBytes());
 //		logger.info("Encrypted password: " + encryptedPassword);
 //		return encryptedPassword;
 //	}

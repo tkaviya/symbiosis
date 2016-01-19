@@ -5,9 +5,9 @@ package net.blaklizt.symbiosis.sym_authentication.security;
  */
 public class SymbiosisSecurityEncyption {
 
-	public static final String AES = "AES";
+	public static final String SHA256 = "SHA-256";
 
-	public static final String DEFAULT_SECURITY_ENCRYPTION = AES;
+	public static final String DEFAULT_SECURITY_HASH = SHA256;
 
 	public static final byte[] DEFAULT_ENCRYPTION_SALT = null;
 

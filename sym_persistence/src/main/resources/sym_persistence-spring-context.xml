@@ -13,6 +13,8 @@
 
     <context:component-scan base-package="net.blaklizt.symbiosis.sym_persistence" />
 
+    <context:annotation-config />
+
     <!--<bean id="symbiosisDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">-->
     <!--<property name="jndiName" value="java:jboss/datasources/symbiosis"/>-->
     <!--</bean>-->
@@ -33,11 +35,11 @@
             <list>
                 <value>net.blaklizt.symbiosis.sym_persistence.entity.enumeration</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.entity.config</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.entity.simple_type</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.entity.complex_type</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.dao</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.dao.implementation</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.super_class</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.admin</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.helper</value>
             </list>
         </property>
         <property name="dataSource" ref="symbiosisDataSource"/>

@@ -26,7 +26,7 @@ import net.blaklizt.symbiosis.sym_persistence.structure.ResponseObject;
 
 import java.util.Date;
 
-import static net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisEntityManager.DaoDataManager.using;
+import static net.blaklizt.symbiosis.sym_persistence.dao.super_class.GenericDao.findById;
 import static net.blaklizt.symbiosis.sym_persistence.dao.super_class.SymbiosisUserHelper.findByUserId;
 
 public class SymbiosisLogHelper {
@@ -46,7 +46,7 @@ public class SymbiosisLogHelper {
 				symbiosis_auth_user auth_user = null;
 
 				if (symbiosis_event.getAuth_user_id() != null) {
-					auth_user = using(symbiosis_auth_user.class).findById(symbiosis_event.getAuth_user_id());
+					auth_user = findById(symbiosis_auth_user.class, symbiosis_event.getAuth_user_id());
 				}
 				else if (symbiosis_event.getSymbiosis_user_id() != null) {
 					ResponseObject<symbiosis_auth_user> authUserResponse = findByUserId(

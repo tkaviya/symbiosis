@@ -119,7 +119,7 @@ project.ext.libraries = [
 
 	/* ################################################# database ################################################# */
 	hibernate_entitymanager:[ group: 'org.hibernate',	name: 'hibernate-entitymanager',version: '4.3.6.Final' ],
-	jpa_2_0_api:	[ group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.0-api',	version: '1.0.1.Final' ],
+	jpa_2_1_api:	[ group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api',	version: '1.0.0.Final' ],
 	hibernate_core:	[ group: 'org.hibernate',			name: 'hibernate-core',			version: '4.2.4.Final' ],
 	mysql_connector:[ group: 'mysql',     				name: 'mysql-connector-java',	version: '5.1.38' ],
 
@@ -153,5 +153,9 @@ project.ext.libraries = [
 	hsqldb:				[ group: 'org.hsqldb',				name: 'hsqldb',		version: '2.3.3' ],
 	dom4j:				[ group: 'dom4j',					name: 'dom4j',		version: '1.6.1' ],
 	antlr:				[ group: 'antlr',					name: 'antlr',		version: '3.0ea8' ],
-	cglib:				[ group: 'cglib',					name: 'cglib',		version: '3.2.0' ]
+	cglib:				[ group: 'cglib',					name: 'cglib',		version: '3.2.0' ],
+
+	swagger2:	[ group: 'io.springfox',			name: 'springfox-swagger2',		version: '2.3.0' ],
+	swagger_ui:	[ group: 'io.springfox',			name: 'springfox-swagger-ui',	version: '2.2.2' ],
+	jaxb_api:	[ group: 'javax.xml.bind',			name: 'jaxb-api',		version: '2.2.11' ]
 ]

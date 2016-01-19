@@ -35,7 +35,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import static net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator.getAuthUserByUserIdSystemAndChannel;
+import static net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator.getAuthUserByUserId;
 import static net.blaklizt.symbiosis.sym_authentication.authentication.SymbiosisAuthenticator.getUserByUsername;
 import static net.blaklizt.symbiosis.sym_persistence.admin.SymbiosisConfig.*;
 
@@ -123,7 +123,7 @@ public abstract class SymbiosisChainAuthenticationProvider {
 			symbiosisUser = responseObject.getResponseObject();
 
 			ResponseObject<symbiosis_auth_user> authUserResponse =
-				getAuthUserByUserIdSystemAndChannel(symbiosisUser.getId(), symbiosisSystem, symbiosisChannel);
+				getAuthUserByUserId(symbiosisUser.getId(), symbiosisSystem, symbiosisChannel);
 
 			symbiosisAuthUser = authUserResponse.getResponseObject();
 

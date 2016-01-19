@@ -9,38 +9,53 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <import resource="classpath*:sym_persistence-spring-context.xml" />
+    <import resource="classpath*:sym_common-spring-context.xml" />
 
     <context:component-scan base-package="net.blaklizt.symbiosis.sym_persistence" />
 
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <context:annotation-config />
+
+    <bean name="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:properties/database/application.properties"/>
     </bean>
 
-    <!-- Data Source -->
-    <bean id="symbiosisDataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="org.hsqldb.jdbcDriver" />
-        <property name="url" value="jdbc:hsqldb:file:testdb;shutdown=true" />
-        <property name="username" value="SA" />
-        <property name="password" value="" />
-        <property name="initialSize" value="1" />
-        <property name="maxActive" value="5" />
-        <property name="poolPreparedStatements" value="true" />
-        <property name="maxOpenPreparedStatements" value="10" />
+    <!--&lt;!&ndash; Data Source &ndash;&gt;-->
+    <!--<bean id="symbiosisDataSource" class="org.apache.commons.dbcp.BasicDataSource">-->
+        <!--<property name="driverClassName" value="org.hsqldb.jdbcDriver" />-->
+        <!--<property name="url" value="jdbc:hsqldb:file:testdb;shutdown=true" />-->
+        <!--<property name="username" value="SA" />-->
+        <!--<property name="password" value="" />-->
+        <!--<property name="initialSize" value="1" />-->
+        <!--<property name="maxActive" value="5" />-->
+        <!--<property name="poolPreparedStatements" value="true" />-->
+        <!--<property name="maxOpenPreparedStatements" value="10" />-->
+    <!--</bean>-->
+
+    <bean id="symbiosisDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${spring.datasource.driver-class-name}" />
+        <property name="url" value="${spring.datasource.url}" />
+        <property name="username" value="${spring.datasource.username}" />
+        <property name="password" value="${spring.datasource.password}" />
     </bean>
 
-
     <bean id="symbiosisSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <!--<property name="packagesToScan">-->
+            <!--<list>-->
+                <!--<value>net.blaklizt.symbiosis.sym_persistence</value>-->
+            <!--</list>-->
+        <!--</property>-->
         <property name="packagesToScan">
             <list>
                 <value>net.blaklizt.symbiosis.sym_persistence.entity.enumeration</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.entity.config</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.entity.simple_type</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.entity.complex_type</value>
-                <value>net.blaklizt.symbiosis.sym_persistence.dao</value>
                 <value>net.blaklizt.symbiosis.sym_persistence.dao.implementation</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.dao.super_class</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.admin</value>
+                <value>net.blaklizt.symbiosis.sym_persistence.helper</value>
             </list>
         </property>
+
         <property name="dataSource" ref="symbiosisDataSource"/>
 
         <property name="hibernateProperties">
@@ -54,6 +69,7 @@
             </props>
         </property>
     </bean>
+
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 

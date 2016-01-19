@@ -15,7 +15,7 @@ dependencies {
 	compile libraries.spring_context
 	compile libraries.spring_orm
 //	compile libraries.spring_security_core
-	compile libraries.jpa_2_0_api
+	compile libraries.jpa_2_1_api
 	compile libraries.hibernate_core
 	compile libraries.commons_logging
 	compile libraries.commons_collections
